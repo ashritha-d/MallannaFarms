@@ -11,6 +11,16 @@
 export type StockStatus = "in_stock" | "low_stock" | "out_of_stock" | "preorder";
 export type MediaType = "image" | "video";
 export type EnquiryStatus = "new" | "read" | "responded" | "archived";
+export type OrderStatus = "new" | "confirmed" | "out_for_delivery" | "delivered" | "cancelled";
+
+export interface OrderLineItem {
+  product_id: string;
+  name: string;
+  pack_size: string | null;
+  image: string | null;
+  price: number;
+  quantity: number;
+}
 
 export interface Database {
   public: {
@@ -196,6 +206,33 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["site_visits"]["Row"]>;
         Relationships: [];
       };
+      orders: {
+        Row: {
+          id: string;
+          order_number: string;
+          customer_name: string;
+          phone: string;
+          email: string | null;
+          address: string;
+          city: string | null;
+          pincode: string | null;
+          notes: string | null;
+          items: OrderLineItem[];
+          subtotal: number;
+          status: OrderStatus;
+          created_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["orders"]["Row"]> & {
+          order_number: string;
+          customer_name: string;
+          phone: string;
+          address: string;
+          items: OrderLineItem[];
+          subtotal: number;
+        };
+        Update: Partial<Database["public"]["Tables"]["orders"]["Row"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
@@ -212,6 +249,7 @@ export type PageContent = Database["public"]["Tables"]["pages"]["Row"];
 export type Faq = Database["public"]["Tables"]["faqs"]["Row"];
 export type ContactMessage = Database["public"]["Tables"]["contact_messages"]["Row"];
 export type Setting = Database["public"]["Tables"]["settings"]["Row"];
+export type Order = Database["public"]["Tables"]["orders"]["Row"];
 
 /** Convenience shape used across the public site once gallery media is joined. */
 export interface GalleryItemWithMedia extends GalleryItem {

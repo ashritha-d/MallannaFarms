@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom";
-import { Facebook, Instagram, Mail, MapPin, Phone, Youtube } from "lucide-react";
-import { FOOTER_LEGAL, FOOTER_NAV } from "@/routes";
+import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { FOOTER_EXPLORE, FOOTER_LEARN, FOOTER_SUPPORT } from "@/routes";
 import { LOGO } from "@/data/seed";
 import { useSettings } from "@/hooks/useSettings";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -14,13 +15,19 @@ function WhatsAppIcon({ className }: { className?: string }) {
 
 export default function Footer() {
   const { data: settings } = useSettings();
+  const { t } = useLanguage();
 
   const socialLinks = [
     { key: "social_instagram", icon: Instagram, label: "Instagram" },
     { key: "social_facebook", icon: Facebook, label: "Facebook" },
     { key: "social_whatsapp", icon: WhatsAppIcon, label: "WhatsApp" },
-    { key: "social_youtube", icon: Youtube, label: "YouTube" },
   ].filter((s) => settings[s.key]);
+
+  const columns = [
+    { title: t("footer_explore"), items: FOOTER_EXPLORE },
+    { title: t("footer_learn"), items: FOOTER_LEARN },
+    { title: t("footer_support"), items: FOOTER_SUPPORT },
+  ];
 
   return (
     <footer className="bg-forest-900 text-cream-100">
@@ -33,8 +40,26 @@ export default function Footer() {
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-cream-100/75">
             {settings.footer_tagline ?? "Naturally Raised. Freshly Delivered. Made for Healthy Families."}
           </p>
+          <div className="mt-5 space-y-2 text-sm text-cream-100/75">
+            <p className="flex items-start gap-2">
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-300" />
+              <span>{settings.contact_address}</span>
+            </p>
+            <p className="flex items-center gap-2">
+              <Phone className="h-4 w-4 shrink-0 text-gold-300" />
+              <a href={`tel:${settings.contact_phone?.replace(/\s+/g, "")}`} className="hover:text-gold-300">
+                {settings.contact_phone}
+              </a>
+            </p>
+            <p className="flex items-center gap-2">
+              <Mail className="h-4 w-4 shrink-0 text-gold-300" />
+              <a href={`mailto:${settings.contact_email}`} className="hover:text-gold-300">
+                {settings.contact_email}
+              </a>
+            </p>
+          </div>
           {socialLinks.length > 0 && (
-            <div className="mt-6 flex gap-3">
+            <div className="mt-5 flex gap-3">
               {socialLinks.map(({ key, icon: Icon, label }) => (
                 <a
                   key={key}
@@ -51,52 +76,29 @@ export default function Footer() {
           )}
         </div>
 
-        <div>
-          <h3 className="font-display text-base font-semibold text-cream-50">Explore</h3>
-          <ul className="mt-4 space-y-2.5">
-            {FOOTER_NAV.map((item) => (
-              <li key={item.to}>
-                <NavLink to={item.to} className="text-sm text-cream-100/75 transition-colors hover:text-gold-300">
-                  {item.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {columns.map((col) => (
+          <div key={col.title}>
+            <h3 className="font-display text-base font-semibold text-cream-50">{col.title}</h3>
+            <ul className="mt-4 space-y-2.5">
+              {col.items.map((item) => (
+                <li key={item.to}>
+                  <NavLink to={item.to} className="text-sm text-cream-100/75 transition-colors hover:text-gold-300">
+                    {item.label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
 
         <div>
-          <h3 className="font-display text-base font-semibold text-cream-50">Legal</h3>
-          <ul className="mt-4 space-y-2.5">
-            {FOOTER_LEGAL.map((item) => (
-              <li key={item.to}>
-                <NavLink to={item.to} className="text-sm text-cream-100/75 transition-colors hover:text-gold-300">
-                  {item.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="font-display text-base font-semibold text-cream-50">Get in Touch</h3>
-          <ul className="mt-4 space-y-3 text-sm text-cream-100/75">
-            <li className="flex items-start gap-2.5">
-              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-300" />
-              <span>{settings.contact_address}</span>
-            </li>
-            <li className="flex items-center gap-2.5">
-              <Phone className="h-4 w-4 shrink-0 text-gold-300" />
-              <a href={`tel:${settings.contact_phone?.replace(/\s+/g, "")}`} className="hover:text-gold-300">
-                {settings.contact_phone}
-              </a>
-            </li>
-            <li className="flex items-center gap-2.5">
-              <Mail className="h-4 w-4 shrink-0 text-gold-300" />
-              <a href={`mailto:${settings.contact_email}`} className="hover:text-gold-300">
-                {settings.contact_email}
-              </a>
-            </li>
-          </ul>
+          <h3 className="font-display text-base font-semibold text-cream-50">{t("footer_connect")}</h3>
+          <p className="mt-4 text-sm text-cream-100/75">
+            Follow Mallanna Farms for fresh updates from the farm.
+          </p>
+          {socialLinks.length === 0 && (
+            <p className="mt-3 text-xs text-cream-100/50">Social links are added in Admin → Social Links.</p>
+          )}
         </div>
       </div>
 

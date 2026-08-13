@@ -9,6 +9,8 @@ import type {
   Faq,
   GalleryItem,
   Media,
+  Order,
+  OrderStatus,
   Product,
   VideoItem,
 } from "@/lib/database.types";
@@ -27,13 +29,14 @@ function friendlyError(error: unknown, fallback: string): string {
 export async function getDashboardStats() {
   try {
     const db = requireSupabase();
-    const [products, activeProducts, media, videos, gallery, enquiries] = await Promise.all([
+    const [products, activeProducts, media, videos, gallery, enquiries, newOrders] = await Promise.all([
       db.from("products").select("id", { count: "exact", head: true }),
       db.from("products").select("id", { count: "exact", head: true }).eq("active", true),
       db.from("media").select("id", { count: "exact", head: true }),
       db.from("videos").select("id", { count: "exact", head: true }),
       db.from("gallery").select("id", { count: "exact", head: true }),
       db.from("contact_messages").select("id", { count: "exact", head: true }).eq("status", "new"),
+      db.from("orders").select("id", { count: "exact", head: true }).eq("status", "new"),
     ]);
     return {
       data: {
@@ -43,6 +46,7 @@ export async function getDashboardStats() {
         videoCount: videos.count ?? 0,
         galleryCount: gallery.count ?? 0,
         newEnquiries: enquiries.count ?? 0,
+        newOrders: newOrders.count ?? 0,
       },
       error: null,
     };
@@ -307,5 +311,42 @@ export async function deleteEnquiry(id: string): Promise<AdminResult<null>> {
     return { data: null, error: null };
   } catch (e) {
     return { data: null, error: friendlyError(e, "Could not delete enquiry.") };
+  }
+}
+
+// ---------- Orders ----------
+// Orders are "order enquiries" (see supabase/schema.sql) — no payment
+// gateway is connected, so these are confirmed by phone/WhatsApp, not
+// charged automatically.
+export async function listOrders(): Promise<AdminResult<Order[]>> {
+  try {
+    const db = requireSupabase();
+    const { data, error } = await db.from("orders").select("*").order("created_at", { ascending: false });
+    if (error) throw error;
+    return { data, error: null };
+  } catch (e) {
+    return { data: null, error: friendlyError(e, "Could not load orders.") };
+  }
+}
+
+export async function updateOrderStatus(id: string, status: OrderStatus): Promise<AdminResult<null>> {
+  try {
+    const db = requireSupabase();
+    const { error } = await db.from("orders").update({ status }).eq("id", id);
+    if (error) throw error;
+    return { data: null, error: null };
+  } catch (e) {
+    return { data: null, error: friendlyError(e, "Could not update order.") };
+  }
+}
+
+export async function deleteOrder(id: string): Promise<AdminResult<null>> {
+  try {
+    const db = requireSupabase();
+    const { error } = await db.from("orders").delete().eq("id", id);
+    if (error) throw error;
+    return { data: null, error: null };
+  } catch (e) {
+    return { data: null, error: friendlyError(e, "Could not delete order.") };
   }
 }

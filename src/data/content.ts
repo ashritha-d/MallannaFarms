@@ -8,7 +8,7 @@
 // as "connected" when it isn't.
 
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
-import type { Faq, GalleryItemWithMedia, ProductWithGallery, VideoItem } from "@/lib/database.types";
+import type { Faq, GalleryItemWithMedia, OrderLineItem, ProductWithGallery, VideoItem } from "@/lib/database.types";
 import {
   DEFAULT_SETTINGS,
   SEED_FAQS,
@@ -121,4 +121,55 @@ export async function submitContactMessage(input: {
     return { ok: false, error: "We couldn't send your message right now. Please try again in a moment." };
   }
   return { ok: true, error: null };
+}
+
+function generateOrderNumber(): string {
+  const stamp = Date.now().toString(36).toUpperCase();
+  const rand = Math.random().toString(36).slice(2, 6).toUpperCase();
+  return `MF-${stamp}-${rand}`;
+}
+
+/**
+ * Places an "order enquiry" — no payment gateway is connected, so this
+ * records the cart + delivery details for the farm to confirm by phone or
+ * WhatsApp, rather than charging a card. See supabase/schema.sql for the
+ * `orders` table this writes to, and /admin/orders for how the farm sees it.
+ */
+export async function submitOrder(input: {
+  customerName: string;
+  phone: string;
+  email: string;
+  address: string;
+  city: string;
+  pincode: string;
+  notes: string;
+  items: OrderLineItem[];
+  subtotal: number;
+}): Promise<{ ok: boolean; orderNumber: string | null; error: string | null }> {
+  if (!isSupabaseConfigured || !supabase) {
+    return {
+      ok: false,
+      orderNumber: null,
+      error:
+        "Online ordering isn't connected yet because the website isn't linked to a database. Please call, WhatsApp or email us directly to place your order — see the details below.",
+    };
+  }
+  const orderNumber = generateOrderNumber();
+  const { error } = await supabase.from("orders").insert({
+    order_number: orderNumber,
+    customer_name: input.customerName,
+    phone: input.phone,
+    email: input.email || null,
+    address: input.address,
+    city: input.city || null,
+    pincode: input.pincode || null,
+    notes: input.notes || null,
+    items: input.items,
+    subtotal: input.subtotal,
+    status: "new",
+  });
+  if (error) {
+    return { ok: false, orderNumber: null, error: "We couldn't place your order right now. Please try again in a moment." };
+  }
+  return { ok: true, orderNumber, error: null };
 }

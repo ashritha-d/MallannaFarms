@@ -140,6 +140,28 @@ create table if not exists site_visits (
   created_at timestamptz not null default now()
 );
 
+-- Orders are "order enquiries", not paid transactions: no payment gateway is
+-- wired up (see README). A customer submits a cart + delivery details here,
+-- the admin sees it in /admin/orders, and confirms payment/delivery by
+-- phone or WhatsApp. `items` stores a denormalized snapshot of each line
+-- (product name/price/qty at order time) so later product edits don't
+-- rewrite historical orders.
+create table if not exists orders (
+  id uuid primary key default gen_random_uuid(),
+  order_number text not null unique,
+  customer_name text not null,
+  phone text not null,
+  email text,
+  address text not null,
+  city text,
+  pincode text,
+  notes text,
+  items jsonb not null default '[]'::jsonb,
+  subtotal numeric(10, 2) not null default 0,
+  status text not null default 'new' check (status in ('new', 'confirmed', 'out_for_delivery', 'delivered', 'cancelled')),
+  created_at timestamptz not null default now()
+);
+
 -- ----------------------------------------------------------------------------
 -- Indexes
 -- ----------------------------------------------------------------------------
@@ -149,6 +171,8 @@ create index if not exists idx_products_slug on products (slug);
 create index if not exists idx_gallery_active_category on gallery (active, category);
 create index if not exists idx_media_category on media (category);
 create index if not exists idx_contact_messages_status on contact_messages (status);
+create index if not exists idx_orders_status on orders (status);
+create index if not exists idx_orders_created_at on orders (created_at desc);
 
 -- ----------------------------------------------------------------------------
 -- Helper: is the current authenticated user an admin?
@@ -176,6 +200,7 @@ alter table faqs enable row level security;
 alter table contact_messages enable row level security;
 alter table settings enable row level security;
 alter table site_visits enable row level security;
+alter table orders enable row level security;
 
 -- admins: only admins can read the admin list; no public access
 create policy "Admins can view admin list" on admins for select using (is_admin());
@@ -226,6 +251,12 @@ create policy "Admins can manage settings" on settings for all using (is_admin()
 create policy "Public can log visits" on site_visits for insert with check (true);
 create policy "Admins can view visits" on site_visits for select using (is_admin());
 
+-- orders: anyone can place an order (insert-only); only admins can read/manage
+create policy "Public can place orders" on orders for insert with check (true);
+create policy "Admins can view orders" on orders for select using (is_admin());
+create policy "Admins can update orders" on orders for update using (is_admin()) with check (is_admin());
+create policy "Admins can delete orders" on orders for delete using (is_admin());
+
 -- ----------------------------------------------------------------------------
 -- Storage: public "media" bucket for images & videos
 -- ----------------------------------------------------------------------------
@@ -266,7 +297,7 @@ We believe that healthier food begins with healthier birds, natural surroundings
 
 We aspire to build a future where quality, nutrition, animal well-being, and sustainability come together—supporting healthier families, stronger communities, and a greener planet.'),
   ('vision_statement', 'From our farm, with care — naturally nourishing every family.'),
-  ('contact_address', 'Sy. No. 174/2, Thallasingaram Village, Choutuppal Municipality, Yadadri Bhuvanagiri District, Telangana – 508252'),
+  ('contact_address', 'Sy. No. 174/2/2, Thallasingaram Village, Choutuppal Municipality, Yadadri Bhuvanagiri District, Telangana – 508252'),
   ('contact_phone', '+91 90000 00000'),
   ('contact_email', 'hello@mallannafarms.com'),
   ('footer_tagline', 'Naturally Raised. Freshly Delivered. Made for Healthy Families.')

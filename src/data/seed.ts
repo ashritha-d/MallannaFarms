@@ -70,7 +70,7 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   // Phone and email were not legible on the artwork (the phone number was
   // shown redacted as placeholder Xs), so those remain placeholders —
   // edit them for real in /admin → Settings.
-  contact_address: "Sy. No. 174/2, Thallasingaram Village, Choutuppal Municipality, Yadadri Bhuvanagiri District, Telangana – 508252",
+  contact_address: "Sy. No. 174/2/2, Thallasingaram Village, Choutuppal Municipality, Yadadri Bhuvanagiri District, Telangana – 508252",
   contact_phone: "+91 90000 00000",
   contact_email: "hello@mallannafarms.com",
   contact_map_embed: "",

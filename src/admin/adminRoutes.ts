@@ -6,6 +6,7 @@ import {
   Inbox,
   LayoutDashboard,
   Images,
+  Package,
   Settings as SettingsIcon,
   Share2,
   UserCircle,
@@ -15,6 +16,7 @@ import {
 export const ADMIN_NAV = [
   { label: "Dashboard", to: "/admin", icon: LayoutDashboard, end: true },
   { label: "Products", to: "/admin/products", icon: Egg },
+  { label: "Orders", to: "/admin/orders", icon: Package },
   { label: "Media Library", to: "/admin/media", icon: ImageIcon },
   { label: "Gallery", to: "/admin/gallery", icon: Images },
   { label: "Videos", to: "/admin/videos", icon: Video },

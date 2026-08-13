@@ -6,12 +6,17 @@ export const ROUTES = {
   about: "/about",
   mission: "/mission",
   vision: "/vision",
+  missionVision: "/mission-vision",
   farm: "/our-farm",
   products: "/products",
   productDetail: (slug: string) => `/products/${slug}`,
+  checkout: "/checkout",
+  wishlist: "/wishlist",
   gallery: "/gallery",
   videos: "/videos",
   whyChooseUs: "/why-choose-us",
+  whyFreeRange: "/why-free-range",
+  delivery: "/delivery",
   contact: "/contact",
   faq: "/faq",
   privacy: "/privacy-policy",
@@ -20,33 +25,37 @@ export const ROUTES = {
 
 export const PRIMARY_NAV = [
   { label: "Home", to: ROUTES.home },
-  { label: "About", to: ROUTES.about },
+  { label: "Our Eggs", to: ROUTES.products },
   { label: "Our Farm", to: ROUTES.farm },
-  { label: "Products", to: ROUTES.products },
-  { label: "Gallery", to: ROUTES.gallery },
-  { label: "Videos", to: ROUTES.videos },
+  { label: "About Us", to: ROUTES.about },
+  { label: "Mission & Vision", to: ROUTES.missionVision },
   { label: "Contact", to: ROUTES.contact },
 ];
 
-export const MORE_NAV = [
-  { label: "Our Mission", to: ROUTES.mission },
-  { label: "Our Vision", to: ROUTES.vision },
-  { label: "Why Choose Us", to: ROUTES.whyChooseUs },
+export const MOBILE_EXTRA_NAV = [
+  { label: "Why Free Range?", to: ROUTES.whyFreeRange },
+  { label: "Gallery", to: ROUTES.gallery },
+  { label: "Videos", to: ROUTES.videos },
   { label: "FAQ", to: ROUTES.faq },
 ];
 
-export const FOOTER_NAV = [
+export const FOOTER_EXPLORE = [
   { label: "Home", to: ROUTES.home },
-  { label: "About", to: ROUTES.about },
+  { label: "Our Eggs", to: ROUTES.products },
   { label: "Our Farm", to: ROUTES.farm },
-  { label: "Products", to: ROUTES.products },
-  { label: "Gallery", to: ROUTES.gallery },
-  { label: "Videos", to: ROUTES.videos },
-  { label: "Contact", to: ROUTES.contact },
+  { label: "About Us", to: ROUTES.about },
 ];
 
-export const FOOTER_LEGAL = [
+export const FOOTER_LEARN = [
+  { label: "Mission & Vision", to: ROUTES.missionVision },
+  { label: "Why Free Range?", to: ROUTES.whyFreeRange },
+  { label: "Farming Practices", to: ROUTES.farm },
+  { label: "FAQs", to: ROUTES.faq },
+];
+
+export const FOOTER_SUPPORT = [
+  { label: "Contact", to: ROUTES.contact },
+  { label: "Delivery", to: ROUTES.delivery },
   { label: "Privacy Policy", to: ROUTES.privacy },
   { label: "Terms & Conditions", to: ROUTES.terms },
-  { label: "FAQ", to: ROUTES.faq },
 ];

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { CheckCircle2, ChevronRight, Egg, Leaf, PackageCheck } from "lucide-react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { CheckCircle2, ChevronRight, Egg, Heart, Leaf, Minus, Plus } from "lucide-react";
 import Seo from "@/components/seo/Seo";
 import FarmImage from "@/components/ui/FarmImage";
 import { Section, SectionHeading } from "@/components/ui/Section";
@@ -8,6 +8,9 @@ import ProductCard from "@/components/products/ProductCard";
 import { ErrorState } from "@/components/ui/States";
 import { getProductBySlug, getProducts } from "@/data/content";
 import { ROUTES } from "@/routes";
+import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import type { ProductWithGallery } from "@/lib/database.types";
 
 const STOCK_LABEL: Record<string, { label: string; className: string }> = {
@@ -19,9 +22,14 @@ const STOCK_LABEL: Record<string, { label: string; className: string }> = {
 
 export default function ProductDetail() {
   const { slug = "" } = useParams();
+  const navigate = useNavigate();
+  const { addItem } = useCart();
+  const { isSaved, toggle } = useWishlist();
+  const { t } = useLanguage();
   const [status, setStatus] = useState<"loading" | "ready" | "notfound" | "error">("loading");
   const [product, setProduct] = useState<ProductWithGallery | null>(null);
   const [related, setRelated] = useState<ProductWithGallery[]>([]);
+  const [qty, setQty] = useState(1);
 
   useEffect(() => {
     setStatus("loading");
@@ -156,15 +164,65 @@ export default function ProductDetail() {
               </ul>
             )}
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="#" className="btn-primary" onClick={(e) => e.preventDefault()}>
-                <PackageCheck className="h-4 w-4" />
-                Enquire to Order
-              </a>
-              <Link to={ROUTES.contact} className="btn-secondary">
-                Contact Us
-              </Link>
+            {product.stock_status !== "out_of_stock" && (
+              <div className="mt-8 flex items-center gap-3">
+                <span className="text-sm font-medium text-forest-700">Quantity</span>
+                <div className="flex items-center gap-1 rounded-full border border-forest-900/15 px-1">
+                  <button
+                    onClick={() => setQty((q) => Math.max(1, q - 1))}
+                    aria-label="Decrease quantity"
+                    className="rounded-full p-2 text-forest-700 hover:bg-forest-100"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </button>
+                  <span className="w-6 text-center text-sm font-semibold">{qty}</span>
+                  <button
+                    onClick={() => setQty((q) => q + 1)}
+                    aria-label="Increase quantity"
+                    className="rounded-full p-2 text-forest-700 hover:bg-forest-100"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+              <button
+                onClick={() => addItem(product, qty)}
+                disabled={product.stock_status === "out_of_stock"}
+                className="btn-secondary disabled:opacity-50"
+              >
+                {t("add_to_cart")}
+              </button>
+              <button
+                onClick={() => {
+                  addItem(product, qty);
+                  navigate(ROUTES.checkout);
+                }}
+                disabled={product.stock_status === "out_of_stock"}
+                className="btn-primary disabled:opacity-50"
+              >
+                {t("buy_now")}
+              </button>
+              <button
+                onClick={() => toggle(product.id)}
+                aria-pressed={isSaved(product.id)}
+                className="btn-secondary !px-4"
+                aria-label={isSaved(product.id) ? "Remove from wishlist" : "Save to wishlist"}
+              >
+                <Heart className={`h-4 w-4 ${isSaved(product.id) ? "fill-earth-500 text-earth-500" : ""}`} />
+              </button>
             </div>
+
+            <p className="mt-3 text-xs text-forest-500">
+              Checkout collects your delivery details — payment is confirmed by our team on call/WhatsApp
+              (cash or UPI on delivery). Prefer to talk first?{" "}
+              <Link to={ROUTES.contact} className="text-gold-600 hover:underline">
+                Contact us
+              </Link>
+              .
+            </p>
 
             {(product.nutrition || product.feed_info) && (
               <div className="mt-9 rounded-2xl border border-forest-900/10 bg-white p-5">

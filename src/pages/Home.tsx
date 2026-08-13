@@ -1,23 +1,35 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Egg, Heart, Leaf, ShieldCheck, Sprout } from "lucide-react";
+import { Egg, Heart, Leaf, ShieldCheck } from "lucide-react";
 import Seo from "@/components/seo/Seo";
 import FarmImage from "@/components/ui/FarmImage";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import ProductCard from "@/components/products/ProductCard";
 import { CardSkeleton, EmptyState } from "@/components/ui/States";
+import JourneySection from "@/components/home/JourneySection";
+import FarmTrustSection from "@/components/home/FarmTrustSection";
+import TestimonialsSection from "@/components/home/TestimonialsSection";
 import { ROUTES } from "@/routes";
 import { useSettings } from "@/hooks/useSettings";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { getProducts } from "@/data/content";
 import { FARM_IMAGES } from "@/data/seed";
+import { COMMITMENTS } from "@/data/commitments";
 import type { ProductWithGallery } from "@/lib/database.types";
 
-const PROMISE_ITEMS = [
-  { icon: Egg, label: "Free Range", desc: "Hens raised with room to roam, not cages." },
-  { icon: Sprout, label: "Natural Feed", desc: "A wholesome, natural diet every day." },
-  { icon: Leaf, label: "Fresh & Nutritious", desc: "Collected and delivered farm-fresh." },
-  { icon: Heart, label: "Quality & Trust", desc: "Hygiene and food safety, always." },
-  { icon: ShieldCheck, label: "Sustainable Farming", desc: "Responsible practices for the planet." },
+const TRUST_STRIP = [
+  { emoji: "🐔", key: "trust_free_range" as const },
+  { emoji: "🌱", key: "trust_natural_feed" as const },
+  { emoji: "🥚", key: "trust_fresh_eggs" as const },
+  { emoji: "❤️", key: "trust_quality" as const },
+];
+
+const WHY_CARDS = [
+  { icon: Egg, title: "Happy & Healthy Hens", desc: "Our hens are raised in a natural environment with space to move freely." },
+  { icon: Leaf, title: "Natural Farming", desc: "We follow responsible farming practices with a focus on natural surroundings and quality nutrition." },
+  { icon: Heart, title: "Fresh & Nutritious", desc: "Fresh eggs carefully collected and delivered from farm to family." },
+  { icon: ShieldCheck, title: "Quality & Trust", desc: "We focus on hygiene, freshness, consistency, and food safety." },
+  { icon: Leaf, title: "Sustainable Future", desc: "We believe responsible farming creates a healthier future for families, animals, and the environment." },
 ];
 
 const FARM_STRIP = [
@@ -30,6 +42,7 @@ const FARM_STRIP = [
 
 export default function Home() {
   const { data: settings } = useSettings();
+  const { t } = useLanguage();
   const [products, setProducts] = useState<ProductWithGallery[] | null>(null);
 
   useEffect(() => {
@@ -40,7 +53,7 @@ export default function Home() {
     <>
       <Seo
         title="Mallanna Farms | Free Range Eggs"
-        description="Fresh, natural, free-range eggs raised with care on Mallanna Farms. Naturally Raised. Freshly Delivered. Made for Healthy Families."
+        description="Fresh, nutritious eggs from naturally raised hens at Mallanna Farms. Naturally Raised. Freshly Delivered. Made for Healthy Families."
         path="/"
       />
 
@@ -58,102 +71,41 @@ export default function Home() {
         <div className="container-page relative z-10 py-24 text-center text-cream-50 sm:py-32">
           <span className="section-eyebrow justify-center text-gold-300">
             <span className="h-px w-8 bg-gold-300/70" />
-            Free Range Eggs
+            {t("hero_eyebrow")}
             <span className="h-px w-8 bg-gold-300/70" />
           </span>
           <h1 className="mx-auto mt-5 max-w-3xl font-display text-4xl font-semibold leading-[1.1] text-cream-50 sm:text-6xl lg:text-7xl">
-            {settings.hero_heading || "Mallanna Farms"}
+            {t("hero_heading")}
           </h1>
-          <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-cream-100/90 sm:text-lg">
-            {settings.hero_tagline || "Naturally Raised. Freshly Delivered. Made for Healthy Families."}
+          <p className="mx-auto mt-3 max-w-2xl font-display text-xl text-gold-200 sm:text-2xl">{t("hero_heading_line2")}</p>
+          <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-cream-100/90 sm:text-lg">
+            {t("hero_description")}
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <NavLink to={settings.hero_cta_primary_link || ROUTES.products} className="btn-gold w-full sm:w-auto">
-              {settings.hero_cta_primary_label || "Explore Our Eggs"}
+            <NavLink to={ROUTES.products} className="btn-gold w-full sm:w-auto">
+              {t("hero_cta_shop")}
             </NavLink>
-            <NavLink to={settings.hero_cta_secondary_link || ROUTES.farm} className="btn-outline-light w-full sm:w-auto">
-              {settings.hero_cta_secondary_label || "Visit Our Farm"}
+            <NavLink to={ROUTES.farm} className="btn-outline-light w-full sm:w-auto">
+              {t("hero_cta_farm")}
             </NavLink>
+          </div>
+
+          <div className="mx-auto mt-12 flex max-w-2xl flex-wrap items-center justify-center gap-x-8 gap-y-3">
+            {TRUST_STRIP.map((item) => (
+              <span key={item.key} className="flex items-center gap-2 text-sm font-medium text-cream-100/90">
+                <span className="text-base">{item.emoji}</span>
+                {t(item.key)}
+              </span>
+            ))}
           </div>
         </div>
 
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cream-50 to-transparent" />
       </section>
 
-      {/* Our Promise */}
-      <Section tone="cream">
-        <SectionHeading eyebrow="Our Promise" title="What Mallanna Farms Stands For" />
-        <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5">
-          {PROMISE_ITEMS.map(({ icon: Icon, label, desc }) => (
-            <div
-              key={label}
-              className="card flex flex-col items-center gap-3 px-4 py-8 text-center transition-transform duration-300 hover:-translate-y-1"
-            >
-              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-forest-100 text-forest-700">
-                <Icon className="h-7 w-7" />
-              </span>
-              <h3 className="font-display text-sm font-semibold text-forest-900 sm:text-base">{label}</h3>
-              <p className="hidden text-xs text-forest-600 sm:block">{desc}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* About */}
-      <Section tone="white">
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          <FarmImage
-            src={settings.about_image || FARM_IMAGES.farmerWithBasket}
-            alt="Mallanna Farms open natural surroundings"
-            aspect="aspect-[4/3]"
-            rounded="rounded-2xl2 rounded-3xl"
-            className="shadow-lift"
-          />
-          <div>
-            <span className="section-eyebrow">
-              <span className="h-px w-8 bg-current opacity-60" />
-              About Mallanna Farms
-            </span>
-            <h2 className="mt-3 text-3xl font-semibold text-forest-900 sm:text-4xl">
-              Healthier food begins with healthier farming
-            </h2>
-            <p className="mt-5 text-base leading-relaxed text-forest-700 sm:text-lg">{settings.about_content}</p>
-            <NavLink to={ROUTES.about} className="mt-6 inline-flex items-center gap-1 font-semibold text-gold-600 hover:underline">
-              Learn More →
-            </NavLink>
-          </div>
-        </div>
-      </Section>
-
-      {/* Fresh From Our Farm */}
-      <Section tone="cream">
-        <SectionHeading
-          eyebrow="Fresh From Our Farm"
-          title="Naturally Raised, Every Single Day"
-          description="From open green spaces to daily egg collection, take a glimpse into life on Mallanna Farms."
-        />
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5 lg:gap-4">
-          {FARM_STRIP.map((src, i) => (
-            <FarmImage
-              key={src + i}
-              src={src}
-              alt="Life at Mallanna Farms"
-              aspect={i === 0 ? "aspect-square col-span-2 row-span-2 sm:col-span-2 sm:row-span-2" : "aspect-square"}
-              rounded="rounded-2xl"
-              className="shadow-card"
-            />
-          ))}
-        </div>
-        <div className="mt-8 text-center">
-          <NavLink to={ROUTES.farm} className="btn-secondary">
-            Visit Our Farm
-          </NavLink>
-        </div>
-      </Section>
-
       {/* Products */}
       <Section tone="white">
-        <SectionHeading eyebrow="Our Products" title="Free Range Eggs, Farm to Family" />
+        <SectionHeading eyebrow={t("section_products_eyebrow")} title={t("section_products_title")} description={t("section_products_subtitle")} />
         {products === null ? (
           <CardSkeleton />
         ) : products.length === 0 ? (
@@ -167,20 +119,152 @@ export default function Home() {
         )}
         <div className="mt-10 text-center">
           <NavLink to={ROUTES.products} className="btn-primary">
-            View All Products
+            {t("cta_shop_eggs")}
           </NavLink>
         </div>
       </Section>
 
-      {/* Vision quote strip */}
-      <Section tone="forest">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="font-display text-2xl italic leading-snug text-cream-50 sm:text-3xl">
-            “{settings.vision_statement}”
-          </p>
-          <p className="mt-4 text-sm uppercase tracking-[0.2em] text-gold-300">Mallanna Farms</p>
+      {/* Why Choose Us */}
+      <Section tone="cream">
+        <SectionHeading eyebrow={t("section_why_eyebrow")} title={t("section_why_title")} description={t("section_why_subtitle")} />
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+          {WHY_CARDS.map(({ icon: Icon, title, desc }) => (
+            <div key={title} className="card flex flex-col gap-3 px-5 py-8 text-center">
+              <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-forest-100 text-forest-700">
+                <Icon className="h-7 w-7" />
+              </span>
+              <h3 className="font-display text-sm font-semibold text-forest-900">{title}</h3>
+              <p className="text-xs leading-relaxed text-forest-600">{desc}</p>
+            </div>
+          ))}
         </div>
       </Section>
+
+      {/* Life at Mallanna Farms */}
+      <Section tone="white">
+        <SectionHeading
+          eyebrow={t("section_farm_eyebrow")}
+          title={t("section_farm_title")}
+          description="Our hens are raised in an open, natural environment where they can move freely, explore, and grow naturally."
+        />
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5 lg:gap-4">
+          {FARM_STRIP.map((src, i) => (
+            <FarmImage
+              key={src + i}
+              src={src}
+              alt="Life at Mallanna Farms"
+              aspect={i === 0 ? "aspect-square col-span-2 row-span-2 sm:col-span-2 sm:row-span-2" : "aspect-square"}
+              rounded="rounded-2xl"
+              className="shadow-card transition-transform duration-500 hover:scale-[1.03]"
+            />
+          ))}
+        </div>
+        <div className="mt-8 text-center">
+          <NavLink to={ROUTES.farm} className="btn-secondary">
+            {t("section_farm_cta")}
+          </NavLink>
+        </div>
+      </Section>
+
+      <JourneySection />
+
+      {/* Mission teaser */}
+      <Section tone="cream">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          <FarmImage
+            src={settings.mission_image || FARM_IMAGES.henWithBasket}
+            alt="Our mission at Mallanna Farms"
+            aspect="aspect-[4/3]"
+            rounded="rounded-3xl"
+            className="shadow-lift"
+          />
+          <div>
+            <span className="section-eyebrow">
+              <span className="h-px w-8 bg-current opacity-60" />
+              {t("section_mission_eyebrow")}
+            </span>
+            <h2 className="mt-3 text-3xl font-semibold text-forest-900 sm:text-4xl">{t("section_mission_title")}</h2>
+            <p className="mt-5 text-base leading-relaxed text-forest-700 sm:text-lg">
+              {(settings.mission_content ?? "").split("\n\n")[0]}
+            </p>
+            <div className="my-6 flex items-center gap-3 text-forest-300" aria-hidden="true">
+              <span className="h-px w-10 bg-forest-200" />
+              <span className="text-xl">🌿</span>
+            </div>
+            <NavLink to={ROUTES.missionVision} className="inline-flex items-center gap-1 font-semibold text-gold-600 hover:underline">
+              Read Our Full Mission & Vision →
+            </NavLink>
+          </div>
+        </div>
+      </Section>
+
+      {/* Our Commitment */}
+      <Section tone="white">
+        <SectionHeading eyebrow={t("section_commitment_eyebrow")} title={t("section_commitment_title")} description={t("section_commitment_subtitle")} />
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
+          {COMMITMENTS.map((c) => (
+            <div key={c.title} className="card px-5 py-8 text-center">
+              <span className="text-3xl">{c.emoji}</span>
+              <h3 className="mt-3 font-display text-sm font-semibold text-forest-900">{c.title}</h3>
+              <p className="mt-2 text-xs leading-relaxed text-forest-600">{c.desc}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* Vision quote */}
+      <Section tone="cream">
+        <div className="mx-auto max-w-2xl rounded-3xl border border-gold-200 bg-gradient-to-br from-cream-100 to-gold-50 px-8 py-12 text-center shadow-card">
+          <span className="section-eyebrow justify-center text-earth-600">{t("section_vision_eyebrow")}</span>
+          <span className="mt-2 block text-3xl">🌾</span>
+          <p className="mt-4 font-display text-2xl italic leading-snug text-forest-900 sm:text-3xl">
+            “{settings.vision_statement}”
+          </p>
+          <NavLink to={ROUTES.missionVision} className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-gold-700 hover:underline">
+            Read Our Vision →
+          </NavLink>
+        </div>
+      </Section>
+
+      {/* Why Free Range teaser */}
+      <Section tone="white">
+        <div className="grid grid-cols-1 items-center gap-10 rounded-3xl bg-forest-50 p-8 sm:p-12 lg:grid-cols-2">
+          <div>
+            <span className="section-eyebrow">{t("section_why_free_range_eyebrow")}</span>
+            <h2 className="mt-3 text-3xl font-semibold text-forest-900 sm:text-4xl">{t("section_why_free_range_title")}</h2>
+            <p className="mt-4 text-base leading-relaxed text-forest-700">
+              Natural movement, open surroundings, responsible nutrition — see what makes free-range eggs different.
+            </p>
+            <NavLink to={ROUTES.whyFreeRange} className="btn-primary mt-6 inline-flex">
+              Learn More
+            </NavLink>
+          </div>
+          <FarmImage src={FARM_IMAGES.orchardHens} alt="Free range hens" aspect="aspect-[4/3]" rounded="rounded-2xl" className="shadow-card" />
+        </div>
+      </Section>
+
+      <FarmTrustSection />
+      <TestimonialsSection />
+
+      {/* Final CTA */}
+      <section className="relative overflow-hidden py-20 sm:py-28">
+        <div className="absolute inset-0">
+          <img src={FARM_IMAGES.orchardHens} alt="" aria-hidden="true" className="h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-forest-950/90" />
+        </div>
+        <div className="container-page relative z-10 text-center text-cream-50">
+          <h2 className="font-display text-3xl font-semibold text-cream-50 sm:text-4xl">{t("cta_final_title")}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-cream-100/90">{t("cta_final_text")}</p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <NavLink to={ROUTES.products} className="btn-gold w-full sm:w-auto">
+              {t("cta_shop_eggs")}
+            </NavLink>
+            <NavLink to={ROUTES.contact} className="btn-outline-light w-full sm:w-auto">
+              {t("cta_contact_us")}
+            </NavLink>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

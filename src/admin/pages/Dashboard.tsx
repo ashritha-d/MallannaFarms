@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Egg, Images, Inbox, Video } from "lucide-react";
+import { Egg, Images, Inbox, Package, Video } from "lucide-react";
 import { useAdminAuth } from "../auth/AuthContext";
 import ConnectSupabaseBanner from "../components/ConnectSupabaseBanner";
 import { getDashboardStats } from "../lib/adminApi";
@@ -13,6 +13,7 @@ interface Stats {
   videoCount: number;
   galleryCount: number;
   newEnquiries: number;
+  newOrders: number;
 }
 
 export default function Dashboard() {
@@ -29,6 +30,7 @@ export default function Dashboard() {
   const cards = [
     { label: "Total Products", value: stats?.totalProducts ?? 0, icon: Egg, to: "/admin/products" },
     { label: "Active Products", value: stats?.activeProducts ?? 0, icon: Egg, to: "/admin/products" },
+    { label: "New Orders", value: stats?.newOrders ?? 0, icon: Package, to: "/admin/orders" },
     { label: "Gallery Images", value: stats?.galleryCount ?? 0, icon: Images, to: "/admin/gallery" },
     { label: "Videos", value: stats?.videoCount ?? 0, icon: Video, to: "/admin/videos" },
     { label: "New Enquiries", value: stats?.newEnquiries ?? 0, icon: Inbox, to: "/admin/enquiries" },
@@ -74,6 +76,9 @@ export default function Dashboard() {
             </NavLink>
             <NavLink to="/admin/enquiries" className="btn-secondary">
               View Enquiries
+            </NavLink>
+            <NavLink to="/admin/orders" className="btn-secondary">
+              View Orders
             </NavLink>
           </div>
         </div>

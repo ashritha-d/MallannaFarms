@@ -12,12 +12,17 @@ import Home from "@/pages/Home";
 import About from "@/pages/About";
 import Mission from "@/pages/Mission";
 import Vision from "@/pages/Vision";
+import MissionVision from "@/pages/MissionVision";
 import OurFarm from "@/pages/OurFarm";
 import Products from "@/pages/Products";
 import ProductDetail from "@/pages/ProductDetail";
+import Checkout from "@/pages/Checkout";
+import Wishlist from "@/pages/Wishlist";
 import Gallery from "@/pages/Gallery";
 import Videos from "@/pages/Videos";
 import WhyChooseUs from "@/pages/WhyChooseUs";
+import WhyFreeRange from "@/pages/WhyFreeRange";
+import Delivery from "@/pages/Delivery";
 import Contact from "@/pages/Contact";
 import FaqPage from "@/pages/Faq";
 import Privacy from "@/pages/Privacy";
@@ -27,6 +32,7 @@ import NotFound from "@/pages/NotFound";
 const Dashboard = lazy(() => import("@/admin/pages/Dashboard"));
 const AdminProducts = lazy(() => import("@/admin/pages/Products"));
 const ProductForm = lazy(() => import("@/admin/pages/ProductForm"));
+const AdminOrders = lazy(() => import("@/admin/pages/Orders"));
 const AdminMedia = lazy(() => import("@/admin/pages/Media"));
 const AdminGallery = lazy(() => import("@/admin/pages/Gallery"));
 const AdminVideos = lazy(() => import("@/admin/pages/Videos"));
@@ -55,12 +61,17 @@ export default function App() {
           <Route path={ROUTES.about} element={<About />} />
           <Route path={ROUTES.mission} element={<Mission />} />
           <Route path={ROUTES.vision} element={<Vision />} />
+          <Route path={ROUTES.missionVision} element={<MissionVision />} />
           <Route path={ROUTES.farm} element={<OurFarm />} />
           <Route path={ROUTES.products} element={<Products />} />
           <Route path="/products/:slug" element={<ProductDetail />} />
+          <Route path={ROUTES.checkout} element={<Checkout />} />
+          <Route path={ROUTES.wishlist} element={<Wishlist />} />
           <Route path={ROUTES.gallery} element={<Gallery />} />
           <Route path={ROUTES.videos} element={<Videos />} />
           <Route path={ROUTES.whyChooseUs} element={<WhyChooseUs />} />
+          <Route path={ROUTES.whyFreeRange} element={<WhyFreeRange />} />
+          <Route path={ROUTES.delivery} element={<Delivery />} />
           <Route path={ROUTES.contact} element={<Contact />} />
           <Route path={ROUTES.faq} element={<FaqPage />} />
           <Route path={ROUTES.privacy} element={<Privacy />} />
@@ -88,6 +99,7 @@ export default function App() {
                       <Route path="products" element={<AdminProducts />} />
                       <Route path="products/new" element={<ProductForm />} />
                       <Route path="products/:id/edit" element={<ProductForm />} />
+                      <Route path="orders" element={<AdminOrders />} />
                       <Route path="media" element={<AdminMedia />} />
                       <Route path="gallery" element={<AdminGallery />} />
                       <Route path="videos" element={<AdminVideos />} />
