@@ -57,61 +57,61 @@ export default function Home() {
         path="/"
       />
 
-      {/* Hero */}
-      <section className="relative flex min-h-[88vh] items-center overflow-hidden sm:min-h-[92vh]">
-        <div className="absolute inset-0">
-          <img
-            src={settings.hero_image || FARM_IMAGES.hero}
-            alt="Free range hens roaming naturally at Mallanna Farms"
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-forest-950/70 via-forest-950/50 to-forest-950/85" />
+      {/* Compact promotional banner */}
+      <div className="container-page pt-4 sm:pt-6">
+        {/* Trust strip */}
+        <div className="mb-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 rounded-full bg-forest-800 px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-wide text-cream-50 sm:gap-x-8 sm:text-xs">
+          {TRUST_STRIP.map((item) => (
+            <span key={item.key} className="flex items-center gap-1.5 whitespace-nowrap">
+              <span>{item.emoji}</span>
+              {t(item.key)}
+            </span>
+          ))}
         </div>
 
-        <div className="container-page relative z-10 py-24 text-center text-cream-50 sm:py-32">
-          <span className="section-eyebrow justify-center text-gold-300">
-            <span className="h-px w-8 bg-gold-300/70" />
-            {t("hero_eyebrow")}
-            <span className="h-px w-8 bg-gold-300/70" />
-          </span>
-          <h1 className="mx-auto mt-5 max-w-3xl font-display text-4xl font-semibold leading-[1.1] text-cream-50 sm:text-6xl lg:text-7xl">
-            {t("hero_heading")}
-          </h1>
-          <p className="mx-auto mt-3 max-w-2xl font-display text-xl text-gold-200 sm:text-2xl">{t("hero_heading_line2")}</p>
-          <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-cream-100/90 sm:text-lg">
-            {t("hero_description")}
-          </p>
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <NavLink to={ROUTES.products} className="btn-gold w-full sm:w-auto">
-              {t("hero_cta_shop")}
-            </NavLink>
-            <NavLink to={ROUTES.farm} className="btn-outline-light w-full sm:w-auto">
-              {t("hero_cta_farm")}
-            </NavLink>
-          </div>
+        <section className="relative overflow-hidden rounded-2xl shadow-lift sm:rounded-3xl">
+          <div className="relative h-56 sm:h-72 lg:h-96">
+            <img
+              src={settings.hero_image || FARM_IMAGES.hero}
+              alt="Free range hens roaming naturally at Mallanna Farms"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-forest-950/90 via-forest-950/60 to-forest-950/10 sm:via-forest-950/50" />
 
-          <div className="mx-auto mt-12 flex max-w-2xl flex-wrap items-center justify-center gap-x-8 gap-y-3">
-            {TRUST_STRIP.map((item) => (
-              <span key={item.key} className="flex items-center gap-2 text-sm font-medium text-cream-100/90">
-                <span className="text-base">{item.emoji}</span>
-                {t(item.key)}
+            <div className="relative z-10 flex h-full max-w-xl flex-col justify-center px-5 py-4 text-cream-50 sm:px-10 sm:py-6 lg:px-14">
+              <span className="section-eyebrow text-gold-300">
+                <span className="h-px w-6 bg-gold-300/70" />
+                {t("hero_eyebrow")}
               </span>
-            ))}
+              <h1 className="mt-2 font-display text-2xl font-semibold leading-[1.1] text-cream-50 sm:text-3xl lg:text-4xl">
+                {t("hero_heading")}
+              </h1>
+              <p className="mt-1.5 font-display text-sm text-gold-200 sm:text-lg">{t("hero_heading_line2")}</p>
+              <p className="mt-2 hidden max-w-sm text-sm leading-relaxed text-cream-100/90 sm:block">
+                {t("hero_description")}
+              </p>
+              <div className="mt-4 flex flex-col gap-2.5 sm:flex-row sm:gap-3">
+                <NavLink to={ROUTES.products} className="btn-gold !px-5 !py-2.5 text-sm w-full sm:w-auto">
+                  {t("hero_cta_shop")}
+                </NavLink>
+                <NavLink to={ROUTES.farm} className="btn-outline-light !px-5 !py-2.5 text-sm w-full sm:w-auto">
+                  {t("hero_cta_farm")}
+                </NavLink>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
+      </div>
 
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cream-50 to-transparent" />
-      </section>
-
-      {/* Products */}
-      <Section tone="white">
+      {/* Products — immediately below the banner, no filler content in between */}
+      <Section tone="white" className="!pt-8 sm:!pt-12">
         <SectionHeading eyebrow={t("section_products_eyebrow")} title={t("section_products_title")} description={t("section_products_subtitle")} />
         {products === null ? (
           <CardSkeleton />
         ) : products.length === 0 ? (
           <EmptyState title="No products yet" message="Products added in the admin dashboard will appear here." />
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-3">
             {products.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}

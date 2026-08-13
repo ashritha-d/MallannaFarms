@@ -76,47 +76,49 @@ export default function ProductCard({ product }: { product: ProductWithGallery }
           {outOfStock ? t("out_of_stock") : t("in_stock")}
         </span>
       </div>
-      <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-earth-600">
-          <Egg className="h-3.5 w-3.5" />
-          {product.grade ?? "Grade A"} · {product.pack_size}
+      <div className="flex flex-1 flex-col p-3 sm:p-5">
+        <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide text-earth-600 sm:text-xs">
+          <Egg className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+          <span className="truncate">
+            {product.grade ?? "Grade A"} · {product.pack_size}
+          </span>
         </div>
-        <h3 className="mt-2 font-display text-lg font-semibold text-forest-900">{product.name}</h3>
-        <p className="mt-1.5 line-clamp-2 flex-1 text-sm text-forest-600">{product.short_description}</p>
+        <h3 className="mt-1.5 font-display text-sm font-semibold text-forest-900 sm:mt-2 sm:text-lg">{product.name}</h3>
+        <p className="mt-1 line-clamp-2 flex-1 text-xs text-forest-600 sm:mt-1.5 sm:text-sm">{product.short_description}</p>
 
-        <div className="mt-4 flex items-baseline gap-2">
-          <span className="font-display text-xl font-semibold text-forest-900">
+        <div className="mt-2.5 flex items-baseline gap-2 sm:mt-4">
+          <span className="font-display text-base font-semibold text-forest-900 sm:text-xl">
             ₹{product.discount_price ?? product.price}
           </span>
-          {product.discount_price && <span className="text-sm text-forest-400 line-through">₹{product.price}</span>}
+          {product.discount_price && <span className="text-xs text-forest-400 line-through sm:text-sm">₹{product.price}</span>}
         </div>
 
         {!outOfStock && (
-          <div className="mt-3 flex items-center gap-2">
+          <div className="mt-2 flex items-center gap-2 sm:mt-3">
             <div className="flex items-center gap-1 rounded-full border border-forest-900/15 px-1">
-              <button onClick={(e) => adjustQty(e, -1)} aria-label="Decrease quantity" className="rounded-full p-1.5 text-forest-700 hover:bg-forest-100">
-                <Minus className="h-3.5 w-3.5" />
+              <button onClick={(e) => adjustQty(e, -1)} aria-label="Decrease quantity" className="rounded-full p-1 text-forest-700 hover:bg-forest-100 sm:p-1.5">
+                <Minus className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               </button>
-              <span className="w-5 text-center text-sm font-medium">{qty}</span>
-              <button onClick={(e) => adjustQty(e, 1)} aria-label="Increase quantity" className="rounded-full p-1.5 text-forest-700 hover:bg-forest-100">
-                <Plus className="h-3.5 w-3.5" />
+              <span className="w-4 text-center text-xs font-medium sm:w-5 sm:text-sm">{qty}</span>
+              <button onClick={(e) => adjustQty(e, 1)} aria-label="Increase quantity" className="rounded-full p-1 text-forest-700 hover:bg-forest-100 sm:p-1.5">
+                <Plus className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               </button>
             </div>
           </div>
         )}
 
-        <div className="mt-3 flex gap-2">
+        <div className="mt-2.5 flex flex-col gap-1.5 sm:mt-3 sm:flex-row sm:gap-2">
           <button
             onClick={onAddToCart}
             disabled={outOfStock}
-            className="btn-secondary flex-1 !px-3 !py-2 text-xs disabled:opacity-50"
+            className="btn-secondary w-full !px-2.5 !py-1.5 text-[11px] disabled:opacity-50 sm:flex-1 sm:!px-3 sm:!py-2 sm:text-xs"
           >
             {t("add_to_cart")}
           </button>
           <button
             onClick={onBuyNow}
             disabled={outOfStock}
-            className="btn-primary flex-1 !px-3 !py-2 text-xs disabled:opacity-50"
+            className="btn-primary w-full !px-2.5 !py-1.5 text-[11px] disabled:opacity-50 sm:flex-1 sm:!px-3 sm:!py-2 sm:text-xs"
           >
             {t("buy_now")}
           </button>
