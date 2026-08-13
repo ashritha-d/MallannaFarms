@@ -74,6 +74,15 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   contact_phone: "+91 90000 00000",
   contact_email: "hello@mallannafarms.com",
   contact_map_embed: "",
+  // Plain Google Maps link (opens in a new tab) — distinct from
+  // contact_map_embed above, which is the iframe embed URL for the
+  // Contact page map. Leave blank to fall back to a maps search built
+  // from contact_address (see floatingContact.ts).
+  contact_map_link: "",
+  // Digits only, with country code, no "+" or spaces (e.g. 919000000000).
+  // Used to build the WhatsApp floating button's wa.me link. Falls back
+  // to the digits of contact_phone if left blank.
+  whatsapp_number: "",
 
   social_instagram: "",
   social_facebook: "",

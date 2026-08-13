@@ -300,6 +300,8 @@ We aspire to build a future where quality, nutrition, animal well-being, and sus
   ('contact_address', 'Sy. No. 174/2/2, Thallasingaram Village, Choutuppal Municipality, Yadadri Bhuvanagiri District, Telangana – 508252'),
   ('contact_phone', '+91 90000 00000'),
   ('contact_email', 'hello@mallannafarms.com'),
+  ('contact_map_link', ''),
+  ('whatsapp_number', ''),
   ('footer_tagline', 'Naturally Raised. Freshly Delivered. Made for Healthy Families.')
 on conflict (key) do nothing;
 

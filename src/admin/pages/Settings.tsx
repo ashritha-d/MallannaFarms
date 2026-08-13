@@ -32,6 +32,8 @@ export default function AdminSettings() {
       contact_phone: values.contact_phone ?? "",
       contact_email: values.contact_email ?? "",
       contact_map_embed: values.contact_map_embed ?? "",
+      contact_map_link: values.contact_map_link ?? "",
+      whatsapp_number: values.whatsapp_number ?? "",
       footer_tagline: values.footer_tagline ?? "",
       site_name: values.site_name ?? "",
       tagline_primary: values.tagline_primary ?? "",
@@ -83,7 +85,34 @@ export default function AdminSettings() {
               className="input"
             />
             <p className="mt-1 text-xs text-forest-500">
-              From Google Maps: Share → Embed a map → copy the "src" URL from the iframe code.
+              From Google Maps: Share → Embed a map → copy the "src" URL from the iframe code. Powers the map shown
+              on the Contact page.
+            </p>
+          </div>
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-forest-800">Google Maps Link</label>
+            <input
+              value={values.contact_map_link ?? ""}
+              onChange={(e) => set("contact_map_link", e.target.value)}
+              placeholder="https://maps.app.goo.gl/..."
+              className="input"
+            />
+            <p className="mt-1 text-xs text-forest-500">
+              A normal shareable Google Maps link (Share → Copy link). Powers the floating Location button on every
+              page — if left blank, it falls back to searching your Farm Address above.
+            </p>
+          </div>
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-forest-800">WhatsApp Number</label>
+            <input
+              value={values.whatsapp_number ?? ""}
+              onChange={(e) => set("whatsapp_number", e.target.value)}
+              placeholder="e.g. 919000000000 (country code, no + or spaces)"
+              className="input"
+            />
+            <p className="mt-1 text-xs text-forest-500">
+              Powers the floating WhatsApp button on every page. If left blank, it falls back to the Phone number
+              above.
             </p>
           </div>
         </div>
