@@ -14,11 +14,11 @@ export default function Vision() {
         description="Our vision at Mallanna Farms is to become a trusted name in natural and sustainable poultry farming, bringing healthy free-range eggs from our farm to every family."
         path="/vision"
       />
-      <PageHero eyebrow="Our Vision" title={settings.vision_title || "Our Vision"} image={settings.vision_image || FARM_IMAGES.f5} />
+      <PageHero eyebrow="Our Vision" title={settings.vision_title || "Our Vision"} image={settings.vision_image || FARM_IMAGES.eggsInHay} />
 
       <Section tone="white">
         <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-16">
-          <FarmImage src={settings.vision_image || FARM_IMAGES.f5} alt="Our vision at Mallanna Farms" aspect="aspect-[4/3]" rounded="rounded-3xl" className="order-2 shadow-lift lg:order-1" />
+          <FarmImage src={settings.vision_image || FARM_IMAGES.eggsInHay} alt="Our vision at Mallanna Farms" aspect="aspect-[4/3]" rounded="rounded-3xl" className="order-2 shadow-lift lg:order-1" />
           <div className="order-1 space-y-5 text-base leading-relaxed text-forest-700 sm:text-lg lg:order-2">
             {(settings.vision_content ?? "").split("\n\n").map((para, i) => (
               <p key={i}>{para}</p>

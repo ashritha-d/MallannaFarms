@@ -22,7 +22,7 @@ export default function Mission() {
         description="Our mission at Mallanna Farms is to provide families with fresh, nutritious, naturally produced free-range eggs while caring for our hens and the environment."
         path="/mission"
       />
-      <PageHero eyebrow="Our Mission" title={settings.mission_title || "Our Mission"} image={settings.mission_image || FARM_IMAGES.f4} />
+      <PageHero eyebrow="Our Mission" title={settings.mission_title || "Our Mission"} image={settings.mission_image || FARM_IMAGES.henWithBasket} />
 
       <Section tone="white">
         <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-16">
@@ -31,7 +31,7 @@ export default function Mission() {
               <p key={i}>{para}</p>
             ))}
           </div>
-          <FarmImage src={settings.mission_image || FARM_IMAGES.f4} alt="Our mission at Mallanna Farms" aspect="aspect-[4/3]" rounded="rounded-3xl" className="shadow-lift" />
+          <FarmImage src={settings.mission_image || FARM_IMAGES.henWithBasket} alt="Our mission at Mallanna Farms" aspect="aspect-[4/3]" rounded="rounded-3xl" className="shadow-lift" />
         </div>
       </Section>
 

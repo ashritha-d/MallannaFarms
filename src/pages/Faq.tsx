@@ -34,7 +34,7 @@ export default function FaqPage() {
         description="Answers to common questions about Mallanna Farms' free-range eggs, farming practices, freshness, and ordering."
         path="/faq"
       />
-      <PageHero eyebrow="FAQ" title="Frequently Asked Questions" image={FARM_IMAGES.f3} />
+      <PageHero eyebrow="FAQ" title="Frequently Asked Questions" image={FARM_IMAGES.eggsInHay} />
 
       <Section tone="cream">
         <div className="mx-auto max-w-3xl">

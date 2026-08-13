@@ -90,7 +90,7 @@ export default function AdminVideos() {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {videos.map((v) => (
                   <div key={v.id} className="card overflow-hidden">
-                    <img src={v.thumbnail_url || "/assets/farm/f2.jpeg"} alt="" className="aspect-video w-full object-cover" />
+                    <img src={v.thumbnail_url || "/assets/farm/hen-closeup.jpg"} alt="" className="aspect-video w-full object-cover" />
                     <div className="space-y-2 p-4">
                       <p className="font-medium text-forest-900">{v.title}</p>
                       <p className="text-xs text-forest-500">{v.category}</p>

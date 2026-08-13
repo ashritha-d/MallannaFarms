@@ -33,7 +33,7 @@ function setLink(rel: string, href: string) {
 }
 
 /** Sets per-page document title, meta description, OG/Twitter tags, canonical URL and optional JSON-LD. */
-export default function Seo({ title, description, path = "", image = "/assets/farm/f1.jpeg", type = "website", jsonLd }: SeoProps) {
+export default function Seo({ title, description, path = "", image = "/assets/farm/hen-with-egg-basket.jpg", type = "website", jsonLd }: SeoProps) {
   useEffect(() => {
     const fullTitle = title.includes("Mallanna Farms") ? title : `${title} | Mallanna Farms`;
     document.title = fullTitle;

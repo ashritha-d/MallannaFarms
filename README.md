@@ -99,6 +99,14 @@ supabase/
 
 Deep forest green, earthy brown, soft gold and warm cream — defined as Tailwind tokens in `tailwind.config.js` (`forest`, `earth`, `gold`, `cream`). Display type is **Fraunces**, body type is **Inter**. The official logo (`logoF.jpeg`) is used unmodified throughout — navbar, footer, favicon — and is never redrawn or altered.
 
+## Notes on the uploaded images
+
+The original `f1.jpeg`–`f9.jpeg` uploads turned out to be mostly composite marketing mockups — logo concept sheets, packaging renders, a multi-panel brand moodboard — rather than individual candid farm photos, several with promotional text baked into the pixels (placeholder phone numbers, alternate taglines, etc). The photos actually used across the site (`public/assets/farm/hen-closeup.jpg`, `farm-gate-entrance.jpg`, `hen-with-egg-basket.jpg`, and others) are cropped directly from the clean, text-free panels inside those uploads, so every image on the site is still real pixels from your own assets — just isolated from the surrounding collage grid and captions. The original uploads are untouched and still in that folder if you want to reuse them elsewhere.
+
+One uploaded file, `f7.jpeg`, turned out to be a screenshot of an unrelated third-party egg farm's website (a New Zealand business) — it is intentionally not referenced anywhere on the site.
+
+The farm's real postal address, nutrition-facts panel, FSSAI license number and barcode (visible on the `f6.jpeg` packaging artwork) are used as the seeded contact/product data in `src/data/seed.ts` and `supabase/schema.sql`. The phone number and email are still placeholders — the artwork only showed a redacted phone number — so update those for real in `/admin → Settings` once you're ready.
+
 ## Notes on the sitemap
 
 `public/sitemap.xml` lists the static pages. Individual product URLs (`/products/:slug`) are database-driven and not included since this is a static file — for full SEO coverage in production, generate the sitemap server-side (e.g. a small Supabase Edge Function or build-time script that queries `products` and appends `<url>` entries) once your catalog is live.

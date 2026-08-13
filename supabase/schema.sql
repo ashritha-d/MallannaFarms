@@ -266,7 +266,7 @@ We believe that healthier food begins with healthier birds, natural surroundings
 
 We aspire to build a future where quality, nutrition, animal well-being, and sustainability come together—supporting healthier families, stronger communities, and a greener planet.'),
   ('vision_statement', 'From our farm, with care — naturally nourishing every family.'),
-  ('contact_address', 'Mallanna Farms, [Village/Mandal], [District], Telangana, India — [PIN]'),
+  ('contact_address', 'Sy. No. 174/2, Thallasingaram Village, Choutuppal Municipality, Yadadri Bhuvanagiri District, Telangana – 508252'),
   ('contact_phone', '+91 90000 00000'),
   ('contact_email', 'hello@mallannafarms.com'),
   ('footer_tagline', 'Naturally Raised. Freshly Delivered. Made for Healthy Families.')

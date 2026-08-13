@@ -27,7 +27,7 @@ export default function About() {
         eyebrow="About Us"
         title="Rooted in Nature, Raised with Care"
         subtitle="Mallanna Farms is a family-run free-range egg farm built on honest, natural farming practices."
-        image={FARM_IMAGES.f6}
+        image={FARM_IMAGES.farmGate}
       />
 
       <Section tone="white">
@@ -48,7 +48,7 @@ export default function About() {
               </NavLink>
             </div>
           </div>
-          <FarmImage src={FARM_IMAGES.f4} alt="Hens at Mallanna Farms" aspect="aspect-[4/3]" rounded="rounded-3xl" className="shadow-lift" />
+          <FarmImage src={FARM_IMAGES.henCloseup} alt="Hens at Mallanna Farms" aspect="aspect-[4/3]" rounded="rounded-3xl" className="shadow-lift" />
         </div>
       </Section>
 

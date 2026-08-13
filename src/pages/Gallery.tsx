@@ -48,7 +48,7 @@ export default function Gallery() {
         description="Explore the Mallanna Farms photo gallery — free range hens, open farm spaces, egg collection, packaging and behind-the-scenes farm life."
         path="/gallery"
       />
-      <PageHero eyebrow="Gallery" title="A Visual Journey Through Mallanna Farms" image={FARM_IMAGES.f9} />
+      <PageHero eyebrow="Gallery" title="A Visual Journey Through Mallanna Farms" image={FARM_IMAGES.orchardHens} />
 
       <Section tone="cream">
         {status === "loading" && <CardSkeleton count={8} />}

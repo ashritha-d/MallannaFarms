@@ -37,7 +37,7 @@ export default function Products() {
         eyebrow="Our Products"
         title="Free Range Eggs, Farm to Family"
         subtitle="Every tray is collected fresh, graded for quality, and packed with care."
-        image={FARM_IMAGES.f7}
+        image={FARM_IMAGES.eggCartonBowl}
       />
 
       <Section tone="cream">

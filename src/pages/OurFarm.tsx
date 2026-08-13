@@ -45,7 +45,7 @@ export default function OurFarm() {
         eyebrow="Our Farm"
         title="Life on Mallanna Farms"
         subtitle="An open, natural home for our hens — and the source of every fresh egg we deliver."
-        image={FARM_IMAGES.f2}
+        image={FARM_IMAGES.farmGate}
       />
 
       <Section tone="white">
@@ -113,7 +113,7 @@ export default function OurFarm() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {videos.map((v) => (
               <div key={v.id} className="card overflow-hidden">
-                <FarmImage src={v.thumbnail_url ?? FARM_IMAGES.f2} alt={v.title} aspect="aspect-video" />
+                <FarmImage src={v.thumbnail_url ?? FARM_IMAGES.henCloseup} alt={v.title} aspect="aspect-video" />
                 <div className="p-4">
                   <h3 className="font-display text-base font-semibold text-forest-900">{v.title}</h3>
                 </div>

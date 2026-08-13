@@ -20,7 +20,13 @@ const PROMISE_ITEMS = [
   { icon: ShieldCheck, label: "Sustainable Farming", desc: "Responsible practices for the planet." },
 ];
 
-const FARM_STRIP = [FARM_IMAGES.f1, FARM_IMAGES.f2, FARM_IMAGES.f3, FARM_IMAGES.f5, FARM_IMAGES.f6];
+const FARM_STRIP = [
+  FARM_IMAGES.henCloseup,
+  FARM_IMAGES.farmGate,
+  FARM_IMAGES.orchardHens,
+  FARM_IMAGES.eggsInHay,
+  FARM_IMAGES.farmerWithBasket,
+];
 
 export default function Home() {
   const { data: settings } = useSettings();
@@ -55,7 +61,7 @@ export default function Home() {
             Free Range Eggs
             <span className="h-px w-8 bg-gold-300/70" />
           </span>
-          <h1 className="mx-auto mt-5 max-w-3xl font-display text-4xl font-semibold leading-[1.1] sm:text-6xl lg:text-7xl">
+          <h1 className="mx-auto mt-5 max-w-3xl font-display text-4xl font-semibold leading-[1.1] text-cream-50 sm:text-6xl lg:text-7xl">
             {settings.hero_heading || "Mallanna Farms"}
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-cream-100/90 sm:text-lg">
@@ -97,7 +103,7 @@ export default function Home() {
       <Section tone="white">
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <FarmImage
-            src={settings.about_image || FARM_IMAGES.f3}
+            src={settings.about_image || FARM_IMAGES.farmerWithBasket}
             alt="Mallanna Farms open natural surroundings"
             aspect="aspect-[4/3]"
             rounded="rounded-2xl2 rounded-3xl"

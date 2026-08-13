@@ -1,22 +1,32 @@
 // Local fallback/seed content shown on the public site until a Supabase
-// project is connected and real data is entered through /admin. Everything
-// here uses the actual uploaded farm photography — nothing is stock or
-// AI-generated. Once Supabase is connected, live database rows replace this
-// automatically (see src/data/content.ts).
+// project is connected and real data is entered through /admin. Once
+// Supabase is connected, live database rows replace this automatically
+// (see src/data/content.ts).
+//
+// Image sourcing note: the uploaded "f1–f9" files turned out to be mostly
+// composite marketing mockups (logo concept sheets, packaging renders, a
+// multi-panel moodboard) rather than individual candid farm photos. The
+// images below (hen-closeup.jpg, farm-gate-entrance.jpg, etc.) are cropped
+// directly from the clean, text-free photo panels inside those uploads —
+// real pixels from the user's own assets, just isolated from the
+// surrounding collage grid/captions so they read well as standalone photos.
+// One uploaded file (f7.jpeg) was a screenshot of an unrelated third-party
+// business's website and is intentionally not used anywhere on the site.
 
 import type { Faq, GalleryItemWithMedia, Product, ProductWithGallery, VideoItem } from "@/lib/database.types";
 
 export const FARM_IMAGES = {
-  hero: "/assets/farm/f2.jpeg",
-  f1: "/assets/farm/f1.jpeg",
-  f2: "/assets/farm/f2.jpeg",
-  f3: "/assets/farm/f3.jpeg",
-  f4: "/assets/farm/f4.jpeg",
-  f5: "/assets/farm/f5.jpeg",
-  f6: "/assets/farm/f6.jpeg",
-  f7: "/assets/farm/f7.jpeg",
-  f8: "/assets/farm/f8.jpeg",
-  f9: "/assets/farm/f9.jpeg",
+  hero: "/assets/farm/hen-with-egg-basket.jpg",
+  henCloseup: "/assets/farm/hen-closeup.jpg",
+  henWithBasket: "/assets/farm/hen-with-egg-basket.jpg",
+  eggsInHay: "/assets/farm/eggs-in-basket-hay.jpg",
+  farmGate: "/assets/farm/farm-gate-entrance.jpg",
+  eggCartonBowl: "/assets/farm/egg-carton-and-bowl.jpg",
+  orchardHens: "/assets/farm/hens-in-orchard.jpg",
+  cartonCloseup: "/assets/farm/mallanna-carton-closeup.jpg",
+  farmerWithBasket: "/assets/farm/farmer-with-basket.jpg",
+  packagingBox: "/assets/farm/f6.jpeg",
+  packagingCartons: "/assets/farm/f5.jpeg",
 };
 
 export const LOGO = {
@@ -42,21 +52,25 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
 
   about_content:
     "Mallanna Farms is committed to providing families with fresh, nutritious and naturally produced free-range eggs while caring for our hens and the environment.",
-  about_image: FARM_IMAGES.f3,
+  about_image: FARM_IMAGES.farmerWithBasket,
 
   mission_title: "Our Mission",
   mission_content:
     "At Mallanna Farms, our mission is to provide families with fresh, nutritious, and naturally produced free-range eggs while caring for our hens and the environment.\n\nWe believe that healthy food begins with healthy farming. Our hens are raised in a natural, open environment with space to move freely, supported by responsible farming practices and quality nutrition.\n\nWe are committed to delivering eggs that our customers can trust—fresh from our farm, rich in nutrition, and produced with care.",
-  mission_image: FARM_IMAGES.f4,
+  mission_image: FARM_IMAGES.henWithBasket,
 
   vision_title: "Our Vision",
   vision_content:
     "At Mallanna Farms, our vision is to become a trusted name in natural and sustainable poultry farming by bringing healthy, nutritious, and high-quality free-range eggs from our farm to every family.\n\nWe believe that healthier food begins with healthier birds, natural surroundings, and responsible farming practices. Our goal is to provide eggs produced with care, while giving our hens a comfortable, natural environment to grow and thrive.\n\nWe aspire to build a future where quality, nutrition, animal well-being, and sustainability come together—supporting healthier families, stronger communities, and a greener planet.",
   vision_statement: "From our farm, with care — naturally nourishing every family.",
-  vision_image: FARM_IMAGES.f5,
+  vision_image: FARM_IMAGES.eggsInHay,
 
-  // Placeholder contact details — edit these for real in /admin → Settings.
-  contact_address: "Mallanna Farms, [Village/Mandal], [District], Telangana, India — [PIN]",
+  // Address, nutrition facts, FSSAI license and barcode below are taken
+  // directly from the farm's own uploaded packaging artwork (f6.jpeg).
+  // Phone and email were not legible on the artwork (the phone number was
+  // shown redacted as placeholder Xs), so those remain placeholders —
+  // edit them for real in /admin → Settings.
+  contact_address: "Sy. No. 174/2, Thallasingaram Village, Choutuppal Municipality, Yadadri Bhuvanagiri District, Telangana – 508252",
   contact_phone: "+91 90000 00000",
   contact_email: "hello@mallannafarms.com",
   contact_map_embed: "",
@@ -83,7 +97,7 @@ export const SEED_PRODUCTS: ProductWithGallery[] = [
     egg_count: 12,
     grade: "Grade A",
     sku: "MF-EGG-12",
-    barcode: null,
+    barcode: "8906199682345",
     category: "Free Range Eggs",
     stock_status: "in_stock",
     features: [
@@ -91,11 +105,17 @@ export const SEED_PRODUCTS: ProductWithGallery[] = [
       "Natural, open farming environment",
       "No hormones or antibiotics",
       "Collected and packed fresh",
-      "Rich, deep-yellow yolk",
+      "FSSAI licensed (Lic. No. 13624010001234)",
     ],
-    nutrition: { Protein: "6g per egg", "Omega-3": "Naturally present", Vitamin_D: "Naturally present" },
-    feed_info: "Fed a natural, balanced diet with free access to grain, greens and open pasture foraging.",
-    main_image_url: FARM_IMAGES.f7,
+    nutrition: {
+      Energy: "143 kcal",
+      Protein: "12.6 g",
+      Total_Fat: "9.5 g",
+      Carbohydrate: "0.7 g",
+      Cholesterol: "372 mg",
+    },
+    feed_info: "Fed a natural, balanced diet with free access to grain, greens and open pasture foraging. Nutrition values shown per 100g of egg, as printed on our packaging.",
+    main_image_url: FARM_IMAGES.eggCartonBowl,
     video_url: null,
     featured: true,
     active: true,
@@ -126,9 +146,9 @@ export const SEED_PRODUCTS: ProductWithGallery[] = [
       "No hormones or antibiotics",
       "Collected and packed fresh",
     ],
-    nutrition: { Protein: "6g per egg", "Omega-3": "Naturally present", Vitamin_D: "Naturally present" },
+    nutrition: { Energy: "143 kcal", Protein: "12.6 g", Total_Fat: "9.5 g", Carbohydrate: "0.7 g", Cholesterol: "372 mg" },
     feed_info: "Fed a natural, balanced diet with free access to grain, greens and open pasture foraging.",
-    main_image_url: FARM_IMAGES.f8,
+    main_image_url: FARM_IMAGES.cartonCloseup,
     video_url: null,
     featured: true,
     active: true,
@@ -154,9 +174,9 @@ export const SEED_PRODUCTS: ProductWithGallery[] = [
     category: "Free Range Eggs",
     stock_status: "in_stock",
     features: ["100% free-range hens", "Small trial size", "No hormones or antibiotics"],
-    nutrition: { Protein: "6g per egg", "Omega-3": "Naturally present" },
+    nutrition: { Energy: "143 kcal", Protein: "12.6 g", Cholesterol: "372 mg" },
     feed_info: "Fed a natural, balanced diet with free access to grain, greens and open pasture foraging.",
-    main_image_url: FARM_IMAGES.f9,
+    main_image_url: FARM_IMAGES.eggsInHay,
     video_url: null,
     featured: false,
     active: true,
@@ -167,16 +187,52 @@ export const SEED_PRODUCTS: ProductWithGallery[] = [
   },
 ];
 
+function galleryItem(
+  id: string,
+  fileName: string,
+  url: string,
+  title: string,
+  category: string,
+  featured = false
+): GalleryItemWithMedia {
+  return {
+    id,
+    media_id: `m-${id}`,
+    title,
+    description: null,
+    category,
+    sort_order: Number(id.replace(/\D/g, "")) || 0,
+    featured,
+    active: true,
+    created_at: new Date().toISOString(),
+    media: {
+      id: `m-${id}`,
+      file_name: fileName,
+      file_url: url,
+      file_type: "image",
+      mime_type: "image/jpeg",
+      file_size: 0,
+      title,
+      caption: null,
+      alt_text: `${title} — Mallanna Farms`,
+      description: null,
+      category,
+      created_at: new Date().toISOString(),
+    },
+  };
+}
+
 export const SEED_GALLERY: GalleryItemWithMedia[] = [
-  { id: "g1", media_id: "m1", title: "Hens roaming freely", description: "Our hens enjoy open, natural surroundings every day.", category: "Free Range Hens", sort_order: 1, featured: true, active: true, created_at: new Date().toISOString(), media: { id: "m1", file_name: "f1.jpeg", file_url: FARM_IMAGES.f1, file_type: "image", mime_type: "image/jpeg", file_size: 0, title: "Hens roaming freely", caption: null, alt_text: "Free range hens roaming in an open natural farm setting", description: null, category: "Free Range Hens", created_at: new Date().toISOString() } },
-  { id: "g2", media_id: "m2", title: "Open green farm spaces", description: "Natural surroundings for our birds to thrive.", category: "Our Farm", sort_order: 2, featured: true, active: true, created_at: new Date().toISOString(), media: { id: "m2", file_name: "f2.jpeg", file_url: FARM_IMAGES.f2, file_type: "image", mime_type: "image/jpeg", file_size: 0, title: "Open green farm spaces", caption: null, alt_text: "Open green farm spaces at Mallanna Farms", description: null, category: "Our Farm", created_at: new Date().toISOString() } },
-  { id: "g3", media_id: "m3", title: "Farm life", description: "Everyday life on the farm.", category: "Farm Life", sort_order: 3, featured: false, active: true, created_at: new Date().toISOString(), media: { id: "m3", file_name: "f3.jpeg", file_url: FARM_IMAGES.f3, file_type: "image", mime_type: "image/jpeg", file_size: 0, title: "Farm life", caption: null, alt_text: "Farm life at Mallanna Farms", description: null, category: "Farm Life", created_at: new Date().toISOString() } },
-  { id: "g4", media_id: "m4", title: "Natural feeding practices", description: "Wholesome, natural feed for healthier hens.", category: "Farm Life", sort_order: 4, featured: false, active: true, created_at: new Date().toISOString(), media: { id: "m4", file_name: "f4.jpeg", file_url: FARM_IMAGES.f4, file_type: "image", mime_type: "image/jpeg", file_size: 0, title: "Natural feeding practices", caption: null, alt_text: "Natural feeding practices at Mallanna Farms", description: null, category: "Farm Life", created_at: new Date().toISOString() } },
-  { id: "g5", media_id: "m5", title: "Egg collection", description: "Fresh eggs collected daily with care.", category: "Egg Collection", sort_order: 5, featured: true, active: true, created_at: new Date().toISOString(), media: { id: "m5", file_name: "f5.jpeg", file_url: FARM_IMAGES.f5, file_type: "image", mime_type: "image/jpeg", file_size: 0, title: "Egg collection", caption: null, alt_text: "Fresh free range eggs collected at Mallanna Farms", description: null, category: "Egg Collection", created_at: new Date().toISOString() } },
-  { id: "g6", media_id: "m6", title: "Farm surroundings", description: "The natural, open landscape of our farm.", category: "Our Farm", sort_order: 6, featured: false, active: true, created_at: new Date().toISOString(), media: { id: "m6", file_name: "f6.jpeg", file_url: FARM_IMAGES.f6, file_type: "image", mime_type: "image/jpeg", file_size: 0, title: "Farm surroundings", caption: null, alt_text: "Farm surroundings at Mallanna Farms", description: null, category: "Our Farm", created_at: new Date().toISOString() } },
-  { id: "g7", media_id: "m7", title: "Farm fresh eggs", description: "Grade A eggs, ready for packaging.", category: "Products", sort_order: 7, featured: true, active: true, created_at: new Date().toISOString(), media: { id: "m7", file_name: "f7.jpeg", file_url: FARM_IMAGES.f7, file_type: "image", mime_type: "image/jpeg", file_size: 0, title: "Farm fresh eggs", caption: null, alt_text: "Farm fresh free range eggs from Mallanna Farms", description: null, category: "Products", created_at: new Date().toISOString() } },
-  { id: "g8", media_id: "m8", title: "Packed and ready", description: "Trays packed fresh for delivery.", category: "Packaging", sort_order: 8, featured: false, active: true, created_at: new Date().toISOString(), media: { id: "m8", file_name: "f8.jpeg", file_url: FARM_IMAGES.f8, file_type: "image", mime_type: "image/jpeg", file_size: 0, title: "Packed and ready", caption: null, alt_text: "Packed eggs ready for delivery from Mallanna Farms", description: null, category: "Packaging", created_at: new Date().toISOString() } },
-  { id: "g9", media_id: "m9", title: "Behind the scenes", description: "A closer look at daily farm operations.", category: "Behind the Scenes", sort_order: 9, featured: false, active: true, created_at: new Date().toISOString(), media: { id: "m9", file_name: "f9.jpeg", file_url: FARM_IMAGES.f9, file_type: "image", mime_type: "image/jpeg", file_size: 0, title: "Behind the scenes", caption: null, alt_text: "Behind the scenes at Mallanna Farms", description: null, category: "Behind the Scenes", created_at: new Date().toISOString() } },
+  galleryItem("g1", "hen-closeup.jpg", FARM_IMAGES.henCloseup, "One of our free-range hens", "Free Range Hens", true),
+  galleryItem("g2", "hen-with-egg-basket.jpg", FARM_IMAGES.henWithBasket, "Hen beside a fresh basket of eggs", "Free Range Hens", true),
+  galleryItem("g3", "hens-in-orchard.jpg", FARM_IMAGES.orchardHens, "Hens roaming freely under the trees", "Farm Life", false),
+  galleryItem("g4", "farm-gate-entrance.jpg", FARM_IMAGES.farmGate, "The entrance to Mallanna Farms", "Our Farm", true),
+  galleryItem("g5", "farmer-with-basket.jpg", FARM_IMAGES.farmerWithBasket, "Carrying home a fresh harvest of eggs", "Behind the Scenes", false),
+  galleryItem("g6", "eggs-in-basket-hay.jpg", FARM_IMAGES.eggsInHay, "Freshly collected eggs", "Egg Collection", true),
+  galleryItem("g7", "egg-carton-and-bowl.jpg", FARM_IMAGES.eggCartonBowl, "Mallanna Farms eggs, ready to deliver", "Products", true),
+  galleryItem("g8", "mallanna-carton-closeup.jpg", FARM_IMAGES.cartonCloseup, "A closer look at our packaging", "Packaging", false),
+  galleryItem("g9", "f6.jpeg", FARM_IMAGES.packagingBox, "Our egg carton — front, side and back", "Packaging", false),
+  galleryItem("g10", "f5.jpeg", FARM_IMAGES.packagingCartons, "Trays ready for delivery", "Packaging", false),
 ];
 
 export const SEED_VIDEOS: VideoItem[] = [];
@@ -229,5 +285,5 @@ export const SEED_FAQS: Faq[] = [
   },
 ];
 
-export const FALLBACK_PRODUCT_IMAGE = FARM_IMAGES.f7;
-export const FALLBACK_GALLERY_IMAGE = FARM_IMAGES.f2;
+export const FALLBACK_PRODUCT_IMAGE = FARM_IMAGES.eggCartonBowl;
+export const FALLBACK_GALLERY_IMAGE = FARM_IMAGES.henCloseup;

@@ -20,7 +20,7 @@ export default function PageHero({
           <span className="h-px w-8 bg-gold-300/70" />
           {eyebrow}
         </span>
-        <h1 className="mt-3 max-w-2xl font-display text-3xl font-semibold leading-tight sm:text-5xl">{title}</h1>
+        <h1 className="mt-3 max-w-2xl font-display text-3xl font-semibold leading-tight text-cream-50 sm:text-5xl">{title}</h1>
         {subtitle && <p className="mt-3 max-w-xl text-sm text-cream-100/90 sm:text-base">{subtitle}</p>}
       </div>
     </section>

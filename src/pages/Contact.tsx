@@ -47,7 +47,7 @@ export default function Contact() {
         description="Get in touch with Mallanna Farms — reach out for enquiries about our free-range eggs, farm visits, or partnerships."
         path="/contact"
       />
-      <PageHero eyebrow="Contact Us" title="We'd Love to Hear From You" image={FARM_IMAGES.f6} />
+      <PageHero eyebrow="Contact Us" title="We'd Love to Hear From You" image={FARM_IMAGES.farmGate} />
 
       <Section tone="cream">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-14">

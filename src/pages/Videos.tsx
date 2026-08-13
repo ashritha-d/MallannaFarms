@@ -43,7 +43,7 @@ export default function Videos() {
         description="Watch videos from Mallanna Farms — see our free-range hens, natural farming practices and daily farm life."
         path="/videos"
       />
-      <PageHero eyebrow="Videos" title="Watch Life at Mallanna Farms" image={FARM_IMAGES.f1} />
+      <PageHero eyebrow="Videos" title="Watch Life at Mallanna Farms" image={FARM_IMAGES.orchardHens} />
 
       <Section tone="cream">
         {status === "loading" && <CardSkeleton count={6} />}
@@ -64,7 +64,7 @@ export default function Videos() {
                 className="card group overflow-hidden text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500"
               >
                 <div className="relative">
-                  <FarmImage src={v.thumbnail_url ?? FARM_IMAGES.f2} alt={v.title} aspect="aspect-video" />
+                  <FarmImage src={v.thumbnail_url ?? FARM_IMAGES.henCloseup} alt={v.title} aspect="aspect-video" />
                   <span className="absolute inset-0 flex items-center justify-center bg-forest-950/25 transition-colors group-hover:bg-forest-950/40">
                     <PlayCircle className="h-14 w-14 text-cream-50 drop-shadow-lg" />
                   </span>

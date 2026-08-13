@@ -20,7 +20,7 @@ export default function WhyChooseUs() {
         description="Why families trust Mallanna Farms — happy hens, natural farming, fresh nutritious eggs, and a genuine commitment to quality and sustainability."
         path="/why-choose-us"
       />
-      <PageHero eyebrow="Why Choose Us" title="Why Families Trust Mallanna Farms" image={FARM_IMAGES.f8} />
+      <PageHero eyebrow="Why Choose Us" title="Why Families Trust Mallanna Farms" image={FARM_IMAGES.henCloseup} />
 
       <Section tone="cream">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
