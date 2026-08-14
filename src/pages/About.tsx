@@ -56,7 +56,7 @@ export default function About() {
           <div>
             <span className="section-eyebrow">
               <span className="h-px w-8 bg-current opacity-60" />
-              About the Client
+              About Us
             </span>
             <h1 className="mt-3 text-3xl font-semibold text-forest-900 sm:text-4xl">
               20 Years in Sales &amp; Public Relations
@@ -70,9 +70,9 @@ export default function About() {
         </div>
       </Section>
 
-      {/* 2. About the Client — Professional Experience & Expertise */}
+      {/* 2. Our Experience — Professional Experience & Expertise */}
       <Section tone="cream">
-        <SectionHeading align="left" eyebrow="My Experience" title="About the Client" />
+        <SectionHeading align="left" eyebrow="My Experience" title="Our Experience" />
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="space-y-4 text-base leading-relaxed text-forest-700 sm:text-lg">
             {(settings.founder_experience ?? "").split("\n\n").map((para, i) => (
