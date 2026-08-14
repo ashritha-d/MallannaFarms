@@ -14,7 +14,6 @@ import {
 import Seo from "@/components/seo/Seo";
 import FarmImage from "@/components/ui/FarmImage";
 import { Section, SectionHeading } from "@/components/ui/Section";
-import PageHero from "@/components/ui/PageHero";
 import { useSettings } from "@/hooks/useSettings";
 import { FARM_IMAGES, FOUNDER_IMAGE } from "@/data/seed";
 
@@ -42,15 +41,8 @@ export default function About() {
         description="Meet the person behind Mallanna Farms — 20 years of Sales & Public Relations experience across FMCG, and the mission and vision behind our free-range eggs."
         path="/about"
       />
-      <PageHero
-        eyebrow="About Us"
-        title="The Story Behind Mallanna Farms"
-        subtitle="Two decades of building brands and growing businesses, now bringing that same care to natural, free-range farming."
-        image={FARM_IMAGES.farmGate}
-      />
-
       {/* 1. Client Introduction */}
-      <Section tone="white">
+      <Section tone="white" className="pt-28 sm:pt-32">
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-16">
           <div className="mx-auto w-full max-w-xs lg:mx-0">
             <FarmImage
@@ -66,9 +58,9 @@ export default function About() {
               <span className="h-px w-8 bg-current opacity-60" />
               About the Client
             </span>
-            <h2 className="mt-3 text-3xl font-semibold text-forest-900 sm:text-4xl">
+            <h1 className="mt-3 text-3xl font-semibold text-forest-900 sm:text-4xl">
               20 Years in Sales &amp; Public Relations
-            </h2>
+            </h1>
             <div className="mt-5 space-y-4 text-base leading-relaxed text-forest-700 sm:text-lg">
               {(settings.founder_intro ?? "").split("\n\n").map((para, i) => (
                 <p key={i}>{para}</p>

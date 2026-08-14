@@ -26,9 +26,7 @@ export const ROUTES = {
 export const PRIMARY_NAV = [
   { label: "Home", to: ROUTES.home },
   { label: "Our Eggs", to: ROUTES.products },
-  { label: "Our Farm", to: ROUTES.farm },
   { label: "About Us", to: ROUTES.about },
-  { label: "Mission & Vision", to: ROUTES.missionVision },
   { label: "Contact", to: ROUTES.contact },
 ];
 

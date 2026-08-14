@@ -256,12 +256,8 @@ function navKey(to: string): Parameters<ReturnType<typeof useLanguage>["t"]>[0] 
       return "nav_home";
     case ROUTES.products:
       return "nav_shop";
-    case ROUTES.farm:
-      return "nav_farm";
     case ROUTES.about:
       return "nav_about";
-    case ROUTES.missionVision:
-      return "nav_mission_vision";
     case ROUTES.contact:
       return "nav_contact";
     default:
