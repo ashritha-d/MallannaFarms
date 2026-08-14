@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import Seo from "@/components/seo/Seo";
-import PageHero from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
 import ProductCard from "@/components/products/ProductCard";
 import { CardSkeleton, EmptyState, ErrorState } from "@/components/ui/States";
 import { getProducts } from "@/data/content";
-import { FARM_IMAGES } from "@/data/seed";
 import type { ProductWithGallery } from "@/lib/database.types";
 
 type Status = "loading" | "ready" | "error";
@@ -61,14 +59,16 @@ export default function Products() {
         description="Shop Mallanna Farms' free-range eggs — Grade A, naturally raised, fresh from our farm to your family."
         path="/products"
       />
-      <PageHero
-        eyebrow="Shop Mallanna Farms"
-        title="Our Fresh Free Range Eggs"
-        subtitle="Every tray is collected fresh, graded for quality, and packed with care."
-        image={FARM_IMAGES.eggCartonBowl}
-      />
+      <Section tone="cream" className="pt-28 sm:pt-32">
+        <div className="mx-auto mb-10 max-w-2xl text-center">
+          <span className="section-eyebrow justify-center">
+            <span className="h-px w-8 bg-current opacity-60" />
+            Shop Mallanna Farms
+          </span>
+          <h1 className="mt-3 text-3xl font-semibold text-forest-900 sm:text-4xl">Our Fresh Free Range Eggs</h1>
+          <p className="mt-3 text-forest-600">Every tray is collected fresh, graded for quality, and packed with care.</p>
+        </div>
 
-      <Section tone="cream">
         <div className="mb-8 flex flex-wrap justify-center gap-2">
           {FILTERS.map((f) => (
             <button

@@ -1,11 +1,9 @@
 import { useState, type FormEvent } from "react";
 import { Mail, MapPin, Phone, Send } from "lucide-react";
 import Seo from "@/components/seo/Seo";
-import PageHero from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
 import { useSettings } from "@/hooks/useSettings";
 import { submitContactMessage } from "@/data/content";
-import { FARM_IMAGES } from "@/data/seed";
 
 type FormState = { name: string; phone: string; email: string; subject: string; message: string };
 const EMPTY: FormState = { name: "", phone: "", email: "", subject: "", message: "" };
@@ -47,9 +45,14 @@ export default function Contact() {
         description="Get in touch with Mallanna Farms — reach out for enquiries about our free-range eggs, farm visits, or partnerships."
         path="/contact"
       />
-      <PageHero eyebrow="Contact Us" title="We'd Love to Hear From You" image={FARM_IMAGES.farmGate} />
-
-      <Section tone="cream">
+      <Section tone="cream" className="pt-28 sm:pt-32">
+        <div className="mb-10 max-w-2xl">
+          <span className="section-eyebrow">
+            <span className="h-px w-8 bg-current opacity-60" />
+            Contact Us
+          </span>
+          <h1 className="mt-3 text-3xl font-semibold text-forest-900 sm:text-4xl">We'd Love to Hear From You</h1>
+        </div>
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-14">
           <div className="lg:col-span-2">
             <h2 className="font-display text-2xl font-semibold text-forest-900">Get in Touch</h2>
