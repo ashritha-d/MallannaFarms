@@ -72,7 +72,7 @@ export default function About() {
 
       {/* 2. Our Experience — Professional Experience & Expertise */}
       <Section tone="cream">
-        <SectionHeading align="left" eyebrow="My Experience" title="Our Experience" />
+        <SectionHeading align="left" title="Our Experience" />
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="space-y-4 text-base leading-relaxed text-forest-700 sm:text-lg">
             {(settings.founder_experience ?? "").split("\n\n").map((para, i) => (
