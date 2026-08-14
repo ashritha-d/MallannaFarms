@@ -20,8 +20,16 @@ export interface AdminResult<T> {
   error: string | null;
 }
 
+// Surfaces the real Supabase/Postgres error alongside a friendly fallback.
+// This is the admin dashboard (used only by the site owner, not the public),
+// so showing the actual cause — an RLS denial, a missing bucket, a
+// constraint violation — is far more useful than hiding it, and lets
+// problems get diagnosed without needing browser devtools.
 function friendlyError(error: unknown, fallback: string): string {
-  if (error instanceof Error) return error.message.includes("not connected") ? error.message : fallback;
+  if (error instanceof Error && error.message) {
+    if (error.message.includes("not connected")) return error.message;
+    return `${fallback} (${error.message})`;
+  }
   return fallback;
 }
 
