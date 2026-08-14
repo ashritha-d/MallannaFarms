@@ -32,14 +32,6 @@ const WHY_CARDS = [
   { icon: Leaf, title: "Sustainable Future", desc: "We believe responsible farming creates a healthier future for families, animals, and the environment." },
 ];
 
-const FARM_STRIP = [
-  FARM_IMAGES.henCloseup,
-  FARM_IMAGES.farmGate,
-  FARM_IMAGES.orchardHens,
-  FARM_IMAGES.eggsInHay,
-  FARM_IMAGES.farmerWithBasket,
-];
-
 export default function Home() {
   const { data: settings } = useSettings();
   const { t } = useLanguage();
@@ -140,63 +132,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Life at Mallanna Farms */}
-      <Section tone="white">
-        <SectionHeading
-          eyebrow={t("section_farm_eyebrow")}
-          title={t("section_farm_title")}
-          description="Our hens are raised in an open, natural environment where they can move freely, explore, and grow naturally."
-        />
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5 lg:gap-4">
-          {FARM_STRIP.map((src, i) => (
-            <FarmImage
-              key={src + i}
-              src={src}
-              alt="Life at Mallanna Farms"
-              aspect={i === 0 ? "aspect-square col-span-2 row-span-2 sm:col-span-2 sm:row-span-2" : "aspect-square"}
-              rounded="rounded-2xl"
-              className="shadow-card transition-transform duration-500 hover:scale-[1.03]"
-            />
-          ))}
-        </div>
-        <div className="mt-8 text-center">
-          <NavLink to={ROUTES.farm} className="btn-secondary">
-            {t("section_farm_cta")}
-          </NavLink>
-        </div>
-      </Section>
-
       <JourneySection />
-
-      {/* Mission teaser */}
-      <Section tone="cream">
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          <FarmImage
-            src={settings.mission_image || FARM_IMAGES.henWithBasket}
-            alt="Our mission at Mallanna Farms"
-            aspect="aspect-[4/3]"
-            rounded="rounded-3xl"
-            className="shadow-lift"
-          />
-          <div>
-            <span className="section-eyebrow">
-              <span className="h-px w-8 bg-current opacity-60" />
-              {t("section_mission_eyebrow")}
-            </span>
-            <h2 className="mt-3 text-3xl font-semibold text-forest-900 sm:text-4xl">{t("section_mission_title")}</h2>
-            <p className="mt-5 text-base leading-relaxed text-forest-700 sm:text-lg">
-              {(settings.mission_content ?? "").split("\n\n")[0]}
-            </p>
-            <div className="my-6 flex items-center gap-3 text-forest-300" aria-hidden="true">
-              <span className="h-px w-10 bg-forest-200" />
-              <span className="text-xl">🌿</span>
-            </div>
-            <NavLink to={ROUTES.missionVision} className="inline-flex items-center gap-1 font-semibold text-gold-600 hover:underline">
-              Read Our Full Mission & Vision →
-            </NavLink>
-          </div>
-        </div>
-      </Section>
 
       {/* Our Commitment */}
       <Section tone="white">
@@ -209,20 +145,6 @@ export default function Home() {
               <p className="mt-2 text-xs leading-relaxed text-forest-600">{c.desc}</p>
             </div>
           ))}
-        </div>
-      </Section>
-
-      {/* Vision quote */}
-      <Section tone="cream">
-        <div className="mx-auto max-w-2xl rounded-3xl border border-gold-200 bg-gradient-to-br from-cream-100 to-gold-50 px-8 py-12 text-center shadow-card">
-          <span className="section-eyebrow justify-center text-earth-600">{t("section_vision_eyebrow")}</span>
-          <span className="mt-2 block text-3xl">🌾</span>
-          <p className="mt-4 font-display text-2xl italic leading-snug text-forest-900 sm:text-3xl">
-            “{settings.vision_statement}”
-          </p>
-          <NavLink to={ROUTES.missionVision} className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-gold-700 hover:underline">
-            Read Our Vision →
-          </NavLink>
         </div>
       </Section>
 

@@ -284,6 +284,20 @@ insert into settings (key, value) values
   ('hero_cta_secondary_label', 'Visit Our Farm'),
   ('hero_cta_secondary_link', '/our-farm'),
   ('about_content', 'Mallanna Farms is committed to providing families with fresh, nutritious and naturally produced free-range eggs while caring for our hens and the environment.'),
+  ('founder_intro', 'I have 20 years of experience in Sales and Public Relations. Over the past two decades, I have worked with companies across FMCG, Personal Care, Home Care, Skin Care, OTC, and Hot Beverages.
+
+My experience includes handling Entire South India Modern Trade, E-Commerce, Quick Commerce, and Regional Modern Trade markets.
+
+My expertise covers Sales Growth, Brand Building Activities, Business Expansion, Brand Activation, New Product Launches, Market Development, and Driving Overall Business Growth.'),
+  ('founder_experience', 'With 20 years of experience in Sales and Public Relations, I bring extensive expertise in building brands, driving business growth, developing markets, and creating strong customer and trade relationships.
+
+Over the past two decades, I have worked across diverse sectors including FMCG, Personal Care, Home Care, Skin Care, OTC, and Hot Beverages, gaining an in-depth understanding of both traditional and emerging retail markets.
+
+My professional experience includes handling South India Modern Trade, E-Commerce, Quick Commerce, and Regional Modern Trade channels. I have successfully worked on sales growth, brand building, business expansion, brand activation, new product launches, market development, and overall business growth.
+
+I specialize in identifying new business opportunities, strengthening distribution and market presence, launching brands successfully, and developing strategies that convert opportunities into sustainable growth.'),
+  ('founder_vision_quote', 'Our vision is simple: to build strong brands, create sustainable business growth, and connect products with the right markets and customers.'),
+  ('founder_image', ''),
   ('mission_title', 'Our Mission'),
   ('mission_content', 'At Mallanna Farms, our mission is to provide families with fresh, nutritious, and naturally produced free-range eggs while caring for our hens and the environment.
 

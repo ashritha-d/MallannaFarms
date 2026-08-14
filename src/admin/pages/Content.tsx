@@ -9,7 +9,7 @@ import { saveSettings } from "../lib/adminApi";
 import { getSettings } from "@/data/content";
 import { invalidateSettingsCache } from "@/hooks/useSettings";
 
-const TABS = ["Homepage Hero", "About", "Our Mission", "Our Vision"] as const;
+const TABS = ["Homepage Hero", "About the Client", "Our Mission", "Our Vision"] as const;
 type Tab = (typeof TABS)[number];
 
 export default function AdminContent() {
@@ -96,11 +96,29 @@ export default function AdminContent() {
           </div>
         )}
 
-        {tab === "About" && (
+        {tab === "About the Client" && (
           <div className="card space-y-4 p-5">
-            <TextAreaField label="About Content" value={values.about_content} onChange={(v) => set("about_content", v)} rows={5} />
-            <ImageField label="About Image" value={values.about_image} onPick={() => setPickerField("about_image")} />
-            <SaveButton saving={saving} onClick={() => save(["about_content", "about_image"])} />
+            <p className="text-sm text-forest-600">
+              Shown on the About Us page — the founder's introduction, professional experience, and photo.
+            </p>
+            <TextAreaField
+              label="Client Introduction (short — use a blank line to separate paragraphs)"
+              value={values.founder_intro}
+              onChange={(v) => set("founder_intro", v)}
+              rows={5}
+            />
+            <TextAreaField
+              label="Professional Experience (detailed — use a blank line to separate paragraphs)"
+              value={values.founder_experience}
+              onChange={(v) => set("founder_experience", v)}
+              rows={8}
+            />
+            <Field label="Professional Vision Quote" value={values.founder_vision_quote} onChange={(v) => set("founder_vision_quote", v)} />
+            <ImageField label="Profile Photo" value={values.founder_image} onPick={() => setPickerField("founder_image")} />
+            <SaveButton
+              saving={saving}
+              onClick={() => save(["founder_intro", "founder_experience", "founder_vision_quote", "founder_image"])}
+            />
           </div>
         )}
 

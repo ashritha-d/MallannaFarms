@@ -29,6 +29,12 @@ export const FARM_IMAGES = {
   packagingCartons: "/assets/farm/f5.jpeg",
 };
 
+// Default founder/client photo for the About page's introduction section —
+// used whenever no founder_image has been set in /admin (an empty setting
+// means "not configured yet", not "no photo available"). Replace by
+// uploading a new one in Admin → Homepage & Pages → About the Client.
+export const FOUNDER_IMAGE = "/assets/founder/client.jpeg";
+
 export const LOGO = {
   primary: "/assets/logo/logoF.jpeg",
   alt1: "/assets/logo/logo.jpeg",
@@ -53,6 +59,18 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   about_content:
     "Mallanna Farms is committed to providing families with fresh, nutritious and naturally produced free-range eggs while caring for our hens and the environment.",
   about_image: FARM_IMAGES.farmerWithBasket,
+
+  // Founder / client bio for the About Us page — editable in
+  // /admin → Homepage & Pages → About. founder_image is left blank
+  // until a real profile photo is uploaded; the page falls back to a
+  // brand-mark treatment rather than an unrelated stock photo.
+  founder_intro:
+    "I have 20 years of experience in Sales and Public Relations. Over the past two decades, I have worked with companies across FMCG, Personal Care, Home Care, Skin Care, OTC, and Hot Beverages.\n\nMy experience includes handling Entire South India Modern Trade, E-Commerce, Quick Commerce, and Regional Modern Trade markets.\n\nMy expertise covers Sales Growth, Brand Building Activities, Business Expansion, Brand Activation, New Product Launches, Market Development, and Driving Overall Business Growth.",
+  founder_experience:
+    "With 20 years of experience in Sales and Public Relations, I bring extensive expertise in building brands, driving business growth, developing markets, and creating strong customer and trade relationships.\n\nOver the past two decades, I have worked across diverse sectors including FMCG, Personal Care, Home Care, Skin Care, OTC, and Hot Beverages, gaining an in-depth understanding of both traditional and emerging retail markets.\n\nMy professional experience includes handling South India Modern Trade, E-Commerce, Quick Commerce, and Regional Modern Trade channels. I have successfully worked on sales growth, brand building, business expansion, brand activation, new product launches, market development, and overall business growth.\n\nI specialize in identifying new business opportunities, strengthening distribution and market presence, launching brands successfully, and developing strategies that convert opportunities into sustainable growth.",
+  founder_vision_quote:
+    "Our vision is simple: to build strong brands, create sustainable business growth, and connect products with the right markets and customers.",
+  founder_image: "",
 
   mission_title: "Our Mission",
   mission_content:
