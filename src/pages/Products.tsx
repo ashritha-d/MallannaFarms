@@ -60,14 +60,7 @@ export default function Products() {
         path="/products"
       />
       <Section tone="cream" className="pt-28 sm:pt-32">
-        <div className="mx-auto mb-10 max-w-2xl text-center">
-          <span className="section-eyebrow justify-center">
-            <span className="h-px w-8 bg-current opacity-60" />
-            Shop Mallanna Farms
-          </span>
-          <h1 className="mt-3 text-3xl font-semibold text-forest-900 sm:text-4xl">Our Fresh Free Range Eggs</h1>
-          <p className="mt-3 text-forest-600">Every tray is collected fresh, graded for quality, and packed with care.</p>
-        </div>
+        <h1 className="sr-only">Our Fresh Free Range Eggs — Shop Mallanna Farms</h1>
 
         <div className="mb-8 flex flex-wrap justify-center gap-2">
           {FILTERS.map((f) => (
