@@ -30,16 +30,20 @@ function excerpt(text: string | undefined, max = 220, paragraphs = 1): string {
 // has a light cream background (needs dark text/border), while the
 // image/solid slides are dark (need light text/border) — using the wrong
 // one makes the button nearly invisible against its own background.
-function SlideCtas({ onDark = true }: { onDark?: boolean }) {
+// `compact` shrinks the buttons further for the mobile side-by-side photo
+// slide, where the CTA column is only ~60% of a phone-width slide —
+// reverts to the normal size from `sm:` up.
+function SlideCtas({ onDark = true, compact = false }: { onDark?: boolean; compact?: boolean }) {
+  const sizing = compact
+    ? "!px-2.5 !py-1.5 text-[11px] sm:!px-5 sm:!py-2.5 sm:text-sm"
+    : "!px-5 !py-2.5 text-sm";
+  const spacing = compact ? "mt-2 gap-1.5 sm:mt-4 sm:gap-3" : "mt-4 gap-2.5 sm:gap-3";
   return (
-    <div className="mt-4 flex flex-col gap-2.5 sm:flex-row sm:gap-3">
-      <NavLink to={ROUTES.products} className="btn-gold !px-5 !py-2.5 text-sm w-full sm:w-auto">
+    <div className={`flex flex-col sm:flex-row ${spacing}`}>
+      <NavLink to={ROUTES.products} className={`btn-gold w-full sm:w-auto ${sizing}`}>
         Shop Free Range Eggs
       </NavLink>
-      <NavLink
-        to={ROUTES.about}
-        className={`!px-5 !py-2.5 text-sm w-full sm:w-auto ${onDark ? "btn-outline-light" : "btn-secondary"}`}
-      >
+      <NavLink to={ROUTES.about} className={`w-full sm:w-auto ${onDark ? "btn-outline-light" : "btn-secondary"} ${sizing}`}>
         Learn More
       </NavLink>
     </div>
@@ -127,24 +131,26 @@ export default function ClientCarousel() {
                 className={`col-start-1 row-start-1 flex h-full items-center bg-cream-50 transition-opacity duration-700 ease-in-out ${visibility}`}
                 aria-hidden={!active}
               >
-                <div className="grid w-full grid-cols-1 items-center gap-6 px-5 py-8 sm:grid-cols-[200px_1fr] sm:gap-8 sm:px-8 sm:py-10 lg:grid-cols-[240px_1fr] lg:px-12 lg:py-12">
+                <div className="grid w-full grid-cols-[38%_1fr] items-center gap-3 px-3 py-4 sm:grid-cols-[200px_1fr] sm:gap-8 sm:px-8 sm:py-10 lg:grid-cols-[240px_1fr] lg:px-12 lg:py-12">
                   <FarmImage
                     src={founderPhoto}
                     alt="Founder of Mallanna Farms"
-                    aspect="aspect-[4/3] sm:aspect-[4/5]"
-                    rounded="rounded-2xl"
-                    className="mx-auto w-full max-w-[220px] shadow-card sm:max-w-none"
+                    aspect="aspect-[3/4] sm:aspect-[4/5]"
+                    rounded="rounded-xl sm:rounded-2xl"
+                    className="w-full shadow-card"
                   />
-                  <div>
-                    <span className="section-eyebrow">
-                      <UserRound className="h-4 w-4" />
+                  <div className="min-w-0">
+                    <span className="section-eyebrow !text-[10px] sm:!text-sm">
+                      <UserRound className="h-3 w-3 sm:h-4 sm:w-4" />
                       {slide.eyebrow}
                     </span>
-                    <h2 className="mt-2 font-display text-xl font-semibold leading-tight text-forest-900 sm:text-2xl lg:text-3xl">
+                    <h2 className="mt-1 font-display text-sm font-semibold leading-tight text-forest-900 sm:mt-2 sm:text-2xl lg:text-3xl">
                       {slide.heading}
                     </h2>
-                    <p className="mt-2 max-w-xl text-sm leading-relaxed text-forest-700 sm:mt-3 sm:text-base">{slide.body}</p>
-                    <SlideCtas onDark={false} />
+                    <p className="line-clamp-3 mt-1 max-w-xl text-[11px] leading-snug text-forest-700 sm:mt-3 sm:line-clamp-3 sm:text-base sm:leading-relaxed">
+                      {slide.body}
+                    </p>
+                    <SlideCtas onDark={false} compact />
                   </div>
                 </div>
               </div>
@@ -158,23 +164,28 @@ export default function ClientCarousel() {
                 className={`col-start-1 row-start-1 flex h-full items-center bg-gradient-to-br from-forest-800 via-forest-900 to-forest-950 transition-opacity duration-700 ease-in-out ${visibility}`}
                 aria-hidden={!active}
               >
-                <div className="flex w-full flex-col items-center px-5 py-10 text-center text-cream-50 sm:px-10 sm:py-14 lg:py-16">
+                <div className="flex w-full flex-col items-center px-5 py-6 text-center text-cream-50 sm:px-10 sm:py-14 lg:py-16">
                   <span className="section-eyebrow justify-center text-gold-300">
                     <slide.icon className="h-4 w-4" />
                     {slide.eyebrow}
                   </span>
-                  <h2 className="mt-3 max-w-2xl font-display text-2xl font-semibold leading-tight text-cream-50 sm:text-3xl lg:text-4xl">
+                  <h2 className="mt-2 max-w-2xl font-display text-lg font-semibold leading-tight text-cream-50 sm:mt-3 sm:text-3xl lg:text-4xl">
                     {slide.heading}
                   </h2>
-                  <p className="mt-3 max-w-2xl text-sm leading-relaxed text-cream-100/90 sm:text-base lg:text-lg">{slide.body}</p>
-                  <div className="mt-5 flex flex-wrap justify-center gap-2">
+                  <p className="line-clamp-3 mt-2 max-w-2xl text-xs leading-snug text-cream-100/90 sm:mt-3 sm:line-clamp-none sm:text-base sm:leading-relaxed lg:text-lg">
+                    {slide.body}
+                  </p>
+                  <div className="mt-3 flex flex-wrap justify-center gap-1.5 sm:mt-5 sm:gap-2">
                     {slide.tags?.map((tag) => (
-                      <span key={tag} className="rounded-full border border-cream-50/25 px-3 py-1 text-xs font-medium text-cream-100/90">
+                      <span
+                        key={tag}
+                        className="rounded-full border border-cream-50/25 px-2 py-0.5 text-[10px] font-medium text-cream-100/90 sm:px-3 sm:py-1 sm:text-xs"
+                      >
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <SlideCtas />
+                  <SlideCtas compact />
                 </div>
               </div>
             );
@@ -187,19 +198,21 @@ export default function ClientCarousel() {
               className={`col-start-1 row-start-1 transition-opacity duration-700 ease-in-out ${visibility}`}
               aria-hidden={!active}
             >
-              <div className="relative h-full min-h-[22rem] sm:min-h-[20rem] lg:min-h-[24rem]">
+              <div className="relative h-full min-h-[16rem] sm:min-h-[20rem] lg:min-h-[24rem]">
                 <img src={slide.image} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover object-center" />
                 <div className="absolute inset-0 bg-gradient-to-r from-forest-950/90 via-forest-950/65 to-forest-950/20 sm:via-forest-950/55" />
-                <div className="relative z-10 flex h-full max-w-xl flex-col justify-center px-5 py-8 text-cream-50 sm:px-10 sm:py-10 lg:px-14">
-                  <span className="section-eyebrow text-gold-300">
+                <div className="relative z-10 flex h-full max-w-xl flex-col justify-center px-5 py-6 text-cream-50 sm:px-10 sm:py-10 lg:px-14">
+                  <span className="section-eyebrow !text-xs text-gold-300 sm:!text-sm">
                     <slide.icon className="h-4 w-4" />
                     {slide.eyebrow}
                   </span>
-                  <h2 className="mt-2 font-display text-xl font-semibold leading-tight text-cream-50 sm:text-2xl lg:text-3xl">
+                  <h2 className="mt-2 font-display text-lg font-semibold leading-tight text-cream-50 sm:text-2xl lg:text-3xl">
                     {slide.heading}
                   </h2>
-                  <p className="mt-2 max-w-md text-sm leading-relaxed text-cream-100/90 sm:mt-3 sm:text-base">{slide.body}</p>
-                  <SlideCtas />
+                  <p className="line-clamp-3 mt-2 max-w-md text-xs leading-snug text-cream-100/90 sm:mt-3 sm:line-clamp-none sm:text-base sm:leading-relaxed">
+                    {slide.body}
+                  </p>
+                  <SlideCtas compact />
                 </div>
               </div>
             </div>
