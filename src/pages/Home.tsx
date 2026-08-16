@@ -57,7 +57,7 @@ export default function Home() {
       {/* Products — immediately below, filterable by pack size, no filler content in between */}
       <Section tone="white" className="!pt-8 sm:!pt-12">
         <SectionHeading eyebrow={t("section_products_eyebrow")} title={t("section_products_title")} description={t("section_products_subtitle")} />
-        <ProductShop gridClassName="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-3" />
+        <ProductShop desktopGridClassName="sm:grid-cols-2 md:grid-cols-3 sm:gap-6" />
         <div className="mt-10 text-center">
           <NavLink to={ROUTES.products} className="btn-primary">
             {t("cta_shop_eggs")}

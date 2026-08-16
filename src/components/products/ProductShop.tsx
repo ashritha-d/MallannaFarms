@@ -8,15 +8,22 @@ import type { ProductWithGallery } from "@/lib/database.types";
 type Status = "loading" | "ready" | "error";
 
 /**
- * Filterable product grid — the single implementation of "browse and
+ * Filterable product listing — the single implementation of "browse and
  * filter eggs by pack size" reused on both the homepage and the dedicated
  * Our Eggs page, so there's one product list and one filtering behavior
  * for the whole site (no separate static homepage product data).
+ *
+ * Mobile is a single horizontally-scrolling/swipeable row (scroll-snap,
+ * next card peeking at the edge); `desktopGridClassName` controls the
+ * column layout from `sm:` up, where each caller keeps its own existing
+ * tablet/desktop grid. The `sm:contents` trick on each card's wrapper
+ * lets the card become a direct grid item at that breakpoint, so the
+ * mobile-only scroll wrapper doesn't affect desktop grid layout at all.
  */
 export default function ProductShop({
-  gridClassName = "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3",
+  desktopGridClassName = "sm:grid-cols-2 lg:grid-cols-3 sm:gap-6",
 }: {
-  gridClassName?: string;
+  desktopGridClassName?: string;
 }) {
   const [status, setStatus] = useState<Status>("loading");
   const [products, setProducts] = useState<ProductWithGallery[]>([]);
@@ -62,9 +69,13 @@ export default function ProductShop({
         <EmptyState title="No products in this category" message="Try a different filter." />
       )}
       {status === "ready" && filtered.length > 0 && (
-        <div className={gridClassName}>
+        <div
+          className={`no-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:snap-none sm:gap-3 sm:overflow-visible sm:px-0 sm:pb-0 ${desktopGridClassName}`}
+        >
           {filtered.map((p) => (
-            <ProductCard key={p.id} product={p} />
+            <div key={p.id} className="w-[76%] max-w-[280px] shrink-0 snap-start sm:contents">
+              <ProductCard product={p} />
+            </div>
           ))}
         </div>
       )}
