@@ -25,10 +25,22 @@ export interface AdminResult<T> {
 // so showing the actual cause — an RLS denial, a missing bucket, a
 // constraint violation — is far more useful than hiding it, and lets
 // problems get diagnosed without needing browser devtools.
+//
+// Checked with `error && typeof error === "object"` rather than
+// `instanceof Error` — Postgrest/Postgres errors carry the useful detail in
+// `hint`/`code`/`details` fields, and duck-typing here means a plain
+// error-shaped object (not every rejection is a real Error instance) still
+// surfaces its message instead of silently falling back to the generic text.
 function friendlyError(error: unknown, fallback: string): string {
-  if (error instanceof Error && error.message) {
-    if (error.message.includes("not connected")) return error.message;
-    return `${fallback} (${error.message})`;
+  console.error(fallback, error);
+  if (error && typeof error === "object") {
+    const e = error as { message?: string; hint?: string; code?: string; details?: string };
+    if (typeof e.message === "string" && e.message.includes("not connected")) return e.message;
+    // `hint` is Postgres's own actionable fix (e.g. the literal SQL to grant
+    // access on a 42501 permission-denied) — prefer it over the generic
+    // message when present.
+    const detail = e.hint || e.message || e.details;
+    if (detail) return `${fallback} (${detail}${e.code ? ` — code ${e.code}` : ""})`;
   }
   return fallback;
 }
