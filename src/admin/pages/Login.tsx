@@ -6,14 +6,13 @@ import { LOGO } from "@/data/seed";
 import Seo from "@/components/seo/Seo";
 
 export default function Login() {
-  const { signIn, resetPassword, session, configured, loading } = useAdminAuth();
+  const { signIn, session, configured, loading } = useAdminAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [resetSent, setResetSent] = useState(false);
 
   if (!loading && session) {
     const from = (location.state as { from?: Location })?.from?.pathname || "/admin";
@@ -30,16 +29,6 @@ export default function Login() {
     else navigate("/admin");
   };
 
-  const onForgot = async () => {
-    if (!email) {
-      setError("Enter your email address first, then click 'Forgot password'.");
-      return;
-    }
-    const res = await resetPassword(email);
-    if (res.error) setError(res.error);
-    else setResetSent(true);
-  };
-
   return (
     <>
       <Seo title="Admin Login" description="Mallanna Farms admin dashboard login." path="/admin/login" />
@@ -53,8 +42,8 @@ export default function Login() {
 
           {!configured && (
             <div className="mt-6 rounded-xl border border-gold-400/40 bg-gold-400/10 px-4 py-3 text-sm text-gold-200">
-              Supabase isn't connected yet. Add your credentials to <code>.env</code> (see <code>.env.example</code>)
-              and create an admin user in Supabase Auth to enable login.
+              Can't reach the backend right now. If you're running the site locally, make sure it's started with{" "}
+              <code>npm run dev:full</code> (not plain <code>npm run dev</code>) so the admin API is available.
             </div>
           )}
 
@@ -101,24 +90,10 @@ export default function Login() {
                 {error}
               </p>
             )}
-            {resetSent && (
-              <p className="rounded-lg bg-forest-50 px-3 py-2 text-xs text-forest-700">
-                If an account exists for that email, a password reset link has been sent.
-              </p>
-            )}
 
             <button type="submit" disabled={!configured || submitting} className="btn-primary w-full">
               {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
               {submitting ? "Signing in…" : "Sign In"}
-            </button>
-
-            <button
-              type="button"
-              onClick={onForgot}
-              disabled={!configured}
-              className="w-full text-center text-xs font-medium text-forest-500 hover:text-gold-600 disabled:opacity-50"
-            >
-              Forgot password?
             </button>
           </form>
         </div>

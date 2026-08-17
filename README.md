@@ -4,7 +4,7 @@ Official website and admin dashboard for **Mallanna Farms**, a natural free-rang
 
 > **Naturally Raised. Freshly Delivered. Made for Healthy Families.**
 
-Built with React + Vite + TypeScript + Tailwind CSS, backed by Supabase (Postgres, Auth, Storage).
+Built with React + Vite + TypeScript + Tailwind CSS, backed by a small Express API (deployed as Vercel Serverless Functions), MongoDB Atlas, and Cloudinary for media storage.
 
 ---
 
@@ -12,23 +12,26 @@ Built with React + Vite + TypeScript + Tailwind CSS, backed by Supabase (Postgre
 
 - **Public website** — Home, About, Mission, Vision, Our Farm, Products, Product Details, Gallery, Videos, Why Choose Us, Contact, FAQ, Privacy Policy, Terms & Conditions.
 - **Admin dashboard** (`/admin`) — secure, authenticated CMS for products, media, gallery, videos, homepage/page content, FAQs, contact enquiries, settings and social links.
-- **Data layer** — every public page reads from Supabase; if Supabase isn't connected yet, the site falls back to curated local content (using the real uploaded farm photography) so it's never blank, and the admin UI clearly flags when it's running without a live backend.
+- **Backend API** (`/api`) — one Express app, exported as a single Vercel Function, talking to MongoDB via Mongoose. Public routes are unauthenticated and read-only (or insert-only for contact/orders); everything under `/api/admin/*` requires an admin session (httpOnly JWT cookie).
+- **Data layer** — every public page reads from `/api`; if it's unreachable, the site falls back to curated local content (using the real uploaded farm photography) so it's never blank, and the admin UI clearly flags when it's running without a live backend.
 
 ## Current status
 
-⚠️ **No Supabase project is connected yet.** The frontend, database schema, and admin dashboard are fully built, but you need to create a Supabase project and connect it (steps below) before:
+⚠️ **No backend is connected yet.** The frontend, API, and admin dashboard are fully built, but you need to create a MongoDB Atlas cluster and a Cloudinary account and wire up their credentials (steps below) before:
 - the admin login works,
 - products/gallery/videos/content can be edited,
-- the contact form can store enquiries.
+- the contact form / order form can store submissions.
 
-Until then, the public site displays real farm photography and placeholder text so it's presentable, and admin screens show a clear "Supabase is not connected" banner instead of pretending to save data.
+Until then, the public site displays real farm photography and placeholder text so it's presentable, and admin screens show a clear "Can't reach the backend" banner instead of pretending to save data.
 
 ---
 
 ## 1. Prerequisites
 
-- Node.js 18+ and npm
-- A free [Supabase](https://supabase.com) account
+- Node.js 20.x and npm
+- A free [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register) account
+- A free [Cloudinary](https://cloudinary.com/users/register/free) account
+- The [Vercel CLI](https://vercel.com/docs/cli) (`npm i -g vercel`, or just use the local devDependency via `npx vercel`) — needed to run the `/api` functions locally
 
 ## 2. Install dependencies
 
@@ -36,42 +39,45 @@ Until then, the public site displays real farm photography and placeholder text 
 npm install
 ```
 
-## 3. Connect Supabase
+## 3. Connect the backend
 
-1. Create a new project at [supabase.com](https://supabase.com).
-2. Open **SQL Editor** in your Supabase project and run the entire contents of [`supabase/schema.sql`](supabase/schema.sql). This creates all tables, Row Level Security policies, and a public `media` storage bucket.
-3. Go to **Authentication → Users → Add User** and create your first admin login (email + password).
-4. Copy that user's UUID (shown in the Users table) and run this in the SQL Editor, replacing the placeholders:
-   ```sql
-   insert into admins (id, email, role)
-   values ('PASTE-USER-UUID-HERE', 'you@example.com', 'owner');
-   ```
-5. Go to **Project Settings → API** and copy your **Project URL** and **anon public key**.
-6. Copy `.env.example` to `.env` and paste them in:
+1. **MongoDB Atlas** — create a free (M0) cluster, create a database user, then **Connect → Drivers** to get your connection string.
+2. **Cloudinary** — from the dashboard home page, copy your Cloud Name, API Key and API Secret (Account Details card).
+3. Copy `.env.example` to `.env.local` and fill in all five values (`MONGODB_URI`, `JWT_SECRET`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`):
    ```bash
-   cp .env.example .env
+   cp .env.example .env.local
    ```
+   Generate a `JWT_SECRET` with:
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
    ```
-   VITE_SUPABASE_URL=https://xxxxx.supabase.co
-   VITE_SUPABASE_ANON_KEY=eyJ...
+4. Create your admin account (also how you reset a forgotten password later — just rerun this):
+   ```bash
+   npm run seed:admin -- you@example.com "a-strong-password"
    ```
-7. Restart the dev server. The public site now reads live data, and `/admin/login` works with the credentials you created in step 3.
+5. **(Optional, one-time)** If you have existing content in an old Supabase project, migrate it over:
+   ```bash
+   npm run migrate:data
+   ```
+   This reads `products`/`videos`/`faqs`/`settings`/`media`/`gallery` from Supabase's public REST API (needs the old `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` in `.env`) and writes them into MongoDB. It refuses to touch a collection that already has documents unless you pass `--force`. `contact_messages`/`orders`/`admins` are not migrated (see `scripts/migrate-from-supabase.ts`'s header comment for why).
 
-**Never** put your Supabase `service_role` key anywhere in this project — only the `anon` key belongs in `.env`, and RLS policies (already defined in `schema.sql`) keep writes restricted to authenticated admins.
+**Never** put these values anywhere except `.env.local` (or your host's environment variable settings) — none of them carry the `VITE_` prefix on purpose, so Vite never bundles them into the browser-shipped code.
 
 ## 4. Run the dev server
 
 ```bash
-npm run dev
+npm run dev:full
 ```
 
-Visit `http://localhost:5173`. Admin dashboard: `http://localhost:5173/admin`.
+This runs `vercel dev`, which serves the Vite frontend **and** the `/api` functions together on one local port — use this whenever you need the backend (admin login, saving content, placing orders). Visit `http://localhost:3000`. Admin dashboard: `http://localhost:3000/admin`.
+
+Plain `npm run dev` (just Vite, no `/api`) also works for quick frontend-only iteration — the site falls back to local seed content automatically, same as if the backend were down.
 
 ## 5. Build for production
 
 ```bash
 npm run build
-npm run preview   # preview the production build locally
+npm run preview   # preview the production build locally (frontend only, no /api)
 ```
 
 ---
@@ -79,20 +85,32 @@ npm run preview   # preview the production build locally
 ## Project structure
 
 ```
+api/
+  index.ts            # Single Express app — the Vercel Function entry point
+  _lib/
+    db.ts              # Cached MongoDB connection (serverless-safe)
+    auth.ts            # JWT session cookie helpers + requireAdmin middleware
+    cloudinary.ts       # Signed direct-to-Cloudinary upload flow
+    errors.ts           # Shared error shape + Express error handler
+    models/             # One Mongoose model per collection
+    routes/              # public.ts (no auth), auth.ts (login/session/logout), admin.ts (requireAdmin)
+scripts/
+  seed-admin.ts        # Create/reset the one admin account
+  migrate-from-supabase.ts  # One-off import of old Supabase content
 src/
-  admin/            # Admin dashboard: auth, layout, CRUD pages, data-access layer
+  admin/            # Admin dashboard: auth, layout, CRUD pages, data-access layer (adminApi.ts)
   components/        # Shared UI (layout, cards, image, lightbox, SEO, empty/error states)
   data/               # seed.ts (local fallback content) + content.ts (public data service)
   hooks/              # useSettings (cached site settings)
-  lib/                # Supabase client + generated-style database types
+  lib/                # apiTypes.ts — shapes returned by /api
   pages/              # Public website pages
   App.tsx, main.tsx, routes.ts
 public/
   assets/farm/        # Uploaded farm photography
   assets/logo/         # Official Mallanna Farms logo (logoF.jpeg) — used as-is, unmodified
   robots.txt, sitemap.xml
-supabase/
-  schema.sql          # Full database schema, RLS policies, storage bucket, seed settings
+_archive/
+  supabase-schema-pre-mongodb-migration/  # Old Postgres schema, kept for reference only — not used
 ```
 
 ## Design system
@@ -105,28 +123,16 @@ The original `f1.jpeg`–`f9.jpeg` uploads turned out to be mostly composite mar
 
 One uploaded file, `f7.jpeg`, turned out to be a screenshot of an unrelated third-party egg farm's website (a New Zealand business) — it is intentionally not referenced anywhere on the site.
 
-The farm's real postal address, nutrition-facts panel, FSSAI license number and barcode (visible on the `f6.jpeg` packaging artwork) are used as the seeded contact/product data in `src/data/seed.ts` and `supabase/schema.sql`. The phone number and email are still placeholders — the artwork only showed a redacted phone number — so update those for real in `/admin → Settings` once you're ready.
+The farm's real postal address, nutrition-facts panel, FSSAI license number and barcode (visible on the `f6.jpeg` packaging artwork) are used as the seeded contact/product data in `src/data/seed.ts`. Update contact details for real in `/admin → Settings` once you're ready.
 
 ## Notes on the sitemap
 
-`public/sitemap.xml` lists the static pages. Individual product URLs (`/products/:slug`) are database-driven and not included since this is a static file — for full SEO coverage in production, generate the sitemap server-side (e.g. a small Supabase Edge Function or build-time script that queries `products` and appends `<url>` entries) once your catalog is live.
+`public/sitemap.xml` lists the static pages. Individual product URLs (`/products/:slug`) are database-driven and not included since this is a static file — for full SEO coverage in production, generate the sitemap server-side (e.g. a small script that queries the `products` collection and appends `<url>` entries) once your catalog is live.
 
 ## Capacitor / Android WebView
 
 The site uses relative units, touch-friendly tap targets, safe-area padding (`env(safe-area-inset-*)`), and avoids hover-only interactions, so it's ready to drop into a Capacitor WebView shell. No Capacitor project exists yet in this repo — run `npx cap init` and `npx cap add android` when you're ready to wrap it.
 
-## Git & GitHub
-
-This repo is initialized locally. To push it to GitHub:
-
-```bash
-git remote add origin https://github.com/<your-username>/<your-repo>.git
-git branch -M main
-git push -u origin main
-```
-
-`.env` is git-ignored — never commit real credentials. Share `.env.example` instead.
-
 ## Deploying
 
-Any static host that serves a Vite SPA works (Vercel, Netlify, Cloudflare Pages, etc.). Set the two `VITE_SUPABASE_*` environment variables in your host's dashboard, set the build command to `npm run build` and the output directory to `dist`, and configure a SPA fallback (`/* → /index.html`) so client-side routing works on refresh/deep links.
+Deployed on [Vercel](https://vercel.com) — `vercel.json` is already configured (build command, output directory, and rewrites that route `/api/*` to the Express function and everything else to the SPA). Set the five server-only environment variables from `.env.example` (`MONGODB_URI`, `JWT_SECRET`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`) in the Vercel project's **Settings → Environment Variables** for both Production and Preview, then push to the connected GitHub branch to deploy.

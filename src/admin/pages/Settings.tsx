@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Loader2, Save } from "lucide-react";
 import Seo from "@/components/seo/Seo";
-import ConnectSupabaseBanner from "../components/ConnectSupabaseBanner";
+import BackendUnavailableBanner from "../components/BackendUnavailableBanner";
 import { useToast } from "../components/Toast";
 import { useAdminAuth } from "../auth/AuthContext";
 import { saveSettings } from "../lib/adminApi";
@@ -58,7 +58,7 @@ export default function AdminSettings() {
           <p className="mt-1 text-sm text-forest-600">Contact details, footer tagline and brand text.</p>
         </div>
 
-        {!configured && <ConnectSupabaseBanner />}
+        {!configured && <BackendUnavailableBanner />}
 
         <div className="card space-y-4 p-5">
           <h2 className="font-display text-base font-semibold text-forest-900">Contact Details</h2>

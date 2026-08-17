@@ -6,7 +6,7 @@ import { ROUTES } from "@/routes";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import type { ProductWithGallery } from "@/lib/database.types";
+import type { ProductWithGallery } from "@/lib/apiTypes";
 
 export default function ProductCard({ product }: { product: ProductWithGallery }) {
   const [qty, setQty] = useState(1);

@@ -6,7 +6,7 @@ import { LOGO } from "@/data/seed";
 import { useCart } from "@/contexts/CartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getProducts } from "@/data/content";
-import type { ProductWithGallery } from "@/lib/database.types";
+import type { ProductWithGallery } from "@/lib/apiTypes";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);

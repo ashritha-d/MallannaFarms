@@ -11,7 +11,7 @@ import { ROUTES } from "@/routes";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import type { ProductWithGallery } from "@/lib/database.types";
+import type { ProductWithGallery } from "@/lib/apiTypes";
 
 const STOCK_LABEL: Record<string, { label: string; className: string }> = {
   in_stock: { label: "In Stock", className: "bg-forest-100 text-forest-700" },

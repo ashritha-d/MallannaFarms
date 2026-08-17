@@ -3,7 +3,7 @@ import ProductCard from "@/components/products/ProductCard";
 import { CardSkeleton, EmptyState, ErrorState } from "@/components/ui/States";
 import { getProducts } from "@/data/content";
 import { PRODUCT_FILTERS, matchesProductFilter, type FilterKey } from "@/lib/productFilters";
-import type { ProductWithGallery } from "@/lib/database.types";
+import type { ProductWithGallery } from "@/lib/apiTypes";
 
 type Status = "loading" | "ready" | "error";
 

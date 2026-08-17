@@ -3,12 +3,12 @@ import { NavLink } from "react-router-dom";
 import { Copy, Pencil, Plus, Search, Trash2 } from "lucide-react";
 import Seo from "@/components/seo/Seo";
 import { EmptyState, ErrorState } from "@/components/ui/States";
-import ConnectSupabaseBanner from "../components/ConnectSupabaseBanner";
+import BackendUnavailableBanner from "../components/BackendUnavailableBanner";
 import ConfirmDialog from "../components/ConfirmDialog";
 import { useToast } from "../components/Toast";
 import { useAdminAuth } from "../auth/AuthContext";
 import { deleteProduct, listProducts, upsertProduct } from "../lib/adminApi";
-import type { Product } from "@/lib/database.types";
+import type { Product } from "@/lib/apiTypes";
 
 export default function AdminProducts() {
   const { configured } = useAdminAuth();
@@ -97,7 +97,7 @@ export default function AdminProducts() {
           </NavLink>
         </div>
 
-        {!configured && <ConnectSupabaseBanner />}
+        {!configured && <BackendUnavailableBanner />}
 
         {configured && (
           <>

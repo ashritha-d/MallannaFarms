@@ -10,7 +10,7 @@ import { CardSkeleton, EmptyState } from "@/components/ui/States";
 import { getGallery, getVideos } from "@/data/content";
 import { FARM_IMAGES } from "@/data/seed";
 import { ROUTES } from "@/routes";
-import type { GalleryItemWithMedia, VideoItem } from "@/lib/database.types";
+import type { GalleryItemWithMedia, VideoItem } from "@/lib/apiTypes";
 
 const PRACTICES = [
   { icon: Sprout, title: "Hens Roaming Freely", desc: "Daily access to open, natural surroundings for our birds." },

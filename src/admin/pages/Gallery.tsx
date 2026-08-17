@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { ArrowDown, ArrowUp, Plus, Star, Trash2 } from "lucide-react";
 import Seo from "@/components/seo/Seo";
 import { EmptyState } from "@/components/ui/States";
-import ConnectSupabaseBanner from "../components/ConnectSupabaseBanner";
+import BackendUnavailableBanner from "../components/BackendUnavailableBanner";
 import ConfirmDialog from "../components/ConfirmDialog";
 import MediaPicker from "../components/MediaPicker";
 import { useToast } from "../components/Toast";
 import { useAdminAuth } from "../auth/AuthContext";
 import { deleteGalleryItem, listGalleryAdmin, upsertGalleryItem } from "../lib/adminApi";
-import type { GalleryItem, Media } from "@/lib/database.types";
+import type { GalleryItem, Media } from "@/lib/apiTypes";
 
 const CATEGORIES = ["Our Farm", "Free Range Hens", "Egg Collection", "Farm Life", "Products", "Packaging", "Behind the Scenes"];
 
@@ -97,7 +97,7 @@ export default function AdminGallery() {
           </button>
         </div>
 
-        {!configured && <ConnectSupabaseBanner />}
+        {!configured && <BackendUnavailableBanner />}
 
         {configured && (
           <>

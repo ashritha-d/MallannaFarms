@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Loader2, Upload, X } from "lucide-react";
 import { listMedia, uploadMedia } from "../lib/adminApi";
 import { useToast } from "./Toast";
-import type { Media } from "@/lib/database.types";
+import type { Media } from "@/lib/apiTypes";
 
 export default function MediaPicker({
   open,

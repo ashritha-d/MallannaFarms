@@ -7,7 +7,7 @@ import Lightbox from "@/components/ui/Lightbox";
 import { CardSkeleton, EmptyState, ErrorState } from "@/components/ui/States";
 import { getGallery } from "@/data/content";
 import { FARM_IMAGES } from "@/data/seed";
-import type { GalleryItemWithMedia } from "@/lib/database.types";
+import type { GalleryItemWithMedia } from "@/lib/apiTypes";
 
 type Status = "loading" | "ready" | "error";
 

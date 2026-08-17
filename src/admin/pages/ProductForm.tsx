@@ -2,11 +2,10 @@ import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ImagePlus, Loader2, Save } from "lucide-react";
 import Seo from "@/components/seo/Seo";
-import { requireSupabase } from "@/lib/supabase";
-import { upsertProduct } from "../lib/adminApi";
+import { getProduct, upsertProduct } from "../lib/adminApi";
 import { useToast } from "../components/Toast";
 import MediaPicker from "../components/MediaPicker";
-import type { Product, StockStatus } from "@/lib/database.types";
+import type { Product, StockStatus } from "@/lib/apiTypes";
 
 const EMPTY: Partial<Product> = {
   name: "",
@@ -55,8 +54,7 @@ export default function ProductForm() {
     if (isNew) return;
     (async () => {
       try {
-        const db = requireSupabase();
-        const { data } = await db.from("products").select("*").eq("id", id).single();
+        const { data } = await getProduct(id!);
         if (data) {
           setForm(data);
           setFeaturesText((data.features ?? []).join("\n"));
