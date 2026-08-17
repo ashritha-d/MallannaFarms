@@ -26,12 +26,15 @@ export function SectionHeading({
   description,
   align = "center",
   light = false,
+  titleSize = "text-3xl sm:text-4xl",
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
   align?: "center" | "left";
   light?: boolean;
+  /** Override the title's responsive text-size classes (default text-3xl sm:text-4xl) — e.g. for a long heading that needs to fit on one mobile line. */
+  titleSize?: string;
 }) {
   return (
     <div className={`mb-10 max-w-2xl sm:mb-14 ${align === "center" ? "mx-auto text-center" : "text-left"}`}>
@@ -41,7 +44,7 @@ export function SectionHeading({
           {eyebrow}
         </span>
       )}
-      <h2 className={`mt-3 text-3xl font-semibold sm:text-4xl ${light ? "text-cream-50" : "text-forest-900"}`}>{title}</h2>
+      <h2 className={`mt-3 font-semibold ${titleSize} ${light ? "text-cream-50" : "text-forest-900"}`}>{title}</h2>
       {description && (
         <p className={`mt-4 text-base leading-relaxed sm:text-lg ${light ? "text-cream-100/85" : "text-forest-700"}`}>
           {description}
