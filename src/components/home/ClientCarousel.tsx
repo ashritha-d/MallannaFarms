@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Award, ChevronLeft, ChevronRight, Compass, Sprout, UserRound } from "lucide-react";
 import FarmImage from "@/components/ui/FarmImage";
@@ -7,6 +7,9 @@ import { ROUTES } from "@/routes";
 import { FARM_IMAGES, FOUNDER_IMAGE } from "@/data/seed";
 
 const AUTOPLAY_MS = 5500;
+// Minimum horizontal drag (px) before a touch gesture counts as a swipe
+// rather than a tap or a vertical page scroll.
+const SWIPE_THRESHOLD = 40;
 
 /** First paragraph (or first N) of a settings field, trimmed to a banner-friendly length. */
 function excerpt(text: string | undefined, max = 220, paragraphs = 1): string {
@@ -55,6 +58,14 @@ export default function ClientCarousel() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
+  // Touch-swipe state lives in refs, not React state — it changes on every
+  // touchmove and shouldn't trigger re-renders while dragging.
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const isSwiping = useRef(false);
+  // Swallows the synthetic click a mobile browser fires after a drag
+  // release, so a swipe doesn't also trigger the CTA/dot underneath the finger.
+  const suppressClick = useRef(false);
+
   const founderPhoto = settings.founder_image || FOUNDER_IMAGE;
 
   const slides = [
@@ -80,7 +91,11 @@ export default function ClientCarousel() {
       icon: Compass,
       eyebrow: "Our Vision",
       heading: settings.vision_title || "Our Vision",
-      body: settings.vision_statement || excerpt(settings.vision_content),
+      // Same excerpt treatment as Mission below (first paragraph of the
+      // full content), not the one-line vision_statement tagline — that
+      // made this slide read much thinner than Mission. Full text is one
+      // tap away via "Learn More" -> the About page.
+      body: excerpt(settings.vision_content),
       image: FARM_IMAGES.eggsInHay,
     },
     {
@@ -105,13 +120,67 @@ export default function ClientCarousel() {
 
   const goTo = (i: number) => setIndex((i + slides.length) % slides.length);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    touchStart.current = { x: t.clientX, y: t.clientY };
+    isSwiping.current = false;
+    setPaused(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    const start = touchStart.current;
+    if (!start) return;
+    const t = e.touches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    // Only latch into "swiping" once the drag is clearly horizontal —
+    // otherwise a vertical page scroll that starts on the banner would
+    // get misread as a slide change.
+    if (!isSwiping.current && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)) {
+      isSwiping.current = true;
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const start = touchStart.current;
+    touchStart.current = null;
+    setPaused(false);
+    if (!start) return;
+
+    const t = e.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+
+    if (isSwiping.current) {
+      if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+        goTo(dx < 0 ? index + 1 : index - 1);
+      }
+      // A drag just happened — swallow the click the browser is about to
+      // fire on whatever's under the finger (CTA button, dot, arrow).
+      suppressClick.current = true;
+      window.setTimeout(() => {
+        suppressClick.current = false;
+      }, 300);
+    }
+    isSwiping.current = false;
+  };
+
+  const handleClickCapture = (e: React.MouseEvent) => {
+    if (suppressClick.current) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+
   return (
     <section
-      className="relative overflow-hidden rounded-2xl shadow-lift sm:rounded-3xl"
+      className="relative touch-pan-y overflow-hidden rounded-2xl shadow-lift sm:rounded-3xl"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      onTouchStart={() => setPaused(true)}
-      onTouchEnd={() => setPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onClickCapture={handleClickCapture}
       role="region"
       aria-roledescription="carousel"
       aria-label="About Mallanna Farms"
