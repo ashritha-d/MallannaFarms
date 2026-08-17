@@ -36,21 +36,25 @@ function excerpt(text: string | undefined, max = 220, paragraphs = 1): string {
 // `compact` shrinks the buttons further for the mobile side-by-side photo
 // slide, where the CTA column is only ~60% of a phone-width slide —
 // reverts to the normal size from `sm:` up.
-function SlideCtas({ onDark = true, compact = false }: { onDark?: boolean; compact?: boolean }) {
+// `reverseOrder` puts "Learn More" first — used on the About Us slide only,
+// where it's the primary action; every other slide keeps "Shop Free Range
+// Eggs" first.
+function SlideCtas({ onDark = true, compact = false, reverseOrder = false }: { onDark?: boolean; compact?: boolean; reverseOrder?: boolean }) {
   const sizing = compact
     ? "!px-2.5 !py-1.5 text-[11px] sm:!px-5 sm:!py-2.5 sm:text-sm"
     : "!px-5 !py-2.5 text-sm";
   const spacing = compact ? "mt-2 gap-1.5 sm:mt-4 sm:gap-3" : "mt-4 gap-2.5 sm:gap-3";
-  return (
-    <div className={`flex flex-col sm:flex-row ${spacing}`}>
-      <NavLink to={ROUTES.products} className={`btn-gold w-full sm:w-auto ${sizing}`}>
-        Shop Free Range Eggs
-      </NavLink>
-      <NavLink to={ROUTES.about} className={`w-full sm:w-auto ${onDark ? "btn-outline-light" : "btn-secondary"} ${sizing}`}>
-        Learn More
-      </NavLink>
-    </div>
+  const shop = (
+    <NavLink key="shop" to={ROUTES.products} className={`btn-gold w-full sm:w-auto ${sizing}`}>
+      Shop Free Range Eggs
+    </NavLink>
   );
+  const learnMore = (
+    <NavLink key="learn" to={ROUTES.about} className={`w-full sm:w-auto ${onDark ? "btn-outline-light" : "btn-secondary"} ${sizing}`}>
+      Learn More
+    </NavLink>
+  );
+  return <div className={`flex flex-col sm:flex-row ${spacing}`}>{reverseOrder ? [learnMore, shop] : [shop, learnMore]}</div>;
 }
 
 export default function ClientCarousel() {
@@ -201,13 +205,25 @@ export default function ClientCarousel() {
                 aria-hidden={!active}
               >
                 <div className="grid w-full grid-cols-[38%_1fr] items-center gap-3 px-3 py-4 sm:grid-cols-[200px_1fr] sm:gap-8 sm:px-8 sm:py-10 lg:grid-cols-[240px_1fr] lg:px-12 lg:py-12">
-                  <FarmImage
-                    src={founderPhoto}
-                    alt="Founder of Mallanna Farms"
-                    aspect="aspect-[3/4] sm:aspect-[4/5]"
-                    rounded="rounded-xl sm:rounded-2xl"
-                    className="w-full shadow-card"
-                  />
+                  <div>
+                    <FarmImage
+                      src={founderPhoto}
+                      alt="Founder of Mallanna Farms"
+                      aspect="aspect-[3/4] sm:aspect-[4/5]"
+                      rounded="rounded-xl sm:rounded-2xl"
+                      className="w-full shadow-card"
+                    />
+                    {(settings.founder_name || settings.founder_title) && (
+                      <div className="mt-1.5 text-center sm:mt-2.5">
+                        {settings.founder_name && (
+                          <p className="text-[10px] font-semibold leading-tight text-forest-900 sm:text-sm">{settings.founder_name}</p>
+                        )}
+                        {settings.founder_title && (
+                          <p className="text-[8px] font-medium uppercase tracking-wide text-gold-600 sm:text-xs">{settings.founder_title}</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
                   <div className="min-w-0">
                     <span className="section-eyebrow !text-[10px] sm:!text-sm">
                       <UserRound className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -219,7 +235,7 @@ export default function ClientCarousel() {
                     <p className="line-clamp-3 mt-1 max-w-xl text-[11px] leading-snug text-forest-700 sm:mt-3 sm:line-clamp-3 sm:text-base sm:leading-relaxed">
                       {slide.body}
                     </p>
-                    <SlideCtas onDark={false} compact />
+                    <SlideCtas onDark={false} compact reverseOrder />
                   </div>
                 </div>
               </div>

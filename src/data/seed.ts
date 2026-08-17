@@ -71,6 +71,8 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   founder_vision_quote:
     "Our vision is simple: to build strong brands, create sustainable business growth, and connect products with the right markets and customers.",
   founder_image: "",
+  founder_name: "Mahesh Goud, MA, MBA",
+  founder_title: "Sales Head",
 
   mission_title: "Our Mission",
   mission_content:
@@ -83,28 +85,29 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   vision_statement: "From our farm, with care — naturally nourishing every family.",
   vision_image: FARM_IMAGES.eggsInHay,
 
-  // Address, nutrition facts, FSSAI license and barcode below are taken
-  // directly from the farm's own uploaded packaging artwork (f6.jpeg).
-  // Phone and email were not legible on the artwork (the phone number was
-  // shown redacted as placeholder Xs), so those remain placeholders —
-  // edit them for real in /admin → Settings.
+  // Address is taken from the farm's own uploaded packaging artwork
+  // (f6.jpeg). Phone, WhatsApp and the map link are the single
+  // customer-care number/location for the whole site — edit them in
+  // /admin → Settings if they ever change.
   contact_address: "Sy. No. 174/2/2, Thallasingaram Village, Choutuppal Municipality, Yadadri Bhuvanagiri District, Telangana – 508252",
-  contact_phone: "+91 90000 00000",
+  contact_phone: "+91 80086 66296",
   contact_email: "hello@mallannafarms.com",
   contact_map_embed: "",
   // Plain Google Maps link (opens in a new tab) — distinct from
   // contact_map_embed above, which is the iframe embed URL for the
   // Contact page map. Leave blank to fall back to a maps search built
-  // from contact_address (see floatingContact.ts).
-  contact_map_link: "",
+  // from contact_address (see floatingContact.ts). Points at the farm's
+  // exact coordinates: 17.265458, 78.917074 (17°15'55.7"N 78°55'01.5"E).
+  contact_map_link:
+    "https://www.google.com/maps/place/17%C2%B015'55.7%22N+78%C2%B055'01.5%22E/@17.2654579,78.9144989,17z/data=!3m1!4b1!4m4!3m3!8m2!3d17.2654579!4d78.9170738?hl=en&entry=ttu&g_ep=EgoyMDI2MDgxMi4wIKXMDSoASAFQAw%3D%3D",
   // Digits only, with country code, no "+" or spaces (e.g. 919000000000).
   // Used to build the WhatsApp floating button's wa.me link. Falls back
   // to the digits of contact_phone if left blank.
-  whatsapp_number: "",
+  whatsapp_number: "918008666296",
 
   social_instagram: "",
   social_facebook: "",
-  social_whatsapp: "",
+  social_whatsapp: "https://wa.me/918008666296",
   social_youtube: "",
 
   footer_tagline: "Naturally Raised. Freshly Delivered. Made for Healthy Families.",

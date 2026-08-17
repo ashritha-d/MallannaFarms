@@ -101,6 +101,10 @@ export default function AdminContent() {
             <p className="text-sm text-forest-600">
               Shown on the About Us page — the founder's introduction, professional experience, and photo.
             </p>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <Field label="Name (shown under the photo)" value={values.founder_name} onChange={(v) => set("founder_name", v)} />
+              <Field label="Designation (shown under the name)" value={values.founder_title} onChange={(v) => set("founder_title", v)} />
+            </div>
             <TextAreaField
               label="Client Introduction (short — use a blank line to separate paragraphs)"
               value={values.founder_intro}
@@ -117,7 +121,9 @@ export default function AdminContent() {
             <ImageField label="Profile Photo" value={values.founder_image} onPick={() => setPickerField("founder_image")} />
             <SaveButton
               saving={saving}
-              onClick={() => save(["founder_intro", "founder_experience", "founder_vision_quote", "founder_image"])}
+              onClick={() =>
+                save(["founder_name", "founder_title", "founder_intro", "founder_experience", "founder_vision_quote", "founder_image"])
+              }
             />
           </div>
         )}

@@ -298,6 +298,8 @@ My professional experience includes handling South India Modern Trade, E-Commerc
 I specialize in identifying new business opportunities, strengthening distribution and market presence, launching brands successfully, and developing strategies that convert opportunities into sustainable growth.'),
   ('founder_vision_quote', 'Our vision is simple: to build strong brands, create sustainable business growth, and connect products with the right markets and customers.'),
   ('founder_image', ''),
+  ('founder_name', 'Mahesh Goud, MA, MBA'),
+  ('founder_title', 'Sales Head'),
   ('mission_title', 'Our Mission'),
   ('mission_content', 'At Mallanna Farms, our mission is to provide families with fresh, nutritious, and naturally produced free-range eggs while caring for our hens and the environment.
 
@@ -312,10 +314,11 @@ We believe that healthier food begins with healthier birds, natural surroundings
 We aspire to build a future where quality, nutrition, animal well-being, and sustainability come together—supporting healthier families, stronger communities, and a greener planet.'),
   ('vision_statement', 'From our farm, with care — naturally nourishing every family.'),
   ('contact_address', 'Sy. No. 174/2/2, Thallasingaram Village, Choutuppal Municipality, Yadadri Bhuvanagiri District, Telangana – 508252'),
-  ('contact_phone', '+91 90000 00000'),
+  ('contact_phone', '+91 80086 66296'),
   ('contact_email', 'hello@mallannafarms.com'),
-  ('contact_map_link', ''),
-  ('whatsapp_number', ''),
+  ('contact_map_link', 'https://www.google.com/maps/place/17%C2%B015''55.7%22N+78%C2%B055''01.5%22E/@17.2654579,78.9144989,17z/data=!3m1!4b1!4m4!3m3!8m2!3d17.2654579!4d78.9170738?hl=en&entry=ttu&g_ep=EgoyMDI2MDgxMi4wIKXMDSoASAFQAw%3D%3D'),
+  ('whatsapp_number', '918008666296'),
+  ('social_whatsapp', 'https://wa.me/918008666296'),
   ('footer_tagline', 'Naturally Raised. Freshly Delivered. Made for Healthy Families.')
 on conflict (key) do nothing;
 

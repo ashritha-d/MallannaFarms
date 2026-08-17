@@ -107,7 +107,7 @@ export default function AdminSettings() {
             <input
               value={values.whatsapp_number ?? ""}
               onChange={(e) => set("whatsapp_number", e.target.value)}
-              placeholder="e.g. 919000000000 (country code, no + or spaces)"
+              placeholder="e.g. 918008666296 (country code, no + or spaces)"
               className="input"
             />
             <p className="mt-1 text-xs text-forest-500">

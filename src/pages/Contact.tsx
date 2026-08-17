@@ -4,6 +4,7 @@ import Seo from "@/components/seo/Seo";
 import { Section } from "@/components/ui/Section";
 import { useSettings } from "@/hooks/useSettings";
 import { submitContactMessage } from "@/data/content";
+import { getMapsUrl } from "@/lib/floatingContact";
 
 type FormState = { name: string; phone: string; email: string; subject: string; message: string };
 const EMPTY: FormState = { name: "", phone: "", email: "", subject: "", message: "" };
@@ -14,6 +15,7 @@ export default function Contact() {
   const [errors, setErrors] = useState<Partial<FormState>>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const mapsUrl = getMapsUrl(settings);
 
   const validate = (): boolean => {
     const next: Partial<FormState> = {};
@@ -64,6 +66,11 @@ export default function Contact() {
                 <div>
                   <p className="text-sm font-semibold text-forest-900">Farm Address</p>
                   <p className="text-sm text-forest-600">{settings.contact_address}</p>
+                  {mapsUrl && (
+                    <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block text-sm font-medium text-gold-600 hover:underline">
+                      Get Directions →
+                    </a>
+                  )}
                 </div>
               </li>
               <li className="flex items-start gap-3">

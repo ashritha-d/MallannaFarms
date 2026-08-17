@@ -52,6 +52,14 @@ export default function About() {
               rounded="rounded-3xl"
               className="shadow-lift"
             />
+            {(settings.founder_name || settings.founder_title) && (
+              <div className="mt-4 text-center">
+                {settings.founder_name && <p className="font-display text-lg font-semibold text-forest-900">{settings.founder_name}</p>}
+                {settings.founder_title && (
+                  <p className="mt-0.5 text-sm font-medium uppercase tracking-wide text-gold-600">{settings.founder_title}</p>
+                )}
+              </div>
+            )}
           </div>
           <div>
             <span className="section-eyebrow">

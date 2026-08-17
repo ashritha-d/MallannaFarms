@@ -15,7 +15,7 @@ function WhatsAppGlyph({ className }: { className?: string }) {
 const FIELDS: { key: string; label: string; icon: ComponentType<{ className?: string }>; placeholder: string }[] = [
   { key: "social_instagram", label: "Instagram", icon: Instagram, placeholder: "https://instagram.com/mallannafarms" },
   { key: "social_facebook", label: "Facebook", icon: Facebook, placeholder: "https://facebook.com/mallannafarms" },
-  { key: "social_whatsapp", label: "WhatsApp", icon: WhatsAppGlyph, placeholder: "https://wa.me/919000000000" },
+  { key: "social_whatsapp", label: "WhatsApp", icon: WhatsAppGlyph, placeholder: "https://wa.me/918008666296" },
   { key: "social_youtube", label: "YouTube", icon: Youtube, placeholder: "https://youtube.com/@mallannafarms" },
 ];
 
