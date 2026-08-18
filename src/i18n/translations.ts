@@ -81,10 +81,6 @@ export const translations = {
     in_stock: "In Stock",
     out_of_stock: "Out of Stock",
 
-    footer_explore: "Explore",
-    footer_learn: "Learn",
-    footer_support: "Support",
-    footer_connect: "Connect",
   },
   te: {
     nav_home: "హోమ్",
@@ -156,10 +152,6 @@ export const translations = {
     in_stock: "అందుబాటులో ఉంది",
     out_of_stock: "అందుబాటులో లేదు",
 
-    footer_explore: "అన్వేషించండి",
-    footer_learn: "తెలుసుకోండి",
-    footer_support: "మద్దతు",
-    footer_connect: "కనెక్ట్ అవ్వండి",
   },
 } as const;
 

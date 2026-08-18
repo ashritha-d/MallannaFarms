@@ -1,14 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
-import { FOOTER_EXPLORE, FOOTER_LEARN, FOOTER_SUPPORT } from "@/routes";
 import { LOGO } from "@/data/seed";
 import { useSettings } from "@/hooks/useSettings";
-import { useLanguage } from "@/contexts/LanguageContext";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 
 export default function Footer() {
   const { data: settings } = useSettings();
-  const { t } = useLanguage();
 
   const socialLinks = [
     { key: "social_instagram", icon: Instagram, label: "Instagram" },
@@ -16,16 +13,10 @@ export default function Footer() {
     { key: "social_whatsapp", icon: WhatsAppIcon, label: "WhatsApp" },
   ].filter((s) => settings[s.key]);
 
-  const columns = [
-    { title: t("footer_explore"), items: FOOTER_EXPLORE },
-    { title: t("footer_learn"), items: FOOTER_LEARN },
-    { title: t("footer_support"), items: FOOTER_SUPPORT },
-  ];
-
   return (
     <footer className="bg-forest-900 text-cream-100">
-      <div className="container-page grid grid-cols-1 gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-        <div className="sm:col-span-2 lg:col-span-1">
+      <div className="container-page py-14">
+        <div className="max-w-sm">
           <NavLink to="/" className="flex items-center gap-3">
             <img src={LOGO.primary} alt="Mallanna Farms logo" className="h-14 w-14 rounded-full object-cover shadow-card" />
             <span className="font-display text-xl font-semibold text-cream-50">Mallanna Farms</span>
@@ -66,31 +57,6 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-          )}
-        </div>
-
-        {columns.map((col) => (
-          <div key={col.title}>
-            <h3 className="font-display text-base font-semibold text-cream-50">{col.title}</h3>
-            <ul className="mt-4 space-y-2.5">
-              {col.items.map((item) => (
-                <li key={item.to}>
-                  <NavLink to={item.to} className="text-sm text-cream-100/75 transition-colors hover:text-gold-300">
-                    {item.label}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-
-        <div>
-          <h3 className="font-display text-base font-semibold text-cream-50">{t("footer_connect")}</h3>
-          <p className="mt-4 text-sm text-cream-100/75">
-            Follow Mallanna Farms for fresh updates from the farm.
-          </p>
-          {socialLinks.length === 0 && (
-            <p className="mt-3 text-xs text-cream-100/50">Social links are added in Admin → Social Links.</p>
           )}
         </div>
       </div>

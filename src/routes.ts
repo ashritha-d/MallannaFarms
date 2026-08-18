@@ -37,23 +37,3 @@ export const MOBILE_EXTRA_NAV = [
   { label: "FAQ", to: ROUTES.faq },
 ];
 
-export const FOOTER_EXPLORE = [
-  { label: "Home", to: ROUTES.home },
-  { label: "Our Eggs", to: ROUTES.products },
-  { label: "Our Farm", to: ROUTES.farm },
-  { label: "About Us", to: ROUTES.about },
-];
-
-export const FOOTER_LEARN = [
-  { label: "Mission & Vision", to: ROUTES.missionVision },
-  { label: "Why Free Range?", to: ROUTES.whyFreeRange },
-  { label: "Farming Practices", to: ROUTES.farm },
-  { label: "FAQs", to: ROUTES.faq },
-];
-
-export const FOOTER_SUPPORT = [
-  { label: "Contact", to: ROUTES.contact },
-  { label: "Delivery", to: ROUTES.delivery },
-  { label: "Privacy Policy", to: ROUTES.privacy },
-  { label: "Terms & Conditions", to: ROUTES.terms },
-];
