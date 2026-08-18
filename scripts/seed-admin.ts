@@ -36,7 +36,7 @@ async function main() {
   const admin = await Admin.findOneAndUpdate(
     { email: normalizedEmail },
     { email: normalizedEmail, passwordHash, role: role === "owner" || role === "admin" ? role : "owner" },
-    { upsert: true, new: true }
+    { upsert: true, returnDocument: "after" }
   );
   console.log(`Admin account ready: ${admin.email} (role: ${admin.role}, id: ${admin._id}).`);
   await mongoose.disconnect();

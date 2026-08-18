@@ -77,7 +77,7 @@ adminRouter.post(
 adminRouter.put(
   "/api/admin/products/:id",
   asyncRoute(async (req, res) => {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body ?? {}, { new: true, runValidators: true });
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body ?? {}, { returnDocument: "after", runValidators: true });
     if (!product) throw new ApiError(404, "Product not found.");
     res.json({ data: product });
   })
@@ -122,7 +122,7 @@ adminRouter.post(
 adminRouter.patch(
   "/api/admin/media/:id",
   asyncRoute(async (req, res) => {
-    const media = await Media.findByIdAndUpdate(req.params.id, req.body ?? {}, { new: true, runValidators: true });
+    const media = await Media.findByIdAndUpdate(req.params.id, req.body ?? {}, { returnDocument: "after", runValidators: true });
     if (!media) throw new ApiError(404, "Media not found.");
     res.json({ data: media });
   })
@@ -166,7 +166,7 @@ adminRouter.post(
 adminRouter.put(
   "/api/admin/gallery/:id",
   asyncRoute(async (req, res) => {
-    const item = await Gallery.findByIdAndUpdate(req.params.id, req.body ?? {}, { new: true, runValidators: true });
+    const item = await Gallery.findByIdAndUpdate(req.params.id, req.body ?? {}, { returnDocument: "after", runValidators: true });
     if (!item) throw new ApiError(404, "Gallery item not found.");
     res.json({ data: item });
   })
@@ -200,7 +200,7 @@ adminRouter.post(
 adminRouter.put(
   "/api/admin/videos/:id",
   asyncRoute(async (req, res) => {
-    const video = await Video.findByIdAndUpdate(req.params.id, req.body ?? {}, { new: true, runValidators: true });
+    const video = await Video.findByIdAndUpdate(req.params.id, req.body ?? {}, { returnDocument: "after", runValidators: true });
     if (!video) throw new ApiError(404, "Video not found.");
     res.json({ data: video });
   })
@@ -234,7 +234,7 @@ adminRouter.post(
 adminRouter.put(
   "/api/admin/faqs/:id",
   asyncRoute(async (req, res) => {
-    const faq = await Faq.findByIdAndUpdate(req.params.id, req.body ?? {}, { new: true, runValidators: true });
+    const faq = await Faq.findByIdAndUpdate(req.params.id, req.body ?? {}, { returnDocument: "after", runValidators: true });
     if (!faq) throw new ApiError(404, "FAQ not found.");
     res.json({ data: faq });
   })

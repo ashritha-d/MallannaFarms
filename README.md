@@ -43,14 +43,15 @@ npm install
 
 1. **MongoDB Atlas** — create a free (M0) cluster, create a database user, then **Connect → Drivers** to get your connection string.
 2. **Cloudinary** — from the dashboard home page, copy your Cloud Name, API Key and API Secret (Account Details card).
-3. Copy `.env.example` to `.env.local` and fill in all five values (`MONGODB_URI`, `JWT_SECRET`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`):
+3. Copy `.env.example` to `.env` and fill in all five values (`MONGODB_URI`, `JWT_SECRET`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`):
    ```bash
-   cp .env.example .env.local
+   cp .env.example .env
    ```
    Generate a `JWT_SECRET` with:
    ```bash
    node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
    ```
+   > **Use `.env`, not `.env.local`.** `.env.local` is the more common convention, but on a project linked to Vercel (`vercel link` / any prior `vercel dev` run), the CLI ignores a hand-edited `.env.local` for the `/api` function's runtime `process.env` and falls back to plain `.env` instead — confirmed directly (`vercel dev --debug` logs "Ignoring .env.local" / "Using local env: .env" on every request). Also add the same 5 vars to the Vercel project's **Settings → Environment Variables** (Development, Preview, and Production) — that's what the real deployed site reads; local `.env`/`.env.local` files are dev-only and never deployed.
 4. Create your admin account (also how you reset a forgotten password later — just rerun this):
    ```bash
    npm run seed:admin -- you@example.com "a-strong-password"
@@ -59,19 +60,24 @@ npm install
    ```bash
    npm run migrate:data
    ```
-   This reads `products`/`videos`/`faqs`/`settings`/`media`/`gallery` from Supabase's public REST API (needs the old `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` in `.env`) and writes them into MongoDB. It refuses to touch a collection that already has documents unless you pass `--force`. `contact_messages`/`orders`/`admins` are not migrated (see `scripts/migrate-from-supabase.ts`'s header comment for why).
+   This reads `products`/`videos`/`faqs`/`settings`/`media`/`gallery` from Supabase's public REST API (needs the old `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` in `.env`) and writes them into MongoDB. It refuses to touch a collection that already has documents unless you pass `--force`; to resume after a partial run without re-touching collections already done, pass `--only=media,gallery` (or any subset) instead. `contact_messages`/`orders`/`admins` are not migrated (see `scripts/migrate-from-supabase.ts`'s header comment for why).
 
-**Never** put these values anywhere except `.env.local` (or your host's environment variable settings) — none of them carry the `VITE_` prefix on purpose, so Vite never bundles them into the browser-shipped code.
+**Never** commit these values — none of them carry the `VITE_` prefix on purpose, so Vite never bundles them into the browser-shipped code, and `.env`/`.env.local` are both gitignored.
 
 ## 4. Run the dev server
 
+Two terminals:
+
 ```bash
-npm run dev:full
+npm run dev:full   # terminal 1 — vercel dev, /api only, fixed port 3999
+npm run dev        # terminal 2 — plain Vite frontend, http://localhost:5173, proxies /api to :3999
 ```
 
-This runs `vercel dev`, which serves the Vite frontend **and** the `/api` functions together on one local port — use this whenever you need the backend (admin login, saving content, placing orders). Visit `http://localhost:3000`. Admin dashboard: `http://localhost:3000/admin`.
+Use `http://localhost:5173` (not the `vercel dev` port) for everything — admin login, saving content, placing orders, all work through the proxy. Admin dashboard: `http://localhost:5173/admin`.
 
-Plain `npm run dev` (just Vite, no `/api`) also works for quick frontend-only iteration — the site falls back to local seed content automatically, same as if the backend were down.
+(Deliberately not one combined `vercel dev` process: pairing it with this repo's custom `vercel.json` rewrites breaks Vite's own dev-only asset requests, e.g. `/@vite/client` 404s. Doesn't affect the real deployment — production serves prebuilt static files, which take precedence over any rewrite.)
+
+Plain `npm run dev` on its own (no `dev:full` running) also works for quick frontend-only iteration — the site falls back to local seed content automatically, same as if the backend were down.
 
 ## 5. Build for production
 

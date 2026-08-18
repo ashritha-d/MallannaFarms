@@ -11,8 +11,11 @@
 // the existing public anon key is enough since these are all public-read
 // tables) and MONGODB_URI from .env.local.
 //
-// Usage: npm run migrate:data            (refuses to touch a non-empty collection)
-//        npm run migrate:data -- --force (re-imports anyway; may duplicate)
+// Usage: npm run migrate:data                       (refuses to touch a non-empty collection)
+//        npm run migrate:data -- --force             (re-imports anyway; may duplicate)
+//        npm run migrate:data -- --only=media,gallery (only these collections — for
+//                                                       resuming after a partial run without
+//                                                       re-touching collections already done)
 import { config as loadDotenv } from "dotenv";
 loadDotenv({ path: ".env" });
 loadDotenv({ path: ".env.local" });
@@ -26,6 +29,9 @@ import { Media } from "../api/_lib/models/Media";
 import { Gallery } from "../api/_lib/models/Gallery";
 
 const FORCE = process.argv.includes("--force");
+const onlyArg = process.argv.find((a) => a.startsWith("--only="));
+const ONLY = onlyArg ? new Set(onlyArg.slice("--only=".length).split(",")) : null;
+const shouldRun = (name: string) => !ONLY || ONLY.has(name);
 
 async function fetchTable<T>(table: string): Promise<T[]> {
   const url = process.env.VITE_SUPABASE_URL;
@@ -57,55 +63,70 @@ async function main() {
     fetchTable<Record<string, unknown>>("settings"),
   ]);
 
-  await guardEmpty("products", await Product.countDocuments({}));
-  if (products.length) {
-    await Product.insertMany(products.map(({ id, ...rest }) => rest));
-    console.log(`Migrated ${products.length} product(s).`);
+  if (shouldRun("products")) {
+    await guardEmpty("products", await Product.countDocuments({}));
+    if (products.length) {
+      await Product.insertMany(products.map(({ id, ...rest }) => rest));
+      console.log(`Migrated ${products.length} product(s).`);
+    }
   }
 
-  await guardEmpty("videos", await Video.countDocuments({}));
-  if (videos.length) {
-    await Video.insertMany(videos.map(({ id, ...rest }) => rest));
-    console.log(`Migrated ${videos.length} video(s).`);
+  if (shouldRun("videos")) {
+    await guardEmpty("videos", await Video.countDocuments({}));
+    if (videos.length) {
+      await Video.insertMany(videos.map(({ id, ...rest }) => rest));
+      console.log(`Migrated ${videos.length} video(s).`);
+    }
   }
 
-  await guardEmpty("faqs", await Faq.countDocuments({}));
-  if (faqs.length) {
-    await Faq.insertMany(faqs.map(({ id, ...rest }) => rest));
-    console.log(`Migrated ${faqs.length} FAQ(s).`);
+  if (shouldRun("faqs")) {
+    await guardEmpty("faqs", await Faq.countDocuments({}));
+    if (faqs.length) {
+      await Faq.insertMany(faqs.map(({ id, ...rest }) => rest));
+      console.log(`Migrated ${faqs.length} FAQ(s).`);
+    }
   }
 
-  await guardEmpty("settings", await Setting.countDocuments({}));
-  if (settings.length) {
-    await Setting.insertMany(settings.map(({ id, updated_at, ...rest }) => rest));
-    console.log(`Migrated ${settings.length} setting(s).`);
+  if (shouldRun("settings")) {
+    await guardEmpty("settings", await Setting.countDocuments({}));
+    if (settings.length) {
+      await Setting.insertMany(settings.map(({ id, updated_at, ...rest }) => rest));
+      console.log(`Migrated ${settings.length} setting(s).`);
+    }
   }
 
-  // --- media, then gallery (which references media by id) ---
+  // --- media, then gallery (which references media by id) — --only=gallery
+  // without also including media in the same run leaves gallery rows with
+  // nothing to match against and every row gets skipped, so pass both
+  // together (--only=media,gallery) rather than gallery alone.
   // NOTE: verify before relying on this — if `media` turns out not to be
   // publicly readable via the anon key (unlike the other tables above),
   // this fetch will fail with a clear error; media/gallery would then need
   // the same admin-credentials treatment as contact_messages/orders instead.
-  const media = await fetchTable<Record<string, unknown> & { id: string }>("media");
-  await guardEmpty("media", await Media.countDocuments({}));
   const oldToNewMediaId = new Map<string, string>();
-  if (media.length) {
-    for (const m of media) {
-      const { id: oldId, ...rest } = m;
-      const created = await Media.create(rest);
-      oldToNewMediaId.set(oldId, String(created._id));
+  if (shouldRun("media")) {
+    const media = await fetchTable<Record<string, unknown> & { id: string }>("media");
+    await guardEmpty("media", await Media.countDocuments({}));
+    if (media.length) {
+      for (const m of media) {
+        const { id: oldId, ...rest } = m;
+        const created = await Media.create(rest);
+        oldToNewMediaId.set(oldId, String(created._id));
+      }
+      console.log(`Migrated ${media.length} media item(s).`);
     }
-    console.log(`Migrated ${media.length} media item(s).`);
   }
 
-  const gallery = await fetchTable<Record<string, unknown> & { id: string; media_id: string }>("gallery");
-  await guardEmpty("gallery", await Gallery.countDocuments({}));
-  if (gallery.length) {
-    const docs = gallery
-      .map(({ id, media_id, ...rest }) => ({ ...rest, media_id: oldToNewMediaId.get(media_id) }))
-      .filter((g) => g.media_id); // drop rows whose media reference didn't migrate
-    await Gallery.insertMany(docs);
-    console.log(`Migrated ${docs.length} of ${gallery.length} gallery item(s) (skipped any with an unmatched media reference).`);
+  if (shouldRun("gallery")) {
+    const gallery = await fetchTable<Record<string, unknown> & { id: string; media_id: string }>("gallery");
+    await guardEmpty("gallery", await Gallery.countDocuments({}));
+    if (gallery.length) {
+      const docs = gallery
+        .map(({ id, media_id, ...rest }) => ({ ...rest, media_id: oldToNewMediaId.get(media_id) }))
+        .filter((g) => g.media_id); // drop rows whose media reference didn't migrate
+      await Gallery.insertMany(docs);
+      console.log(`Migrated ${docs.length} of ${gallery.length} gallery item(s) (skipped any with an unmatched media reference).`);
+    }
   }
 
   await mongoose.disconnect();
