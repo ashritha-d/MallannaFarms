@@ -83,8 +83,12 @@ export default function ProductCard({ product }: { product: ProductWithGallery }
             {product.grade ?? "Grade A"} · {product.pack_size}
           </span>
         </div>
-        <h3 className="mt-1.5 font-display text-sm font-semibold text-forest-900 sm:mt-2 sm:text-lg">{product.name}</h3>
-        <p className="mt-1 line-clamp-2 flex-1 text-xs text-forest-600 sm:mt-1.5 sm:text-sm">{product.short_description}</p>
+        <h3 className="mt-1.5 line-clamp-2 min-h-[2lh] font-display text-sm font-semibold leading-tight text-forest-900 sm:mt-2 sm:text-lg">
+          {product.name}
+        </h3>
+        <p className="mt-1 line-clamp-2 min-h-[2lh] flex-1 text-xs text-forest-600 sm:mt-1.5 sm:text-sm">
+          {product.short_description}
+        </p>
 
         <div className="mt-2.5 flex items-baseline gap-2 sm:mt-4">
           <span className="font-display text-base font-semibold text-forest-900 sm:text-xl">
@@ -93,19 +97,33 @@ export default function ProductCard({ product }: { product: ProductWithGallery }
           {product.discount_price && <span className="text-xs text-forest-400 line-through sm:text-sm">₹{product.price}</span>}
         </div>
 
-        {!outOfStock && (
-          <div className="mt-2 flex items-center gap-2 sm:mt-3">
-            <div className="flex items-center gap-1 rounded-full border border-forest-900/15 px-1">
-              <button onClick={(e) => adjustQty(e, -1)} aria-label="Decrease quantity" className="rounded-full p-1 text-forest-700 hover:bg-forest-100 sm:p-1.5">
-                <Minus className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-              </button>
-              <span className="w-4 text-center text-xs font-medium sm:w-5 sm:text-sm">{qty}</span>
-              <button onClick={(e) => adjustQty(e, 1)} aria-label="Increase quantity" className="rounded-full p-1 text-forest-700 hover:bg-forest-100 sm:p-1.5">
-                <Plus className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-              </button>
-            </div>
+        {/* Always rendered (just disabled when out of stock) rather than
+            conditionally omitted — an omitted row would make out-of-stock
+            cards shorter and pull their buttons up out of alignment with
+            every other card in the row. */}
+        <div className="mt-2 flex items-center gap-2 sm:mt-3">
+          <div
+            className={`flex items-center gap-1 rounded-full border border-forest-900/15 px-1 ${outOfStock ? "opacity-40" : ""}`}
+          >
+            <button
+              onClick={(e) => adjustQty(e, -1)}
+              disabled={outOfStock}
+              aria-label="Decrease quantity"
+              className="rounded-full p-1 text-forest-700 hover:bg-forest-100 disabled:pointer-events-none sm:p-1.5"
+            >
+              <Minus className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+            </button>
+            <span className="w-4 text-center text-xs font-medium sm:w-5 sm:text-sm">{qty}</span>
+            <button
+              onClick={(e) => adjustQty(e, 1)}
+              disabled={outOfStock}
+              aria-label="Increase quantity"
+              className="rounded-full p-1 text-forest-700 hover:bg-forest-100 disabled:pointer-events-none sm:p-1.5"
+            >
+              <Plus className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+            </button>
           </div>
-        )}
+        </div>
 
         <div className="mt-2.5 flex flex-col gap-1.5 sm:mt-3 sm:flex-row sm:gap-2">
           <button

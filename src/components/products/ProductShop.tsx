@@ -13,12 +13,13 @@ type Status = "loading" | "ready" | "error";
  * Our Eggs page, so there's one product list and one filtering behavior
  * for the whole site (no separate static homepage product data).
  *
- * Mobile is a single horizontally-scrolling/swipeable row (scroll-snap,
- * next card peeking at the edge); `desktopGridClassName` controls the
- * column layout from `sm:` up, where each caller keeps its own existing
- * tablet/desktop grid. The `sm:contents` trick on each card's wrapper
- * lets the card become a direct grid item at that breakpoint, so the
- * mobile-only scroll wrapper doesn't affect desktop grid layout at all.
+ * A single responsive CSS Grid at every breakpoint (1 column on mobile, up
+ * through whatever `desktopGridClassName` specifies for `sm:`/`lg:`) — same
+ * shape as `CardSkeleton`'s loading grid, so there's no layout jump between
+ * the skeleton and the real cards. Grid's default row-stretch means every
+ * card in a row is automatically the same height with no manual sizing;
+ * `ProductCard` itself reserves equal space for title/description/quantity
+ * regardless of content length so rows stay aligned as products change.
  */
 export default function ProductShop({
   desktopGridClassName = "sm:grid-cols-2 lg:grid-cols-3 sm:gap-6",
@@ -60,7 +61,7 @@ export default function ProductShop({
         ))}
       </div>
 
-      {status === "loading" && <CardSkeleton count={6} />}
+      {status === "loading" && <CardSkeleton count={6} gridClassName={desktopGridClassName} />}
       {status === "error" && <ErrorState onRetry={load} />}
       {status === "ready" && products.length === 0 && (
         <EmptyState title="No products available" message="Please check back soon — new products are added regularly." />
@@ -69,13 +70,9 @@ export default function ProductShop({
         <EmptyState title="No products in this category" message="Try a different filter." />
       )}
       {status === "ready" && filtered.length > 0 && (
-        <div
-          className={`no-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:snap-none sm:gap-3 sm:overflow-visible sm:px-0 sm:pb-0 ${desktopGridClassName}`}
-        >
+        <div className={`grid grid-cols-1 items-stretch gap-4 ${desktopGridClassName}`}>
           {filtered.map((p) => (
-            <div key={p.id} className="w-[76%] max-w-[280px] shrink-0 snap-start sm:contents">
-              <ProductCard product={p} />
-            </div>
+            <ProductCard key={p.id} product={p} />
           ))}
         </div>
       )}
