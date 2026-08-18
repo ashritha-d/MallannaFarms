@@ -6,7 +6,7 @@ import { Section } from "@/components/ui/Section";
 import { CardSkeleton, EmptyState, ErrorState } from "@/components/ui/States";
 import { getFaqs } from "@/data/content";
 import { FARM_IMAGES } from "@/data/seed";
-import type { Faq } from "@/lib/database.types";
+import type { Faq } from "@/lib/apiTypes";
 
 type Status = "loading" | "ready" | "error";
 

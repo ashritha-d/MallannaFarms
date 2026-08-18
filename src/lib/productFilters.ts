@@ -2,7 +2,7 @@
 // dedicated "Our Eggs" page and the homepage product section so the two
 // never drift out of sync (single source of truth, per egg_count bucket).
 
-import type { ProductWithGallery } from "@/lib/database.types";
+import type { ProductWithGallery } from "@/lib/apiTypes";
 
 export type FilterKey = "all" | "six" | "twelve" | "family" | "premium";
 

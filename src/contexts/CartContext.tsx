@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import type { ProductWithGallery } from "@/lib/database.types";
+import type { ProductWithGallery } from "@/lib/apiTypes";
 
 export interface CartItem {
   productId: string;

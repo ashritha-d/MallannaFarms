@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Loader2, Save } from "lucide-react";
 import Seo from "@/components/seo/Seo";
-import ConnectSupabaseBanner from "../components/ConnectSupabaseBanner";
+import BackendUnavailableBanner from "../components/BackendUnavailableBanner";
 import MediaPicker from "../components/MediaPicker";
 import { useToast } from "../components/Toast";
 import { useAdminAuth } from "../auth/AuthContext";
@@ -54,7 +54,7 @@ export default function AdminContent() {
           <p className="mt-1 text-sm text-forest-600">Edit text and images shown across the public website.</p>
         </div>
 
-        {!configured && <ConnectSupabaseBanner />}
+        {!configured && <BackendUnavailableBanner />}
 
         <div className="flex flex-wrap gap-2 border-b border-forest-900/10 pb-3">
           {TABS.map((t) => (

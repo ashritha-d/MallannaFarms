@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Seo from "@/components/seo/Seo";
 import { useToast } from "../components/Toast";
 import { useAdminAuth } from "../auth/AuthContext";
-import { requireSupabase } from "@/lib/supabase";
+import { changePassword } from "../lib/adminApi";
 
 export default function AdminProfile() {
   const { user, signOut } = useAdminAuth();
@@ -25,17 +25,14 @@ export default function AdminProfile() {
       return;
     }
     setSaving(true);
-    try {
-      const db = requireSupabase();
-      const { error } = await db.auth.updateUser({ password });
-      if (error) throw error;
+    const res = await changePassword(password);
+    setSaving(false);
+    if (res.error) {
+      notify(res.error, "error");
+    } else {
       notify("Password updated successfully.");
       setPassword("");
       setConfirm("");
-    } catch (e) {
-      notify(e instanceof Error ? e.message : "Could not update password.", "error");
-    } finally {
-      setSaving(false);
     }
   };
 

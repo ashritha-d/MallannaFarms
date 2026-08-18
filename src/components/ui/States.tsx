@@ -37,9 +37,16 @@ export function ErrorState({ message, onRetry }: { message?: string; onRetry?: (
   );
 }
 
-export function CardSkeleton({ count = 3 }: { count?: number }) {
+export function CardSkeleton({
+  count = 3,
+  gridClassName = "sm:grid-cols-2 lg:grid-cols-3",
+}: {
+  count?: number;
+  /** Override the responsive column classes so the skeleton matches whatever grid the real content will use (avoids a layout jump once it loads). */
+  gridClassName?: string;
+}) {
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className={`grid grid-cols-1 gap-6 ${gridClassName}`}>
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="card overflow-hidden">
           <div className="skeleton aspect-[4/3] w-full rounded-none" />

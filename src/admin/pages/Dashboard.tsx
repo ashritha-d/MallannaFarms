@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Egg, Images, Inbox, Package, Video } from "lucide-react";
 import { useAdminAuth } from "../auth/AuthContext";
-import ConnectSupabaseBanner from "../components/ConnectSupabaseBanner";
+import BackendUnavailableBanner from "../components/BackendUnavailableBanner";
 import { getDashboardStats } from "../lib/adminApi";
 import Seo from "@/components/seo/Seo";
 
@@ -45,7 +45,7 @@ export default function Dashboard() {
           <p className="mt-1 text-sm text-forest-600">Overview of your Mallanna Farms website.</p>
         </div>
 
-        {!configured && <ConnectSupabaseBanner />}
+        {!configured && <BackendUnavailableBanner />}
 
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
           {cards.map(({ label, value, icon: Icon, to }) => (

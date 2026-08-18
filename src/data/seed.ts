@@ -1,6 +1,6 @@
-// Local fallback/seed content shown on the public site until a Supabase
-// project is connected and real data is entered through /admin. Once
-// Supabase is connected, live database rows replace this automatically
+// Local fallback/seed content shown on the public site until the backend
+// (MongoDB, via /api) is reachable and real data is entered through /admin.
+// Once it's reachable, live database rows replace this automatically
 // (see src/data/content.ts).
 //
 // Image sourcing note: the uploaded "f1–f9" files turned out to be mostly
@@ -13,7 +13,7 @@
 // One uploaded file (f7.jpeg) was a screenshot of an unrelated third-party
 // business's website and is intentionally not used anywhere on the site.
 
-import type { Faq, GalleryItemWithMedia, Product, ProductWithGallery, VideoItem } from "@/lib/database.types";
+import type { Faq, GalleryItemWithMedia, Product, ProductWithGallery, VideoItem } from "@/lib/apiTypes";
 
 export const FARM_IMAGES = {
   hero: "/assets/farm/hen-with-egg-basket.jpg",

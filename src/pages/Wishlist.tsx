@@ -8,7 +8,7 @@ import { CardSkeleton, EmptyState } from "@/components/ui/States";
 import { getProducts } from "@/data/content";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { FARM_IMAGES } from "@/data/seed";
-import type { ProductWithGallery } from "@/lib/database.types";
+import type { ProductWithGallery } from "@/lib/apiTypes";
 
 export default function Wishlist() {
   const { ids } = useWishlist();

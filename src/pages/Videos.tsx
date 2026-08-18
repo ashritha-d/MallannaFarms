@@ -7,7 +7,7 @@ import FarmImage from "@/components/ui/FarmImage";
 import { CardSkeleton, EmptyState, ErrorState } from "@/components/ui/States";
 import { getVideos } from "@/data/content";
 import { FARM_IMAGES } from "@/data/seed";
-import type { VideoItem } from "@/lib/database.types";
+import type { VideoItem } from "@/lib/apiTypes";
 
 type Status = "loading" | "ready" | "error";
 

@@ -1,11 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import ProductCard from "@/components/products/ProductCard";
-import { CardSkeleton, EmptyState, ErrorState } from "@/components/ui/States";
+import { EmptyState, ErrorState } from "@/components/ui/States";
 import { getProducts } from "@/data/content";
 import { PRODUCT_FILTERS, matchesProductFilter, type FilterKey } from "@/lib/productFilters";
-import type { ProductWithGallery } from "@/lib/database.types";
+import type { ProductWithGallery } from "@/lib/apiTypes";
 
 type Status = "loading" | "ready" | "error";
+
+// Matches ProductCard's own fixed card/image sizing exactly, so the loading
+// skeleton doesn't jump in size once the real cards arrive.
+const CARD_WIDTH = "w-64 sm:w-72 lg:w-80";
+const IMAGE_HEIGHT = "h-48 sm:h-56 lg:h-64";
 
 /**
  * Filterable product listing — the single implementation of "browse and
@@ -13,18 +18,13 @@ type Status = "loading" | "ready" | "error";
  * Our Eggs page, so there's one product list and one filtering behavior
  * for the whole site (no separate static homepage product data).
  *
- * Mobile is a single horizontally-scrolling/swipeable row (scroll-snap,
- * next card peeking at the edge); `desktopGridClassName` controls the
- * column layout from `sm:` up, where each caller keeps its own existing
- * tablet/desktop grid. The `sm:contents` trick on each card's wrapper
- * lets the card become a direct grid item at that breakpoint, so the
- * mobile-only scroll wrapper doesn't affect desktop grid layout at all.
+ * One horizontally-scrolling row at every breakpoint (scroll-snap, next
+ * card peeking at the edge) — every card shares the same fixed width and
+ * image height (see ProductCard), and `items-stretch` on the row makes the
+ * content area the same height too, so nothing shifts card to card as
+ * products are added or content length varies.
  */
-export default function ProductShop({
-  desktopGridClassName = "sm:grid-cols-2 lg:grid-cols-3 sm:gap-6",
-}: {
-  desktopGridClassName?: string;
-}) {
+export default function ProductShop() {
   const [status, setStatus] = useState<Status>("loading");
   const [products, setProducts] = useState<ProductWithGallery[]>([]);
   const [filter, setFilter] = useState<FilterKey>("all");
@@ -60,7 +60,20 @@ export default function ProductShop({
         ))}
       </div>
 
-      {status === "loading" && <CardSkeleton count={6} />}
+      {status === "loading" && (
+        <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 sm:pb-0">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className={`card ${CARD_WIDTH} shrink-0 snap-start overflow-hidden`}>
+              <div className={`skeleton ${IMAGE_HEIGHT} w-full rounded-none`} />
+              <div className="space-y-3 p-3 sm:p-4">
+                <div className="skeleton h-4 w-2/3" />
+                <div className="skeleton h-4 w-1/3" />
+                <div className="skeleton h-8 w-full" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
       {status === "error" && <ErrorState onRetry={load} />}
       {status === "ready" && products.length === 0 && (
         <EmptyState title="No products available" message="Please check back soon — new products are added regularly." />
@@ -69,13 +82,9 @@ export default function ProductShop({
         <EmptyState title="No products in this category" message="Try a different filter." />
       )}
       {status === "ready" && filtered.length > 0 && (
-        <div
-          className={`no-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:snap-none sm:gap-3 sm:overflow-visible sm:px-0 sm:pb-0 ${desktopGridClassName}`}
-        >
+        <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 sm:pb-0">
           {filtered.map((p) => (
-            <div key={p.id} className="w-[76%] max-w-[280px] shrink-0 snap-start sm:contents">
-              <ProductCard product={p} />
-            </div>
+            <ProductCard key={p.id} product={p} />
           ))}
         </div>
       )}

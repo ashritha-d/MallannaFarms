@@ -1,7 +1,7 @@
 import { useEffect, useState, type ComponentType } from "react";
 import { Facebook, Instagram, Loader2, Save, Youtube } from "lucide-react";
 import Seo from "@/components/seo/Seo";
-import ConnectSupabaseBanner from "../components/ConnectSupabaseBanner";
+import BackendUnavailableBanner from "../components/BackendUnavailableBanner";
 import { useToast } from "../components/Toast";
 import { useAdminAuth } from "../auth/AuthContext";
 import { saveSettings } from "../lib/adminApi";
@@ -57,7 +57,7 @@ export default function AdminSocial() {
           <p className="mt-1 text-sm text-forest-600">Links shown in the footer. Leave blank to hide an icon.</p>
         </div>
 
-        {!configured && <ConnectSupabaseBanner />}
+        {!configured && <BackendUnavailableBanner />}
 
         <div className="card space-y-4 p-5">
           {FIELDS.map((f) => (

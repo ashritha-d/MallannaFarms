@@ -2,12 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { Search, Trash2, X } from "lucide-react";
 import Seo from "@/components/seo/Seo";
 import { EmptyState } from "@/components/ui/States";
-import ConnectSupabaseBanner from "../components/ConnectSupabaseBanner";
+import BackendUnavailableBanner from "../components/BackendUnavailableBanner";
 import ConfirmDialog from "../components/ConfirmDialog";
 import { useToast } from "../components/Toast";
 import { useAdminAuth } from "../auth/AuthContext";
 import { deleteEnquiry, listEnquiries, updateEnquiryStatus } from "../lib/adminApi";
-import type { ContactMessage, EnquiryStatus } from "@/lib/database.types";
+import type { ContactMessage, EnquiryStatus } from "@/lib/apiTypes";
 
 const STATUS_STYLES: Record<EnquiryStatus, string> = {
   new: "bg-gold-100 text-gold-700",
@@ -88,7 +88,7 @@ export default function AdminEnquiries() {
           <p className="mt-1 text-sm text-forest-600">Messages submitted through the website contact form.</p>
         </div>
 
-        {!configured && <ConnectSupabaseBanner />}
+        {!configured && <BackendUnavailableBanner />}
 
         {configured && (
           <>

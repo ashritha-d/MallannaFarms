@@ -2,12 +2,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Loader2, Search, Trash2, Upload, X } from "lucide-react";
 import Seo from "@/components/seo/Seo";
 import { EmptyState } from "@/components/ui/States";
-import ConnectSupabaseBanner from "../components/ConnectSupabaseBanner";
+import BackendUnavailableBanner from "../components/BackendUnavailableBanner";
 import ConfirmDialog from "../components/ConfirmDialog";
 import { useToast } from "../components/Toast";
 import { useAdminAuth } from "../auth/AuthContext";
 import { deleteMedia, listMedia, updateMedia, uploadMedia } from "../lib/adminApi";
-import type { Media } from "@/lib/database.types";
+import type { Media } from "@/lib/apiTypes";
 
 const CATEGORIES = ["Our Farm", "Free Range Hens", "Egg Collection", "Farm Life", "Products", "Packaging", "Behind the Scenes", "Uploads"];
 
@@ -98,7 +98,7 @@ export default function AdminMedia() {
           <p className="mt-1 text-sm text-forest-600">Upload and organize photos and videos used across the site.</p>
         </div>
 
-        {!configured && <ConnectSupabaseBanner />}
+        {!configured && <BackendUnavailableBanner />}
 
         {configured && (
           <>

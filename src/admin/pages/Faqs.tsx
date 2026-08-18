@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { Plus, Trash2, X } from "lucide-react";
 import Seo from "@/components/seo/Seo";
 import { EmptyState } from "@/components/ui/States";
-import ConnectSupabaseBanner from "../components/ConnectSupabaseBanner";
+import BackendUnavailableBanner from "../components/BackendUnavailableBanner";
 import ConfirmDialog from "../components/ConfirmDialog";
 import { useToast } from "../components/Toast";
 import { useAdminAuth } from "../auth/AuthContext";
 import { deleteFaq, listFaqsAdmin, upsertFaq } from "../lib/adminApi";
-import type { Faq } from "@/lib/database.types";
+import type { Faq } from "@/lib/apiTypes";
 
 const EMPTY: Partial<Faq> = { question: "", answer: "", category: "General", active: true, sort_order: 0 };
 
@@ -76,7 +76,7 @@ export default function AdminFaqs() {
           </button>
         </div>
 
-        {!configured && <ConnectSupabaseBanner />}
+        {!configured && <BackendUnavailableBanner />}
 
         {configured && (
           <>

@@ -2,12 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { Search, Trash2, X } from "lucide-react";
 import Seo from "@/components/seo/Seo";
 import { EmptyState } from "@/components/ui/States";
-import ConnectSupabaseBanner from "../components/ConnectSupabaseBanner";
+import BackendUnavailableBanner from "../components/BackendUnavailableBanner";
 import ConfirmDialog from "../components/ConfirmDialog";
 import { useToast } from "../components/Toast";
 import { useAdminAuth } from "../auth/AuthContext";
 import { deleteOrder, listOrders, updateOrderStatus } from "../lib/adminApi";
-import type { Order, OrderStatus } from "@/lib/database.types";
+import type { Order, OrderStatus } from "@/lib/apiTypes";
 
 const STATUS_STYLES: Record<OrderStatus, string> = {
   new: "bg-gold-100 text-gold-700",
@@ -89,7 +89,7 @@ export default function AdminOrders() {
           </p>
         </div>
 
-        {!configured && <ConnectSupabaseBanner />}
+        {!configured && <BackendUnavailableBanner />}
 
         {configured && (
           <>

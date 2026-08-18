@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { Plus, Trash2, X } from "lucide-react";
 import Seo from "@/components/seo/Seo";
 import { EmptyState } from "@/components/ui/States";
-import ConnectSupabaseBanner from "../components/ConnectSupabaseBanner";
+import BackendUnavailableBanner from "../components/BackendUnavailableBanner";
 import ConfirmDialog from "../components/ConfirmDialog";
 import MediaPicker from "../components/MediaPicker";
 import { useToast } from "../components/Toast";
 import { useAdminAuth } from "../auth/AuthContext";
 import { deleteVideo, listVideosAdmin, upsertVideo } from "../lib/adminApi";
-import type { VideoItem } from "@/lib/database.types";
+import type { VideoItem } from "@/lib/apiTypes";
 
 const EMPTY: Partial<VideoItem> = { title: "", description: "", video_url: "", thumbnail_url: "", category: "Farm Life", featured: false, active: true };
 
@@ -78,7 +78,7 @@ export default function AdminVideos() {
           </button>
         </div>
 
-        {!configured && <ConnectSupabaseBanner />}
+        {!configured && <BackendUnavailableBanner />}
 
         {configured && (
           <>
