@@ -5,7 +5,7 @@
 // theft) or SameSite=Lax (stricter CSRF protection).
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { env } from "./env";
+import { env } from "./env.js";
 
 const COOKIE_NAME = "mf_admin_session";
 const TOKEN_TTL = "7d";

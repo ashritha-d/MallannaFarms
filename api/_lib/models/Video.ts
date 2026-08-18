@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import type { InferSchemaType } from "mongoose";
-import { idTransform } from "./plugins/idTransform";
+import { idTransform } from "./plugins/idTransform.js";
 const { Schema, model, models } = mongoose;
 
 const VideoSchema = new Schema(

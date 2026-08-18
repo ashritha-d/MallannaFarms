@@ -5,7 +5,7 @@
 // uploads directly to Cloudinary. See routes/admin.ts's
 // POST /api/admin/media/signature + POST /api/admin/media pair.
 import { v2 as cloudinary } from "cloudinary";
-import { env } from "./env";
+import { env } from "./env.js";
 
 cloudinary.config({
   cloud_name: env.CLOUDINARY_CLOUD_NAME,

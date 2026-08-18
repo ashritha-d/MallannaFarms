@@ -10,7 +10,7 @@
 // servers introduce; a plain module-level variable is enough in production
 // but the extra safety costs nothing.
 import mongoose from "mongoose";
-import { env } from "./env";
+import { env } from "./env.js";
 
 interface MongooseCache {
   conn: typeof mongoose | null;

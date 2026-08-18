@@ -3,17 +3,17 @@
 // `active`, mirroring src/admin/lib/adminApi.ts's function list 1:1.
 import { Router } from "express";
 import bcrypt from "bcryptjs";
-import { Admin } from "../models/Admin";
-import { Media } from "../models/Media";
-import { Product } from "../models/Product";
-import { Gallery } from "../models/Gallery";
-import { Video } from "../models/Video";
-import { Faq } from "../models/Faq";
-import { Setting } from "../models/Setting";
-import { ContactMessage } from "../models/ContactMessage";
-import { Order } from "../models/Order";
-import { asyncRoute, ApiError } from "../errors";
-import { createUploadSignature, deleteCloudinaryAsset } from "../cloudinary";
+import { Admin } from "../models/Admin.js";
+import { Media } from "../models/Media.js";
+import { Product } from "../models/Product.js";
+import { Gallery } from "../models/Gallery.js";
+import { Video } from "../models/Video.js";
+import { Faq } from "../models/Faq.js";
+import { Setting } from "../models/Setting.js";
+import { ContactMessage } from "../models/ContactMessage.js";
+import { Order } from "../models/Order.js";
+import { asyncRoute, ApiError } from "../errors.js";
+import { createUploadSignature, deleteCloudinaryAsset } from "../cloudinary.js";
 
 export const adminRouter = Router();
 

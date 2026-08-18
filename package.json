@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Mallanna Farms — official website and admin dashboard for free-range egg farming brand.",
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
   "scripts": {
     "dev": "vite",

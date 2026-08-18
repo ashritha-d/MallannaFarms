@@ -2,14 +2,14 @@
 // src/data/content.ts's function list 1:1 (see that file for the fallback
 // behavior on the frontend side when these calls fail).
 import { Router } from "express";
-import { Setting } from "../models/Setting";
-import { Product } from "../models/Product";
-import { Gallery } from "../models/Gallery";
-import { Video } from "../models/Video";
-import { Faq } from "../models/Faq";
-import { ContactMessage } from "../models/ContactMessage";
-import { Order } from "../models/Order";
-import { asyncRoute } from "../errors";
+import { Setting } from "../models/Setting.js";
+import { Product } from "../models/Product.js";
+import { Gallery } from "../models/Gallery.js";
+import { Video } from "../models/Video.js";
+import { Faq } from "../models/Faq.js";
+import { ContactMessage } from "../models/ContactMessage.js";
+import { Order } from "../models/Order.js";
+import { asyncRoute } from "../errors.js";
 
 export const publicRouter = Router();
 

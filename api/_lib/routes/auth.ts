@@ -4,9 +4,9 @@
 // which does require an existing session.
 import { Router } from "express";
 import bcrypt from "bcryptjs";
-import { Admin } from "../models/Admin";
-import { signToken, setAuthCookie, clearAuthCookie, readAdminSession } from "../auth";
-import { asyncRoute } from "../errors";
+import { Admin } from "../models/Admin.js";
+import { signToken, setAuthCookie, clearAuthCookie, readAdminSession } from "../auth.js";
+import { asyncRoute } from "../errors.js";
 
 export const authRouter = Router();
 

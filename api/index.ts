@@ -11,12 +11,12 @@
 // adminRouter, so it gates admin routes without touching public ones.
 import express from "express";
 import cookieParser from "cookie-parser";
-import { connectDB } from "./_lib/db";
-import { requireAdmin } from "./_lib/auth";
-import { errorHandler } from "./_lib/errors";
-import { publicRouter } from "./_lib/routes/public";
-import { authRouter } from "./_lib/routes/auth";
-import { adminRouter } from "./_lib/routes/admin";
+import { connectDB } from "./_lib/db.js";
+import { requireAdmin } from "./_lib/auth.js";
+import { errorHandler } from "./_lib/errors.js";
+import { publicRouter } from "./_lib/routes/public.js";
+import { authRouter } from "./_lib/routes/auth.js";
+import { adminRouter } from "./_lib/routes/admin.js";
 
 const app = express();
 
