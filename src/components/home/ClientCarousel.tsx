@@ -36,25 +36,25 @@ function excerpt(text: string | undefined, max = 220, paragraphs = 1): string {
 // `compact` shrinks the buttons further for the mobile side-by-side photo
 // slide, where the CTA column is only ~60% of a phone-width slide —
 // reverts to the normal size from `sm:` up.
-// `reverseOrder` puts "Learn More" first — used on the About Us slide only,
-// where it's the primary action; every other slide keeps "Shop Free Range
-// Eggs" first.
-function SlideCtas({ onDark = true, compact = false, reverseOrder = false }: { onDark?: boolean; compact?: boolean; reverseOrder?: boolean }) {
+// Order is fixed across every slide — "Learn More" first (primary),
+// "Shop Free Range Eggs" second — driven from this one shared component
+// so it can't drift out of sync slide to slide; flex-col stacks them in
+// source order on mobile too, so that's "Learn More" on top there as well.
+function SlideCtas({ onDark = true, compact = false }: { onDark?: boolean; compact?: boolean }) {
   const sizing = compact
     ? "!px-2.5 !py-1.5 text-[11px] sm:!px-5 sm:!py-2.5 sm:text-sm"
     : "!px-5 !py-2.5 text-sm";
   const spacing = compact ? "mt-2 gap-1.5 sm:mt-4 sm:gap-3" : "mt-4 gap-2.5 sm:gap-3";
-  const shop = (
-    <NavLink key="shop" to={ROUTES.products} className={`btn-gold w-full sm:w-auto ${sizing}`}>
-      Shop Free Range Eggs
-    </NavLink>
+  return (
+    <div className={`flex flex-col sm:flex-row ${spacing}`}>
+      <NavLink to={ROUTES.about} className={`w-full sm:w-auto ${onDark ? "btn-outline-light" : "btn-secondary"} ${sizing}`}>
+        Learn More
+      </NavLink>
+      <NavLink to={ROUTES.products} className={`btn-gold w-full sm:w-auto ${sizing}`}>
+        Shop Free Range Eggs
+      </NavLink>
+    </div>
   );
-  const learnMore = (
-    <NavLink key="learn" to={ROUTES.about} className={`w-full sm:w-auto ${onDark ? "btn-outline-light" : "btn-secondary"} ${sizing}`}>
-      Learn More
-    </NavLink>
-  );
-  return <div className={`flex flex-col sm:flex-row ${spacing}`}>{reverseOrder ? [learnMore, shop] : [shop, learnMore]}</div>;
 }
 
 export default function ClientCarousel() {
@@ -235,7 +235,7 @@ export default function ClientCarousel() {
                     <p className="line-clamp-3 mt-1 max-w-xl text-[11px] leading-snug text-forest-700 sm:mt-3 sm:line-clamp-3 sm:text-base sm:leading-relaxed">
                       {slide.body}
                     </p>
-                    <SlideCtas onDark={false} compact reverseOrder />
+                    <SlideCtas onDark={false} compact />
                   </div>
                 </div>
               </div>
