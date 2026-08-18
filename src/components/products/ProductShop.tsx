@@ -1,11 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import ProductCard from "@/components/products/ProductCard";
-import { CardSkeleton, EmptyState, ErrorState } from "@/components/ui/States";
+import { EmptyState, ErrorState } from "@/components/ui/States";
 import { getProducts } from "@/data/content";
 import { PRODUCT_FILTERS, matchesProductFilter, type FilterKey } from "@/lib/productFilters";
 import type { ProductWithGallery } from "@/lib/apiTypes";
 
 type Status = "loading" | "ready" | "error";
+
+// Matches ProductCard's own fixed card/image sizing exactly, so the loading
+// skeleton doesn't jump in size once the real cards arrive.
+const CARD_WIDTH = "w-64 sm:w-72 lg:w-80";
+const IMAGE_HEIGHT = "h-48 sm:h-56 lg:h-64";
 
 /**
  * Filterable product listing — the single implementation of "browse and
@@ -13,19 +18,13 @@ type Status = "loading" | "ready" | "error";
  * Our Eggs page, so there's one product list and one filtering behavior
  * for the whole site (no separate static homepage product data).
  *
- * A single responsive CSS Grid at every breakpoint (1 column on mobile, up
- * through whatever `desktopGridClassName` specifies for `sm:`/`lg:`) — same
- * shape as `CardSkeleton`'s loading grid, so there's no layout jump between
- * the skeleton and the real cards. Grid's default row-stretch means every
- * card in a row is automatically the same height with no manual sizing;
- * `ProductCard` itself reserves equal space for title/description/quantity
- * regardless of content length so rows stay aligned as products change.
+ * One horizontally-scrolling row at every breakpoint (scroll-snap, next
+ * card peeking at the edge) — every card shares the same fixed width and
+ * image height (see ProductCard), and `items-stretch` on the row makes the
+ * content area the same height too, so nothing shifts card to card as
+ * products are added or content length varies.
  */
-export default function ProductShop({
-  desktopGridClassName = "sm:grid-cols-2 lg:grid-cols-3 sm:gap-6",
-}: {
-  desktopGridClassName?: string;
-}) {
+export default function ProductShop() {
   const [status, setStatus] = useState<Status>("loading");
   const [products, setProducts] = useState<ProductWithGallery[]>([]);
   const [filter, setFilter] = useState<FilterKey>("all");
@@ -61,7 +60,20 @@ export default function ProductShop({
         ))}
       </div>
 
-      {status === "loading" && <CardSkeleton count={6} gridClassName={desktopGridClassName} />}
+      {status === "loading" && (
+        <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 sm:pb-0">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className={`card ${CARD_WIDTH} shrink-0 snap-start overflow-hidden`}>
+              <div className={`skeleton ${IMAGE_HEIGHT} w-full rounded-none`} />
+              <div className="space-y-3 p-3 sm:p-4">
+                <div className="skeleton h-4 w-2/3" />
+                <div className="skeleton h-4 w-1/3" />
+                <div className="skeleton h-8 w-full" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
       {status === "error" && <ErrorState onRetry={load} />}
       {status === "ready" && products.length === 0 && (
         <EmptyState title="No products available" message="Please check back soon — new products are added regularly." />
@@ -70,7 +82,7 @@ export default function ProductShop({
         <EmptyState title="No products in this category" message="Try a different filter." />
       )}
       {status === "ready" && filtered.length > 0 && (
-        <div className={`grid grid-cols-1 items-stretch gap-4 ${desktopGridClassName}`}>
+        <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 sm:pb-0">
           {filtered.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}

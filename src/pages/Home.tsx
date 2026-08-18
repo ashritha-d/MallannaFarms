@@ -61,7 +61,7 @@ export default function Home() {
           title={t("section_products_title")}
           titleSize="text-xl sm:text-4xl"
         />
-        <ProductShop desktopGridClassName="sm:grid-cols-2 md:grid-cols-3 sm:gap-6" />
+        <ProductShop />
         <div className="mt-10 text-center">
           <NavLink to={ROUTES.products} className="btn-primary">
             {t("cta_shop_eggs")}
