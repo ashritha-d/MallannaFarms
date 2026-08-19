@@ -1,11 +1,13 @@
 import { NavLink } from "react-router-dom";
-import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { ExternalLink, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { LOGO } from "@/data/seed";
 import { useSettings } from "@/hooks/useSettings";
+import { getMapsUrl } from "@/lib/floatingContact";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 
 export default function Footer() {
   const { data: settings } = useSettings();
+  const mapsUrl = getMapsUrl(settings);
 
   const socialLinks = [
     { key: "social_instagram", icon: Instagram, label: "Instagram" },
@@ -15,8 +17,8 @@ export default function Footer() {
 
   return (
     <footer className="bg-forest-900 text-cream-100">
-      <div className="container-page py-14">
-        <div className="max-w-sm">
+      <div className="container-page grid grid-cols-1 items-stretch gap-10 py-14 lg:grid-cols-2 lg:gap-14">
+        <div>
           <NavLink to="/" className="flex items-center gap-3">
             <img src={LOGO.primary} alt="Mallanna Farms logo" className="h-14 w-14 rounded-full object-cover shadow-card" />
             <span className="font-display text-xl font-semibold text-cream-50">Mallanna Farms</span>
@@ -59,6 +61,42 @@ export default function Footer() {
             </div>
           )}
         </div>
+
+        {/* Whole card is one link — an overlay this size necessarily takes
+            over the iframe's own drag/zoom (a transparent click-catcher has
+            to sit above it to make the full visible area open Maps, not
+            just a small button), so this trades in-page panning for a
+            single unambiguous "tap to open Google Maps" affordance. The
+            live embed is still real Google Maps content underneath, not a
+            static image — roads, labels and the red pin are all genuine. */}
+        {mapsUrl && (
+          <a
+            href={mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Mallanna Farms location in Google Maps"
+            className="group relative block min-h-[300px] overflow-hidden rounded-2xl ring-1 ring-cream-50/15 transition-shadow hover:ring-gold-300/40 lg:min-h-[360px]"
+          >
+            {settings.contact_map_embed ? (
+              <iframe
+                src={settings.contact_map_embed}
+                title="Mallanna Farms location"
+                loading="lazy"
+                tabIndex={-1}
+                className="pointer-events-none h-full w-full border-0"
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center bg-forest-800 text-sm text-cream-100/60">
+                Map location coming soon.
+              </div>
+            )}
+            <div className="pointer-events-none absolute inset-0 bg-forest-950/0 transition-colors group-hover:bg-forest-950/10" />
+            <span className="pointer-events-none absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-forest-800 shadow-card">
+              <ExternalLink className="h-3.5 w-3.5" />
+              View on Google Maps
+            </span>
+          </a>
+        )}
       </div>
 
       <div className="border-t border-cream-50/10">

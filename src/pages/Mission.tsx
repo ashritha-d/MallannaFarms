@@ -4,7 +4,7 @@ import PageHero from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
 import { useSettings } from "@/hooks/useSettings";
 import { FARM_IMAGES } from "@/data/seed";
-import { COMMITMENTS } from "@/data/commitments";
+import CommitmentCards from "@/components/ui/CommitmentCards";
 
 export default function Mission() {
   const { data: settings } = useSettings();
@@ -30,14 +30,8 @@ export default function Mission() {
 
       <Section tone="cream">
         <h2 className="text-center font-display text-3xl font-semibold text-forest-900 sm:text-4xl">Our Commitment</h2>
-        <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
-          {COMMITMENTS.map((c) => (
-            <div key={c.title} className="card px-5 py-8 text-center">
-              <span className="text-3xl">{c.emoji}</span>
-              <h3 className="mt-3 font-display text-sm font-semibold text-forest-900">{c.title}</h3>
-              <p className="mt-2 text-xs leading-relaxed text-forest-600">{c.desc}</p>
-            </div>
-          ))}
+        <div className="mt-10">
+          <CommitmentCards />
         </div>
       </Section>
 

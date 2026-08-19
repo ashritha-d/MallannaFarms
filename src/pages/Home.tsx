@@ -11,10 +11,12 @@ import TestimonialsSection from "@/components/home/TestimonialsSection";
 import { ROUTES } from "@/routes";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { FARM_IMAGES } from "@/data/seed";
-import { COMMITMENTS } from "@/data/commitments";
+import CommitmentCards from "@/components/ui/CommitmentCards";
 
+// Free-range item uses a real Natu Kodi (native/country chicken) photo
+// instead of the generic white-hen emoji — the others stay as emoji.
 const TRUST_STRIP = [
-  { emoji: "🐔", key: "trust_free_range" as const },
+  { image: FARM_IMAGES.henCloseup, key: "trust_free_range" as const },
   { emoji: "🌱", key: "trust_natural_feed" as const },
   { emoji: "🥚", key: "trust_fresh_eggs" as const },
   { emoji: "❤️", key: "trust_quality" as const },
@@ -45,7 +47,11 @@ export default function Home() {
         <div className="mb-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 rounded-full bg-forest-800 px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-wide text-cream-50 sm:gap-x-8 sm:text-xs">
           {TRUST_STRIP.map((item) => (
             <span key={item.key} className="flex items-center gap-1.5 whitespace-nowrap">
-              <span>{item.emoji}</span>
+              {"image" in item ? (
+                <img src={item.image} alt="" aria-hidden="true" className="h-4 w-4 rounded-full object-cover ring-1 ring-cream-50/40" />
+              ) : (
+                <span>{item.emoji}</span>
+              )}
               {t(item.key)}
             </span>
           ))}
@@ -90,15 +96,7 @@ export default function Home() {
       {/* Our Commitment */}
       <Section tone="white">
         <SectionHeading eyebrow={t("section_commitment_eyebrow")} title={t("section_commitment_title")} description={t("section_commitment_subtitle")} />
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
-          {COMMITMENTS.map((c) => (
-            <div key={c.title} className="card px-5 py-8 text-center">
-              <span className="text-3xl">{c.emoji}</span>
-              <h3 className="mt-3 font-display text-sm font-semibold text-forest-900">{c.title}</h3>
-              <p className="mt-2 text-xs leading-relaxed text-forest-600">{c.desc}</p>
-            </div>
-          ))}
-        </div>
+        <CommitmentCards />
       </Section>
 
       {/* Why Free Range teaser */}
