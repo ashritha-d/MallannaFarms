@@ -17,14 +17,14 @@ export default function Contact() {
         description="Get in touch with Mallanna Farms — reach out for enquiries about our free-range eggs, farm visits, or partnerships."
         path="/contact"
       />
-      <Section tone="cream" className="pt-28 sm:pt-32">
-        <div className="mb-6">
-          <span className="section-eyebrow">
-            <span className="h-px w-8 bg-current opacity-60" />
-            Contact Us
-          </span>
-          <h1 className="mt-3 text-3xl font-semibold text-forest-900 sm:text-4xl">We'd Love to Hear From You</h1>
-        </div>
+      <Section tone="cream" className="pt-8 sm:pt-12">
+        {/* Visible eyebrow/heading removed per request; sr-only h1 kept so
+            the page still has one real heading for a11y/SEO (same pattern
+            as the Products page). pt-8/12 (was pt-28/32, sized for the
+            removed heading text) matches Products.tsx's own no-visible-
+            heading top padding, so content starts right below the navbar
+            with no leftover gap. */}
+        <h1 className="sr-only">Contact Us</h1>
 
         {/* Info (left) + map (right) — own row so the map sits directly
             beside the contact details rather than sharing a column with
