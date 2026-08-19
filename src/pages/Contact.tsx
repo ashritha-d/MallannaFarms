@@ -50,13 +50,10 @@ export default function Contact() {
         path="/contact"
       />
       <Section tone="cream" className="pt-28 sm:pt-32">
-        <div className="mb-10 max-w-2xl">
-          <span className="section-eyebrow">
-            <span className="h-px w-8 bg-current opacity-60" />
-            Contact Us
-          </span>
-          <h1 className="mt-3 text-3xl font-semibold text-forest-900 sm:text-4xl">We'd Love to Hear From You</h1>
-        </div>
+        {/* Visible eyebrow/heading removed per request; sr-only h1 kept so
+            the page still has one real heading for a11y/SEO (same pattern
+            as the Products page). */}
+        <h1 className="sr-only">Contact Us</h1>
         {/* Info (left) + map (right) — own row so the map sits directly
             beside the contact details rather than sharing a column with
             them. items-stretch (grid default) lets the map match the info
