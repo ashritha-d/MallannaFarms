@@ -48,7 +48,7 @@ export default function Home() {
           {TRUST_STRIP.map((item) => (
             <span key={item.key} className="flex items-center gap-1.5 whitespace-nowrap">
               {"image" in item ? (
-                <img src={item.image} alt="" aria-hidden="true" className="h-4 w-4 rounded-full object-cover ring-1 ring-cream-50/40" />
+                <img src={item.image} alt="" aria-hidden="true" className="h-4 w-4 object-contain" />
               ) : (
                 <span>{item.emoji}</span>
               )}
