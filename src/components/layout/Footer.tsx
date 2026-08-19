@@ -2,17 +2,21 @@ import { NavLink } from "react-router-dom";
 import { ExternalLink, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { LOGO } from "@/data/seed";
 import { useSettings } from "@/hooks/useSettings";
-import { getMapsUrl } from "@/lib/floatingContact";
+import { getMapsUrl, getWhatsAppUrl } from "@/lib/floatingContact";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 
 export default function Footer() {
   const { data: settings } = useSettings();
   const mapsUrl = getMapsUrl(settings);
+  // Same helper (and so the same number) as the Contact page's WhatsApp
+  // button and the floating action button — not the separate
+  // social_whatsapp "profile link" field, so every WhatsApp entry point
+  // on the site stays in sync with one source of truth.
+  const whatsappUrl = getWhatsAppUrl(settings);
 
   const socialLinks = [
     { key: "social_instagram", icon: Instagram, label: "Instagram" },
     { key: "social_facebook", icon: Facebook, label: "Facebook" },
-    { key: "social_whatsapp", icon: WhatsAppIcon, label: "WhatsApp" },
   ].filter((s) => settings[s.key]);
 
   return (
@@ -44,6 +48,17 @@ export default function Footer() {
               </a>
             </p>
           </div>
+          {whatsappUrl && (
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary mt-5 w-full !bg-[#25D366] hover:!bg-[#1fbd5a] sm:w-auto"
+            >
+              <WhatsAppIcon className="h-4 w-4" />
+              Message Us on WhatsApp
+            </a>
+          )}
           {socialLinks.length > 0 && (
             <div className="mt-5 flex gap-3">
               {socialLinks.map(({ key, icon: Icon, label }) => (
