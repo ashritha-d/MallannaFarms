@@ -16,7 +16,7 @@ import CommitmentCards from "@/components/ui/CommitmentCards";
 // Free-range item uses a real Natu Kodi (native/country chicken) photo
 // instead of the generic white-hen emoji — the others stay as emoji.
 const TRUST_STRIP = [
-  { image: FARM_IMAGES.henCloseup, key: "trust_free_range" as const },
+  { image: FARM_IMAGES.natuKodi, key: "trust_free_range" as const },
   { emoji: "🌱", key: "trust_natural_feed" as const },
   { emoji: "🥚", key: "trust_fresh_eggs" as const },
   { emoji: "❤️", key: "trust_quality" as const },

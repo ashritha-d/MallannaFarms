@@ -18,6 +18,10 @@ import type { Faq, GalleryItemWithMedia, Product, ProductWithGallery, VideoItem 
 export const FARM_IMAGES = {
   hero: "/assets/farm/hen-with-egg-basket.jpg",
   henCloseup: "/assets/farm/hen-closeup.jpg",
+  // Isolated Natu Kodi (country/native chicken) cutout, transparent
+  // background — used as a small icon in place of the generic white-hen
+  // emoji (trust strip, "Happy & Healthy Hens" commitment card).
+  natuKodi: "/assets/farm/hen.png",
   henWithBasket: "/assets/farm/hen-with-egg-basket.jpg",
   eggsInHay: "/assets/farm/eggs-in-basket-hay.jpg",
   farmGate: "/assets/farm/farm-gate-entrance.jpg",
