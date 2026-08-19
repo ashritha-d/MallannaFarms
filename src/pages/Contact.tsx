@@ -1,46 +1,14 @@
-import { useState, type FormEvent } from "react";
-import { ExternalLink, Mail, MapPin, Phone, Send } from "lucide-react";
+import { ExternalLink, Mail, MapPin, Phone } from "lucide-react";
 import Seo from "@/components/seo/Seo";
 import { Section } from "@/components/ui/Section";
 import { useSettings } from "@/hooks/useSettings";
-import { submitContactMessage } from "@/data/content";
 import { getMapsUrl, getWhatsAppUrl } from "@/lib/floatingContact";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 
-type FormState = { name: string; phone: string; email: string; subject: string; message: string };
-const EMPTY: FormState = { name: "", phone: "", email: "", subject: "", message: "" };
-
 export default function Contact() {
   const { data: settings } = useSettings();
-  const [form, setForm] = useState<FormState>(EMPTY);
-  const [errors, setErrors] = useState<Partial<FormState>>({});
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const [errorMsg, setErrorMsg] = useState("");
   const mapsUrl = getMapsUrl(settings);
   const whatsappUrl = getWhatsAppUrl(settings);
-
-  const validate = (): boolean => {
-    const next: Partial<FormState> = {};
-    if (!form.name.trim()) next.name = "Please enter your name.";
-    if (!/^\S+@\S+\.\S+$/.test(form.email)) next.email = "Please enter a valid email address.";
-    if (!form.message.trim() || form.message.trim().length < 10) next.message = "Please enter a message (min. 10 characters).";
-    setErrors(next);
-    return Object.keys(next).length === 0;
-  };
-
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!validate()) return;
-    setStatus("submitting");
-    const res = await submitContactMessage(form);
-    if (res.ok) {
-      setStatus("success");
-      setForm(EMPTY);
-    } else {
-      setStatus("error");
-      setErrorMsg(res.error ?? "Something went wrong.");
-    }
-  };
 
   return (
     <>
@@ -50,10 +18,14 @@ export default function Contact() {
         path="/contact"
       />
       <Section tone="cream" className="pt-28 sm:pt-32">
-        {/* Visible eyebrow/heading removed per request; sr-only h1 kept so
-            the page still has one real heading for a11y/SEO (same pattern
-            as the Products page). */}
-        <h1 className="sr-only">Contact Us</h1>
+        <div className="mb-6">
+          <span className="section-eyebrow">
+            <span className="h-px w-8 bg-current opacity-60" />
+            Contact Us
+          </span>
+          <h1 className="mt-3 text-3xl font-semibold text-forest-900 sm:text-4xl">We'd Love to Hear From You</h1>
+        </div>
+
         {/* Info (left) + map (right) — own row so the map sits directly
             beside the contact details rather than sharing a column with
             them. items-stretch (grid default) lets the map match the info
@@ -141,113 +113,7 @@ export default function Contact() {
             )}
           </div>
         </div>
-
-        {/* Message form — its own full-width section below, so it isn't
-            competing with the map for the same row. */}
-        <div className="card mt-10 p-6 sm:p-8 lg:mt-14">
-          <h2 className="font-display text-2xl font-semibold text-forest-900">Send Us a Message</h2>
-
-          {status === "success" ? (
-            <div className="mt-6 rounded-xl bg-forest-50 p-6 text-center">
-              <p className="font-display text-lg font-semibold text-forest-800">Thank you!</p>
-              <p className="mt-1 text-sm text-forest-600">Your message has been received. We'll get back to you soon.</p>
-              <button onClick={() => setStatus("idle")} className="btn-secondary mt-4">
-                Send Another Message
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={onSubmit} className="mt-6 space-y-5" noValidate>
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <Field label="Name" id="name" required error={errors.name}>
-                  <input
-                    id="name"
-                    type="text"
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="input"
-                    aria-invalid={!!errors.name}
-                  />
-                </Field>
-                <Field label="Phone" id="phone">
-                  <input
-                    id="phone"
-                    type="tel"
-                    value={form.phone}
-                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    className="input"
-                  />
-                </Field>
-              </div>
-              <Field label="Email" id="email" required error={errors.email}>
-                <input
-                  id="email"
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="input"
-                  aria-invalid={!!errors.email}
-                />
-              </Field>
-              <Field label="Subject" id="subject">
-                <input
-                  id="subject"
-                  type="text"
-                  value={form.subject}
-                  onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                  className="input"
-                />
-              </Field>
-              <Field label="Message" id="message" required error={errors.message}>
-                <textarea
-                  id="message"
-                  rows={5}
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  className="input resize-none"
-                  aria-invalid={!!errors.message}
-                />
-              </Field>
-
-              {status === "error" && (
-                <p className="rounded-lg bg-earth-50 px-4 py-3 text-sm text-earth-700">{errorMsg}</p>
-              )}
-
-              <button type="submit" disabled={status === "submitting"} className="btn-primary w-full sm:w-auto">
-                <Send className="h-4 w-4" />
-                {status === "submitting" ? "Sending…" : "Send Message"}
-              </button>
-            </form>
-          )}
-        </div>
       </Section>
     </>
-  );
-}
-
-function Field({
-  label,
-  id,
-  required,
-  error,
-  children,
-}: {
-  label: string;
-  id: string;
-  required?: boolean;
-  error?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-forest-800">
-        {label} {required && <span className="text-earth-500">*</span>}
-      </label>
-      {children}
-      {error && (
-        <p className="mt-1 text-xs text-earth-600" role="alert">
-          {error}
-        </p>
-      )}
-    </div>
   );
 }
